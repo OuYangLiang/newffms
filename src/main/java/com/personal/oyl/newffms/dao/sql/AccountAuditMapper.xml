@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.AccountAuditDao">
+	<resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.AccountAudit">
+		<id column="ADT_OID" property="adtOid" jdbcType="DECIMAL" />
+		<result column="ADT_DESC" property="adtDesc" jdbcType="NVARCHAR" />
+		<result column="ADT_TYPE" property="adtType" jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+		<result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
+		<result column="ACNT_OID" property="acntOid" jdbcType="DECIMAL" />
+        <result column="REF_ACNT_OID" property="refAcntOid" jdbcType="DECIMAL" />
+        <result column="INCOMING_OID" property="incomingOid" jdbcType="DECIMAL" />
+        <result column="CPN_OID" property="cpnOid" jdbcType="DECIMAL" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATOR_OID" property="creatorOid" jdbcType="DECIMAL" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+        ADT_OID, ADT_DESC, ADT_TYPE, AMOUNT, CONFIRMED, ACNT_OID, REF_ACNT_OID, INCOMING_OID, CPN_OID, CREATE_TIME, CREATOR_OID
+	</sql>
+
+
+    <select id="select" resultMap="BaseResultMap" parameterType="com.personal.oyl.newffms.pojo.AccountAudit">
+        SELECT <include refid="Base_Column_List" />
+        FROM ACCOUNT_AUDIT
+        <where>
+			<if test="adtOid != null">
+				ADT_OID = #{adtOid,jdbcType=DECIMAL}
+			</if>
+			<if test="adtDesc != null">
+				AND ADT_DESC = #{adtDesc,jdbcType=NVARCHAR}
+			</if>
+			<if test="adtType != null">
+				AND ADT_TYPE = #{adtType,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+				AND AMOUNT = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+            <if test="acntOid != null">
+                AND ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+            </if>
+			<if test="refAcntOid != null">
+				AND REF_ACNT_OID = #{refAcntOid,jdbcType=DECIMAL}
+			</if>
+			<if test="incomingOid != null">
+                AND INCOMING_OID = #{incomingOid,jdbcType=DECIMAL}
+            </if>
+			<if test="cpnOid != null">
+                AND CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+            </if>
+            <if test="createTime != null">
+                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="creatorOid != null">
+                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="delete" parameterType="com.personal.oyl.newffms.pojo.AccountAudit" >
+        DELETE FROM ACCOUNT_AUDIT
+        <where>
+            <if test="adtOid != null">
+                ADT_OID = #{adtOid,jdbcType=DECIMAL}
+            </if>
+            <if test="adtDesc != null">
+                AND ADT_DESC = #{adtDesc,jdbcType=NVARCHAR}
+            </if>
+            <if test="adtType != null">
+                AND ADT_TYPE = #{adtType,jdbcType=VARCHAR}
+            </if>
+            <if test="amount != null">
+                AND AMOUNT = #{amount,jdbcType=DECIMAL}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+            <if test="acntOid != null">
+                AND ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+            </if>
+            <if test="refAcntOid != null">
+                AND REF_ACNT_OID = #{refAcntOid,jdbcType=DECIMAL}
+            </if>
+            <if test="incomingOid != null">
+                AND INCOMING_OID = #{incomingOid,jdbcType=DECIMAL}
+            </if>
+            <if test="cpnOid != null">
+                AND CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+            </if>
+            <if test="createTime != null">
+                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="creatorOid != null">
+                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </delete>
+    
+    
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.AccountAudit">
+        INSERT INTO ACCOUNT_AUDIT(<include refid="Base_Column_List" />)
+        VALUES (#{adtOid,jdbcType=DECIMAL}, #{adtDesc,jdbcType=NVARCHAR}, #{adtType,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL},
+                #{confirmed,jdbcType=BIT}, #{acntOid,jdbcType=DECIMAL}, #{refAcntOid,jdbcType=DECIMAL},
+                #{incomingOid,jdbcType=DECIMAL}, #{cpnOid,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{creatorOid,jdbcType=DECIMAL})
+    </insert>
+    
+    
+    <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.AccountAudit">
+        UPDATE ACCOUNT_AUDIT
+        <set>
+            <if test="adtDesc != null">
+                ADT_DESC = #{adtDesc,jdbcType=NVARCHAR},
+            </if>
+            <if test="adtType != null">
+                ADT_TYPE = #{adtType,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                AMOUNT = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="confirmed != null">
+                CONFIRMED = #{confirmed,jdbcType=BIT},
+            </if>
+            <if test="acntOid != null">
+                ACNT_OID = #{acntOid,jdbcType=DECIMAL},
+            </if>
+            <if test="refAcntOid != null">
+                REF_ACNT_OID = #{refAcntOid,jdbcType=DECIMAL},
+            </if>
+            <if test="incomingOid != null">
+                INCOMING_OID = #{incomingOid,jdbcType=DECIMAL},
+            </if>
+            <if test="cpnOid != null">
+                CPN_OID = #{cpnOid,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creatorOid != null">
+                CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
+            </if>
+        </set>
+        WHERE ADT_OID = #{adtOid,jdbcType=DECIMAL}
+    </update>
+    
+    
+    <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.AccountAudit">
+        UPDATE ACCOUNT_AUDIT
+        SET
+            ADT_DESC = #{adtDesc,jdbcType=NVARCHAR},
+            ADT_TYPE = #{adtType,jdbcType=VARCHAR},
+            AMOUNT = #{amount,jdbcType=DECIMAL},
+            CONFIRMED = #{confirmed,jdbcType=BIT},
+            ACNT_OID = #{acntOid,jdbcType=DECIMAL},
+            REF_ACNT_OID = #{refAcntOid,jdbcType=DECIMAL},
+            INCOMING_OID = #{incomingOid,jdbcType=DECIMAL},
+            CPN_OID = #{cpnOid,jdbcType=DECIMAL},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+        WHERE ADT_OID = #{adtOid,jdbcType=DECIMAL}
+    </update>
+    
+</mapper>

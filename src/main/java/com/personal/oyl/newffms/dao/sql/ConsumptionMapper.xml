@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.ConsumptionDao">
+	<resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.Consumption">
+		<id column="CPN_OID" property="cpnOid" jdbcType="DECIMAL" />
+		<result column="CPN_TYPE" property="cpnType" jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+		<result column="CPN_TIME" property="cpnTime" jdbcType="TIMESTAMP" />
+		<result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATOR_OID" property="creatorOid" jdbcType="DECIMAL" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+        CPN_OID, CPN_TYPE, AMOUNT, CPN_TIME, CONFIRMED, CREATE_TIME, CREATOR_OID
+	</sql>
+
+
+    <select id="select" resultMap="BaseResultMap" parameterType="com.personal.oyl.newffms.pojo.Consumption">
+        SELECT <include refid="Base_Column_List" />
+        FROM CONSUMPTION
+        <where>
+			<if test="cpnOid != null">
+				CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+			</if>
+			<if test="cpnType != null">
+				AND CPN_TYPE = #{cpnType,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+				AND AMOUNT = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="cpnTime != null">
+                AND CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+			<if test="createTime != null">
+                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+			<if test="creatorOid != null">
+                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="delete" parameterType="com.personal.oyl.newffms.pojo.Consumption" >
+        DELETE FROM CONSUMPTION
+        <where>
+            <if test="cpnOid != null">
+                CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+            </if>
+            <if test="cpnType != null">
+                AND CPN_TYPE = #{cpnType,jdbcType=VARCHAR}
+            </if>
+            <if test="amount != null">
+                AND AMOUNT = #{amount,jdbcType=DECIMAL}
+            </if>
+            <if test="cpnTime != null">
+                AND CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+            <if test="createTime != null">
+                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="creatorOid != null">
+                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </delete>
+    
+    
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Consumption">
+        INSERT INTO CONSUMPTION(<include refid="Base_Column_List" />)
+        VALUES (#{cpnOid,jdbcType=DECIMAL}, #{cpnType,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{cpnTime,jdbcType=TIMESTAMP}, #{confirmed,jdbcType=BIT},
+                #{createTime,jdbcType=TIMESTAMP}, #{creatorOid,jdbcType=DECIMAL})
+    </insert>
+    
+    
+    <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.Consumption">
+        UPDATE CONSUMPTION
+        <set>
+            <if test="cpnType != null">
+                CPN_TYPE = #{cpnType,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                AMOUNT = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="cpnTime != null">
+                CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="confirmed != null">
+                CONFIRMED = #{confirmed,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creatorOid != null">
+                CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
+            </if>
+        </set>
+        WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+    </update>
+    
+    
+    <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.Consumption">
+        UPDATE CONSUMPTION
+        SET
+            CPN_TYPE = #{cpnType,jdbcType=VARCHAR},
+            AMOUNT = #{amount,jdbcType=DECIMAL},
+            CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP},
+            CONFIRMED = #{confirmed,jdbcType=BIT},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+        WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+    </update>
+    
+</mapper>

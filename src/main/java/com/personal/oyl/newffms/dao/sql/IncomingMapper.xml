@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.IncomingDao">
+	<resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.Incoming">
+		<id column="INCOMING_OID" property="incomingOid" jdbcType="DECIMAL" />
+		<result column="INCOMING_DESC" property="incomingDesc" jdbcType="NVARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+		<result column="INCOMING_TYPE" property="incomingType" jdbcType="VARCHAR" />
+		<result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
+        <result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATOR_OID" property="creatorOid" jdbcType="DECIMAL" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+        INCOMING_OID, INCOMING_DESC, AMOUNT, INCOMINT_TYPE, CONFIRMED, OWNER_OID, CREATE_TIME, CREATOR_OID
+	</sql>
+
+
+    <select id="select" resultMap="BaseResultMap" parameterType="com.personal.oyl.newffms.pojo.Incoming">
+        SELECT <include refid="Base_Column_List" />
+        FROM INCOMING
+        <where>
+			<if test="incomingOid != null">
+				INCOMING_OID = #{incomingOid,jdbcType=DECIMAL}
+			</if>
+			<if test="incomingDesc != null">
+				AND INCOMING_DESC = #{incomingDesc,jdbcType=NVARCHAR}
+			</if>
+			<if test="amount != null">
+				AND AMOUNT = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="incomingType != null">
+                AND INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+			<if test="ownerOid != null">
+				AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+			<if test="creatorOid != null">
+                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="delete" parameterType="com.personal.oyl.newffms.pojo.Incoming" >
+        DELETE FROM INCOMING
+        <where>
+            <if test="incomingOid != null">
+                INCOMING_OID = #{incomingOid,jdbcType=DECIMAL}
+            </if>
+            <if test="incomingDesc != null">
+                AND INCOMING_DESC = #{incomingDesc,jdbcType=NVARCHAR}
+            </if>
+            <if test="amount != null">
+                AND AMOUNT = #{amount,jdbcType=DECIMAL}
+            </if>
+            <if test="incomingType != null">
+                AND INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+            <if test="ownerOid != null">
+                AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="createTime != null">
+                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="creatorOid != null">
+                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </delete>
+    
+    
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Incoming">
+        INSERT INTO INCOMING(<include refid="Base_Column_List" />)
+        VALUES (#{incomingOid,jdbcType=DECIMAL}, #{incomingDesc,jdbcType=NVARCHAR}, #{balance,jdbcType=DECIMAL}, #{incomingType,jdbcType=VARCHAR},
+                #{confirmed,jdbcType=BIT}, #{ownerOid,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{creatorOid,jdbcType=DECIMAL})
+    </insert>
+    
+    
+    <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.Incoming">
+        UPDATE INCOMING
+        <set>
+            <if test="incomingDesc != null">
+                INCOMING_DESC = #{incomingDesc,jdbcType=NVARCHAR},
+            </if>
+            <if test="amount != null">
+                AMOUNT = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="incomingtype != null">
+                INCOMINT_TYPE = #{incomingtype,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmed != null">
+                CONFIRMED = #{confirmed,jdbcType=BIT},
+            </if>
+            <if test="ownerOid != null">
+                OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creatorOid != null">
+                CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
+            </if>
+        </set>
+        WHERE INCOMING_OID = #{incomingOid,jdbcType=DECIMAL}
+    </update>
+    
+    
+    <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.Incoming">
+        UPDATE INCOMING
+        SET
+            INCOMING_DESC = #{incomingDesc,jdbcType=NVARCHAR},
+            AMOUNT = #{amount,jdbcType=DECIMAL},
+            INCOMINT_TYPE = #{incomingtype,jdbcType=VARCHAR},
+            CONFIRMED = #{confirmed,jdbcType=BIT},
+            OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+        WHERE INCOMING_OID = #{incomingOid,jdbcType=DECIMAL}
+    </update>
+    
+</mapper>

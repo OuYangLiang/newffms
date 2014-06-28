@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.UserProfileDao">
+	<resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.UserProfile">
+		<id column="USER_OID" property="userOid" jdbcType="DECIMAL" />
+		<result column="USER_NAME" property="userName" jdbcType="NVARCHAR" />
+		<result column="USER_ALIAS" property="userAlias" jdbcType="NVARCHAR" />
+		<result column="GENDER" property="gender" jdbcType="VARCHAR" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="LOGIN_ID" property="loginId" jdbcType="VARCHAR" />
+		<result column="LOGIN_PWD" property="loginPwd" jdbcType="CHAR" />
+		<result column="USER_TYPE_OID" property="userTypeOid" jdbcType="DECIMAL" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+        USER_OID, USER_NAME, USER_ALIAS, GENDER, PHONE, EMAIL, LOGIN_ID, LOGIN_PWD, USER_TYPE_OID
+	</sql>
+
+
+    <select id="select" resultMap="BaseResultMap" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
+        SELECT <include refid="Base_Column_List" />
+        FROM USER_PROFILE
+        <where>
+			<if test="userOid != null">
+				USER_OID = #{userOid,jdbcType=DECIMAL}
+			</if>
+			<if test="userName != null">
+				AND USER_NAME = #{userName,jdbcType=NVARCHAR}
+			</if>
+			<if test="userAlias != null">
+				AND USER_ALIAS = #{userAlias,jdbcType=NVARCHAR}
+			</if>
+			<if test="gender != null">
+				AND GENDER = #{gender,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null">
+				AND PHONE = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+				AND EMAIL = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="loginId != null">
+				AND LOGIN_ID = #{loginId,jdbcType=VARCHAR}
+			</if>
+			<if test="userTypeOid != null">
+				AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
+			</if>
+        </where>
+    </select>
+
+
+    <delete id="delete" parameterType="com.personal.oyl.newffms.pojo.UserProfile" >
+        DELETE FROM USER_PROFILE
+        <where>
+            <if test="userOid != null">
+                USER_OID = #{userOid,jdbcType=DECIMAL}
+            </if>
+            <if test="userName != null">
+                AND USER_NAME = #{userName,jdbcType=NVARCHAR}
+            </if>
+            <if test="userAlias != null">
+                AND USER_ALIAS = #{userAlias,jdbcType=NVARCHAR}
+            </if>
+            <if test="gender != null">
+                AND GENDER = #{gender,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null">
+                AND PHONE = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null">
+                AND EMAIL = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="loginId != null">
+                AND LOGIN_ID = #{loginId,jdbcType=VARCHAR}
+            </if>
+            <if test="userTypeOid != null">
+                AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </delete>
+    
+    
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
+        INSERT INTO USER_PROFILE(<include refid="Base_Column_List" />)
+        VALUES (#{userOid,jdbcType=DECIMAL}, #{userName,jdbcType=NVARCHAR}, #{userAlias,jdbcType=NVARCHAR}, #{gender,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR}, #{userTypeOid,jdbcType=DECIMAL})
+    </insert>
+    
+    
+    <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
+        UPDATE USER_PROFILE
+        <set>
+            <if test="userName != null">
+                USER_NAME = #{userName,jdbcType=NVARCHAR},
+            </if>
+            <if test="userAlias != null">
+                USER_ALIAS = #{userAlias,jdbcType=NVARCHAR},
+            </if>
+            <if test="gender != null">
+                GENDER = #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                PHONE = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="loginId != null">
+                LOGIN_ID = #{loginId,jdbcType=VARCHAR},
+            </if>
+            <if test="loginPwd != null">
+                LOGIN_PWD = #{loginPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userTypeOid != null">
+                USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL},
+            </if>
+        </set>
+        WHERE USER_OID = #{userOid,jdbcType=DECIMAL}
+    </update>
+    
+    
+    <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
+        UPDATE USER_PROFILE
+        SET
+            USER_NAME = #{userName,jdbcType=NVARCHAR},
+            USER_ALIAS = #{userAlias,jdbcType=NVARCHAR},
+            GENDER = #{gender,jdbcType=VARCHAR},
+            PHONE = #{phone,jdbcType=VARCHAR},
+            EMAIL = #{email,jdbcType=VARCHAR},
+            LOGIN_ID = #{loginId,jdbcType=VARCHAR},
+            LOGIN_PWD = #{loginPwd,jdbcType=VARCHAR},
+            USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
+        WHERE USER_OID = #{userOid,jdbcType=DECIMAL}
+    </update>
+    
+</mapper>

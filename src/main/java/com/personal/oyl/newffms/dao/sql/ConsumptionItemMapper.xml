@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.ConsumptionItemDao">
+	<resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.ConsumptionItem">
+		<id column="ITEM_OID" property="itemOid" jdbcType="DECIMAL" />
+		<result column="ITEM_DESC" property="itemDesc" jdbcType="NVARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+		<result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
+        <result column="CPN_OID" property="cpnOid" jdbcType="DECIMAL" />
+        <result column="CATEGORY_OID" property="categoryOid" jdbcType="DECIMAL" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+        ITEM_OID, ITEM_DESC, AMOUNT, OWNER_OID, CPN_OID, CATEGORY_OID
+	</sql>
+
+
+    <select id="select" resultMap="BaseResultMap" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem">
+        SELECT <include refid="Base_Column_List" />
+        FROM CONSUMPTION_ITEM
+        <where>
+			<if test="itemOid != null">
+				ITEM_OID = #{itemOid,jdbcType=DECIMAL}
+			</if>
+			<if test="itemDesc != null">
+				AND ITEM_DESC = #{itemDesc,jdbcType=NVARCHAR}
+			</if>
+			<if test="amount != null">
+				AND AMOUNT = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="ownerOid != null">
+                AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="cpnOid != null">
+                AND CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+            </if>
+			<if test="categoryOid != null">
+                AND CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="delete" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem" >
+        DELETE FROM CONSUMPTION_ITEM
+        <where>
+            <if test="itemOid != null">
+                ITEM_OID = #{itemOid,jdbcType=DECIMAL}
+            </if>
+            <if test="itemDesc != null">
+                AND ITEM_DESC = #{itemDesc,jdbcType=NVARCHAR}
+            </if>
+            <if test="amount != null">
+                AND AMOUNT = #{amount,jdbcType=DECIMAL}
+            </if>
+            <if test="ownerOid != null">
+                AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="cpnOid != null">
+                AND CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+            </if>
+            <if test="categoryOid != null">
+                AND CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </delete>
+    
+    
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem">
+        INSERT INTO CONSUMPTION_ITEM(<include refid="Base_Column_List" />)
+        VALUES (#{itemOid,jdbcType=DECIMAL}, #{itemDesc,jdbcType=NVARCHAR}, #{amount,jdbcType=DECIMAL},
+                #{ownerOid,jdbcType=DECIMAL}, #{cpnOid,jdbcType=DECIMAL}, #{categoryOid,jdbcType=DECIMAL})
+    </insert>
+    
+    
+    <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem">
+        UPDATE CONSUMPTION_ITEM
+        <set>
+            <if test="itemDesc != null">
+                ITEM_DESC = #{itemDesc,jdbcType=NVARCHAR},
+            </if>
+            <if test="amount != null">
+                AMOUNT = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="ownerOid != null">
+                OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            </if>
+            <if test="cpnOid != null">
+                CPN_OID = #{cpnOid,jdbcType=DECIMAL},
+            </if>
+            <if test="categoryOid != null">
+                CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL},
+            </if>
+        </set>
+        WHERE ITEM_OID = #{itemOid,jdbcType=DECIMAL}
+    </update>
+    
+    
+    <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem">
+        UPDATE CONSUMPTION_ITEM
+        SET
+            ITEM_DESC = #{itemDesc,jdbcType=NVARCHAR},
+            AMOUNT = #{amount,jdbcType=DECIMAL},
+            OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            CPN_OID = #{cpnOid,jdbcType=DECIMAL},
+            CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL},
+        WHERE ITEM_OID = #{itemOid,jdbcType=DECIMAL}
+    </update>
+    
+</mapper>

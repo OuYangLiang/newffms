@@ -17,13 +17,17 @@
 		<logout />
 	</http>
 	
+	<beans:bean id="myUserService" class="com.personal.oyl.newffms.security.MyUserDetailService"/>
+	
+	<beans:bean name="pwdEncoder" class="com.personal.oyl.newffms.security.PwdEncoder">
+        <beans:property name="algorithm" value="SHA-512" />
+    </beans:bean>
+	
 	
 	<authentication-manager>
         <authentication-provider user-service-ref="myUserService">
+            <password-encoder ref="pwdEncoder"/>
         </authentication-provider>
     </authentication-manager>
-	
-	
-    <beans:bean id="myUserService" class="com.personal.oyl.newffms.security.MyUserDetailService"/>
 	
 </beans:beans>

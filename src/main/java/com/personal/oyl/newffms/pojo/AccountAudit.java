@@ -1,7 +1,6 @@
 package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.personal.oyl.newffms.constants.AccountAuditType;
 
@@ -15,8 +14,7 @@ public class AccountAudit extends BasePojo {
     private BigDecimal refAcntOid;
     private BigDecimal incomingOid;
     private BigDecimal cpnOid;
-    private Date createTime;
-    private BigDecimal creatorOid;
+    private BaseObject baseObject;
 
     public BigDecimal getAdtOid() {
         return adtOid;
@@ -90,19 +88,29 @@ public class AccountAudit extends BasePojo {
         this.cpnOid = cpnOid;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public BaseObject getBaseObject() {
+        return baseObject;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setBaseObject(BaseObject baseObject) {
+        this.baseObject = baseObject;
+    }
+    
+    @Override
+    public void setAllEmptyStringToNull() throws Exception {
+        if (null != baseObject) {
+            baseObject.setAllEmptyStringToNull();
+        }
+        
+        super.setAllEmptyStringToNull();
     }
 
-    public BigDecimal getCreatorOid() {
-        return creatorOid;
+    @Override
+    public void trimAllString() throws Exception {
+        if (null != baseObject) {
+            baseObject.trimAllString();
+        }
+        super.trimAllString();
     }
 
-    public void setCreatorOid(BigDecimal creatorOid) {
-        this.creatorOid = creatorOid;
-    }
 }

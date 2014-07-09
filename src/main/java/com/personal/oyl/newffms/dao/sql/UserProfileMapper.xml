@@ -11,11 +11,16 @@
 		<result column="LOGIN_ID" property="loginId" jdbcType="VARCHAR" />
 		<result column="LOGIN_PWD" property="loginPwd" jdbcType="CHAR" />
 		<result column="USER_TYPE_OID" property="userTypeOid" jdbcType="DECIMAL" />
+		<result column="CREATE_TIME" property="baseObject.createTime" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_TIME" property="baseObject.updateTime" jdbcType="TIMESTAMP" />
+		<result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
+		<result column="UPDATE_BY" property="baseObject.updateBy" jdbcType="NVARCHAR" />
+		<result column="SEQ_NO" property="baseObject.seqNo" jdbcType="DECIMAL" />
 	</resultMap>
 
 
 	<sql id="Base_Column_List">
-        USER_OID, USER_NAME, USER_ALIAS, GENDER, PHONE, EMAIL, LOGIN_ID, LOGIN_PWD, USER_TYPE_OID
+        USER_OID, USER_NAME, USER_ALIAS, GENDER, PHONE, EMAIL, LOGIN_ID, LOGIN_PWD, USER_TYPE_OID, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
 	</sql>
 
 
@@ -47,6 +52,21 @@
 			<if test="userTypeOid != null">
 				AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
 			</if>
+			<if test="baseObject != null and baseObject.createTime != null">
+                AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="baseObject != null and baseObject.updateTime != null">
+                AND UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP}
+            </if>
+			<if test="baseObject != null and baseObject.createBy != null">
+                AND CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                AND UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
+            </if>
         </where>
     </select>
 
@@ -78,6 +98,21 @@
             <if test="userTypeOid != null">
                 AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
             </if>
+            <if test="baseObject != null and baseObject.createTime != null">
+                AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.updateTime != null">
+                AND UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                AND CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                AND UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
+            </if>
         </where>
     </delete>
     
@@ -85,7 +120,8 @@
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
         INSERT INTO USER_PROFILE(<include refid="Base_Column_List" />)
         VALUES (#{userOid,jdbcType=DECIMAL}, #{userName,jdbcType=NVARCHAR}, #{userAlias,jdbcType=NVARCHAR}, #{gender,jdbcType=VARCHAR},
-                #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR}, #{userTypeOid,jdbcType=DECIMAL})
+                #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR}, #{userTypeOid,jdbcType=DECIMAL},
+                #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
     </insert>
     
     
@@ -116,6 +152,21 @@
             <if test="userTypeOid != null">
                 USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL},
             </if>
+            <if test="baseObject != null and baseObject.createTime != null">
+                CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="baseObject != null and baseObject.updateTime != null">
+                UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
+            </if>
         </set>
         WHERE USER_OID = #{userOid,jdbcType=DECIMAL}
     </update>
@@ -131,7 +182,12 @@
             EMAIL = #{email,jdbcType=VARCHAR},
             LOGIN_ID = #{loginId,jdbcType=VARCHAR},
             LOGIN_PWD = #{loginPwd,jdbcType=VARCHAR},
-            USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
+            USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL},
+            CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
+            UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
+            CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
+            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
         WHERE USER_OID = #{userOid,jdbcType=DECIMAL}
     </update>
     

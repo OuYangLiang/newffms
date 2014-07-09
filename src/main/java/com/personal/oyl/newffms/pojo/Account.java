@@ -1,7 +1,6 @@
 package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.personal.oyl.newffms.constants.AccountType;
 
@@ -13,8 +12,7 @@ public class Account extends BasePojo {
     private BigDecimal quota;
     private BigDecimal debt;
     private BigDecimal ownerOid;
-    private Date createTime;
-    private BigDecimal creatorOid;
+    private BaseObject baseObject;
 
     public BigDecimal getAcntOid() {
         return acntOid;
@@ -72,20 +70,29 @@ public class Account extends BasePojo {
         this.ownerOid = ownerOid;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public BaseObject getBaseObject() {
+        return baseObject;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setBaseObject(BaseObject baseObject) {
+        this.baseObject = baseObject;
     }
 
-    public BigDecimal getCreatorOid() {
-        return creatorOid;
+    @Override
+    public void setAllEmptyStringToNull() throws Exception {
+        if (null != baseObject) {
+            baseObject.setAllEmptyStringToNull();
+        }
+        
+        super.setAllEmptyStringToNull();
     }
 
-    public void setCreatorOid(BigDecimal creatorOid) {
-        this.creatorOid = creatorOid;
+    @Override
+    public void trimAllString() throws Exception {
+        if (null != baseObject) {
+            baseObject.trimAllString();
+        }
+        super.trimAllString();
     }
-    
+
 }

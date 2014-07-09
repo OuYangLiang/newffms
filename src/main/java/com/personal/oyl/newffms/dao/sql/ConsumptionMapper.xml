@@ -7,13 +7,16 @@
 		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
 		<result column="CPN_TIME" property="cpnTime" jdbcType="TIMESTAMP" />
 		<result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
-        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="CREATOR_OID" property="creatorOid" jdbcType="DECIMAL" />
+		<result column="CREATE_TIME" property="baseObject.createTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_TIME" property="baseObject.updateTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
+        <result column="UPDATE_BY" property="baseObject.updateBy" jdbcType="NVARCHAR" />
+        <result column="SEQ_NO" property="baseObject.seqNo" jdbcType="DECIMAL" />
 	</resultMap>
 
 
 	<sql id="Base_Column_List">
-        CPN_OID, CPN_TYPE, AMOUNT, CPN_TIME, CONFIRMED, CREATE_TIME, CREATOR_OID
+        CPN_OID, CPN_TYPE, AMOUNT, CPN_TIME, CONFIRMED, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
 	</sql>
 
 
@@ -36,11 +39,23 @@
             <if test="confirmed != null">
                 AND CONFIRMED = #{confirmed,jdbcType=BIT}
             </if>
-			<if test="createTime != null">
-                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            <if test="userTypeOid != null">
+                AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
             </if>
-			<if test="creatorOid != null">
-                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            <if test="baseObject != null and baseObject.createTime != null">
+                AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.updateTime != null">
+                AND UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                AND CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                AND UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
             </if>
         </where>
     </select>
@@ -64,11 +79,23 @@
             <if test="confirmed != null">
                 AND CONFIRMED = #{confirmed,jdbcType=BIT}
             </if>
-            <if test="createTime != null">
-                AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+            <if test="userTypeOid != null">
+                AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
             </if>
-            <if test="creatorOid != null">
-                AND CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            <if test="baseObject != null and baseObject.createTime != null">
+                AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.updateTime != null">
+                AND UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                AND CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                AND UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
             </if>
         </where>
     </delete>
@@ -77,7 +104,7 @@
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Consumption">
         INSERT INTO CONSUMPTION(<include refid="Base_Column_List" />)
         VALUES (#{cpnOid,jdbcType=DECIMAL}, #{cpnType,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{cpnTime,jdbcType=TIMESTAMP}, #{confirmed,jdbcType=BIT},
-                #{createTime,jdbcType=TIMESTAMP}, #{creatorOid,jdbcType=DECIMAL})
+        #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
     </insert>
     
     
@@ -96,11 +123,20 @@
             <if test="confirmed != null">
                 CONFIRMED = #{confirmed,jdbcType=BIT},
             </if>
-            <if test="createTime != null">
-                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            <if test="baseObject != null and baseObject.createTime != null">
+                CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="creatorOid != null">
-                CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
+            <if test="baseObject != null and baseObject.updateTime != null">
+                UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
             </if>
         </set>
         WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL}
@@ -114,8 +150,11 @@
             AMOUNT = #{amount,jdbcType=DECIMAL},
             CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP},
             CONFIRMED = #{confirmed,jdbcType=BIT},
-            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-            CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
+            CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
+            UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
+            CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
+            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
         WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL}
     </update>
     

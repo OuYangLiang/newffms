@@ -6,11 +6,16 @@
 		<result column="CATEGORY_DESC" property="categoryDesc" jdbcType="NVARCHAR" />
 		<result column="MONTHLY_BUDGET" property="monthlyBudget" jdbcType="DECIMAL" />
         <result column="PARENT_OID" property="parentOid" jdbcType="DECIMAL" />
+        <result column="CREATE_TIME" property="baseObject.createTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_TIME" property="baseObject.updateTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
+        <result column="UPDATE_BY" property="baseObject.updateBy" jdbcType="NVARCHAR" />
+        <result column="SEQ_NO" property="baseObject.seqNo" jdbcType="DECIMAL" />
 	</resultMap>
 
 
 	<sql id="Base_Column_List">
-        CATEGORY_OID, CATEGORY_DESC, MONTHLY_BUDGET, PARENT_OID
+        CATEGORY_OID, CATEGORY_DESC, MONTHLY_BUDGET, PARENT_OID, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
 	</sql>
 
 
@@ -30,6 +35,21 @@
 			<if test="parentOid != null">
 				AND PARENT_OID = #{parentOid,jdbcType=DECIMAL}
 			</if>
+			<if test="baseObject != null and baseObject.createTime != null">
+                AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.updateTime != null">
+                AND UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                AND CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                AND UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
+            </if>
         </where>
     </select>
 
@@ -49,36 +69,43 @@
             <if test="parentOid != null">
                 AND PARENT_OID = #{parentOid,jdbcType=DECIMAL}
             </if>
+            <if test="baseObject != null and baseObject.createTime != null">
+                AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.updateTime != null">
+                AND UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                AND CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                AND UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
+            </if>
         </where>
     </delete>
     
     
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Category">
         INSERT INTO CATEGORY(<include refid="Base_Column_List" />)
-        VALUES (#{categoryOid,jdbcType=DECIMAL}, #{categoryDesc,jdbcType=NVARCHAR}, #{monthlyBudget,jdbcType=DECIMAL}, #{parentOid,jdbcType=DECIMAL})
+        VALUES (#{categoryOid,jdbcType=DECIMAL}, #{categoryDesc,jdbcType=NVARCHAR}, #{monthlyBudget,jdbcType=DECIMAL}, #{parentOid,jdbcType=DECIMAL},
+        #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
     </insert>
     
     
     <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.Category">
-        UPDATE ACCOUNT
+        UPDATE CATEGORY
         <set>
-            <if test="acntDesc != null">
-                ACNT_DESC = #{acntDesc,jdbcType=NVARCHAR},
+            <if test="categoryDesc != null">
+                CATEGORY_DESC = #{categoryDesc,jdbcType=NVARCHAR},
             </if>
-            <if test="acntType != null">
-                ACNT_TYPE = #{acntType,jdbcType=VARCHAR},
+            <if test="monthlyBudget != null">
+                MONTHLY_BUDGET = #{monthlyBudget,jdbcType=DECIMAL},
             </if>
-            <if test="balance != null">
-                BALANCE = #{balance,jdbcType=DECIMAL},
-            </if>
-            <if test="quota != null">
-                QUOTA = #{quota,jdbcType=DECIMAL},
-            </if>
-            <if test="debt != null">
-                DEBT = #{debt,jdbcType=DECIMAL},
-            </if>
-            <if test="ownerOid != null">
-                OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            <if test="parentOid != null">
+                PARENT_OID = #{parentOid,jdbcType=DECIMAL},
             </if>
             <if test="createTime != null">
                 CREATE_TIME = #{createTime,jdbcType=DECIMAL},
@@ -86,23 +113,40 @@
             <if test="creatorOid != null">
                 CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
             </if>
+            <if test="baseObject != null and baseObject.createTime != null">
+                CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="baseObject != null and baseObject.updateTime != null">
+                UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="baseObject != null and baseObject.createBy != null">
+                CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
+            </if>
+            <if test="baseObject != null and baseObject.updateBy != null">
+                UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
+            </if>
+            <if test="baseObject != null and baseObject.seqNo != null">
+                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
+            </if>
         </set>
-        WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+        WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
     </update>
     
     
     <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.Category">
-        UPDATE ACCOUNT
+        UPDATE CATEGORY
         SET
-            ACNT_DESC = #{acntDesc,jdbcType=NVARCHAR},
-            ACNT_TYPE = #{acntType,jdbcType=VARCHAR},
-            BALANCE = #{balance,jdbcType=DECIMAL},
-            QUOTA = #{quota,jdbcType=DECIMAL},
-            DEBT = #{debt,jdbcType=DECIMAL},
-            OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            CATEGORY_DESC = #{categoryDesc,jdbcType=NVARCHAR},
+            MONTHLY_BUDGET = #{monthlyBudget,jdbcType=DECIMAL},
+            PARENT_OID = #{parentOid,jdbcType=DECIMAL},
             CREATE_TIME = #{createTime,jdbcType=DECIMAL},
-            CREATOR_OID = #{creatorOid,jdbcType=DECIMAL}
-        WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+            CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
+            CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
+            UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
+            CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
+            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
+        WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
     </update>
     
 </mapper>

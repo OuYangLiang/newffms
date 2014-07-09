@@ -7,6 +7,7 @@ public class Category extends BasePojo {
     private String categoryDesc;
     private BigDecimal monthlyBudget;
     private BigDecimal parentOid;
+    private BaseObject baseObject;
 
     public BigDecimal getCategoryOid() {
         return categoryOid;
@@ -40,4 +41,28 @@ public class Category extends BasePojo {
         this.parentOid = parentOid;
     }
 
+    public BaseObject getBaseObject() {
+        return baseObject;
+    }
+
+    public void setBaseObject(BaseObject baseObject) {
+        this.baseObject = baseObject;
+    }
+
+    @Override
+    public void setAllEmptyStringToNull() throws Exception {
+        if (null != baseObject) {
+            baseObject.setAllEmptyStringToNull();
+        }
+        
+        super.setAllEmptyStringToNull();
+    }
+
+    @Override
+    public void trimAllString() throws Exception {
+        if (null != baseObject) {
+            baseObject.trimAllString();
+        }
+        super.trimAllString();
+    }
 }

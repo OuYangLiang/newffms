@@ -14,6 +14,7 @@ public class UserProfile extends BasePojo {
     private String loginId;
     private String loginPwd;
     private BigDecimal userTypeOid;
+    private BaseObject baseObject;
 
     public BigDecimal getUserOid() {
         return userOid;
@@ -87,4 +88,28 @@ public class UserProfile extends BasePojo {
         this.userTypeOid = userTypeOid;
     }
 
+    public BaseObject getBaseObject() {
+        return baseObject;
+    }
+
+    public void setBaseObject(BaseObject baseObject) {
+        this.baseObject = baseObject;
+    }
+
+    @Override
+    public void setAllEmptyStringToNull() throws Exception {
+        if (null != baseObject) {
+            baseObject.setAllEmptyStringToNull();
+        }
+        
+        super.setAllEmptyStringToNull();
+    }
+
+    @Override
+    public void trimAllString() throws Exception {
+        if (null != baseObject) {
+            baseObject.trimAllString();
+        }
+        super.trimAllString();
+    }
 }

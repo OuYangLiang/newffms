@@ -11,8 +11,7 @@ public class Consumption extends BasePojo {
     private BigDecimal amount;
     private Date cpnTime;
     private Boolean confirmed;
-    private Date createTime;
-    private BigDecimal creatorOid;
+    private BaseObject baseObject;
 
     public BigDecimal getCpnOid() {
         return cpnOid;
@@ -54,19 +53,28 @@ public class Consumption extends BasePojo {
         this.confirmed = confirmed;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public BaseObject getBaseObject() {
+        return baseObject;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setBaseObject(BaseObject baseObject) {
+        this.baseObject = baseObject;
+    }
+    
+    @Override
+    public void setAllEmptyStringToNull() throws Exception {
+        if (null != baseObject) {
+            baseObject.setAllEmptyStringToNull();
+        }
+        
+        super.setAllEmptyStringToNull();
     }
 
-    public BigDecimal getCreatorOid() {
-        return creatorOid;
-    }
-
-    public void setCreatorOid(BigDecimal creatorOid) {
-        this.creatorOid = creatorOid;
+    @Override
+    public void trimAllString() throws Exception {
+        if (null != baseObject) {
+            baseObject.trimAllString();
+        }
+        super.trimAllString();
     }
 }

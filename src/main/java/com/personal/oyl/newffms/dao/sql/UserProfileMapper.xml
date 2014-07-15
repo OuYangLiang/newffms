@@ -117,7 +117,7 @@
     </delete>
     
     
-    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.UserProfile" useGeneratedKeys="true" keyProperty="userOid">
         INSERT INTO USER_PROFILE(<include refid="Base_Column_List" />)
         VALUES (#{userOid,jdbcType=DECIMAL}, #{userName,jdbcType=NVARCHAR}, #{userAlias,jdbcType=NVARCHAR}, #{gender,jdbcType=VARCHAR},
                 #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR}, #{userTypeOid,jdbcType=DECIMAL},

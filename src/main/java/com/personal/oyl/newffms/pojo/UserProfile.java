@@ -2,14 +2,20 @@ package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.personal.oyl.newffms.constants.Gender;
 
 public class UserProfile extends BasePojo {
     private BigDecimal userOid;
+    @NotEmpty(message = "User Name cannot be null.")
     private String userName;
     private String userAlias;
     private Gender gender;
     private String phone;
+    @NotEmpty(message = "Email cannot be null.")
+    @Email(message = "Email is not valid input.")
     private String email;
     private String loginId;
     private String loginPwd;

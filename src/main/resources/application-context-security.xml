@@ -10,11 +10,15 @@
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
+        
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/login*" security="none"/>
 
     <http>
 		<intercept-url pattern="/**" access="ROLE_USER" />
-		<form-login />
-		<logout />
+		<form-login login-page="/login" default-target-url="/user/add" 
+            always-use-default-target="true" />
+		<logout logout-success-url="/login" />
 	</http>
 	
 	<beans:bean id="myUserService" class="com.personal.oyl.newffms.security.MyUserDetailService"/>

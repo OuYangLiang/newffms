@@ -25,7 +25,8 @@
             Email: <input type="text" name="email" /><spring:errors path="email" /><br/>
             Login Id: <input type="text" name="loginId" /><br/>
             Login Password: <input type="text" name="loginPwd" /><br/>
-            <a href="javascript:document.getElementById('form').submit();" >submit</a>
+            <a href="javascript:document.getElementById('form').submit();" >Submit</a>
+            <a href="javascript:window.location.href='<c:url value="/j_spring_security_logout" />';" >Logout</a>
         </spring:form>
     </body>
 </html>

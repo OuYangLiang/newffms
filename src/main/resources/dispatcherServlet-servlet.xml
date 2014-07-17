@@ -52,8 +52,11 @@
 	
 	<mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/test/visitNew" />
-            <bean class="com.personal.oyl.newffms.interceptor.TestInterceptor" />
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/login" />
+            <mvc:exclude-mapping path="/css/**" />
+            <mvc:exclude-mapping path="/js/**" />
+        	<bean class="com.personal.oyl.newffms.interceptor.TestInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
     

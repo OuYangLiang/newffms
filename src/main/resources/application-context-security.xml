@@ -10,28 +10,42 @@
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security.xsd">
-        
-    <http pattern="/css/**" security="none"/>
-    <http pattern="/login*" security="none"/>
 
-    <http>
-		<intercept-url pattern="/**" access="ROLE_USER" />
-		<form-login login-page="/login" default-target-url="/user/add" 
-            always-use-default-target="true" />
+	<http pattern="/js/**" security="none" />
+	<http pattern="/css/**" security="none" />
+	<http pattern="/login*" security="none" />
+
+	<http access-decision-manager-ref="accessDecisionManager"
+		access-denied-page="/accessDenied">
+		<intercept-url pattern="/**" access="valueBeAnything" />
+		<form-login login-page="/login" default-target-url="/welcome"
+			always-use-default-target="true" />
 		<logout logout-success-url="/login" />
 	</http>
-	
-	<beans:bean id="myUserService" class="com.personal.oyl.newffms.security.MyUserDetailService"/>
-	
-	<beans:bean name="pwdEncoder" class="com.personal.oyl.newffms.security.PwdEncoder">
-        <beans:property name="algorithm" value="SHA-512" />
-    </beans:bean>
-	
-	
+
+	<beans:bean id="myUserService"
+		class="com.personal.oyl.newffms.security.MyUserDetailService" />
+
+	<beans:bean name="pwdEncoder"
+		class="com.personal.oyl.newffms.security.PwdEncoder">
+		<beans:property name="algorithm" value="SHA-512" />
+	</beans:bean>
+
+
 	<authentication-manager>
-        <authentication-provider user-service-ref="myUserService">
-            <password-encoder ref="pwdEncoder"/>
-        </authentication-provider>
-    </authentication-manager>
-	
+		<authentication-provider user-service-ref="myUserService">
+			<password-encoder ref="pwdEncoder" />
+		</authentication-provider>
+	</authentication-manager>
+
+	<beans:bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean
+					class="com.personal.oyl.newffms.security.CustomAccessDecisionVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
 </beans:beans>

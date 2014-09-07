@@ -1,24 +1,24 @@
 package com.personal.oyl.newffms.constants;
 
 public enum AccountType {
-    Cash("AccountType.Cash"),
-    Bankcard("AccountType.Bankcard"),
-    Creditcard("AccountType.Creditcard"),
-    Alipay("AccountType.Alipay"),
-    Epp("AccountType.Epp"),
-    MedicalInsurance("AccountType.MedicalInsurance"),
-    Accumulation("AccountType.Accumulation"),
-    Other("AccountType.Other");
+    Cash("现金"),
+    Bankcard("银行卡"),
+    Creditcard("信用卡"),
+    Alipay("支付宝"),
+    Epp("易付宝"),
+    MedicalInsurance("医保"),
+    Accumulation("公积金"),
+    Other("其它");
     
-    private String key;
+    private String desc;
 
-    private AccountType(String key)
+    private AccountType(String desc)
     {
-        this.key = key;
+        this.desc = desc;
     }
 
-    public String getKey()
+    public String getDesc()
     {
-        return key;
+        return desc;
     }
 }

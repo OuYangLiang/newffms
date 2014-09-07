@@ -30,11 +30,11 @@ fieldset .input .inputbox{
 
 fieldset .input .selectbox{
     width: 100px;
-    margin-top: 5px;
-    
-    height:20px;
-    border:none;
-    background: transparent;
+}
+
+fieldset .input .ui-selectmenu-button{
+    margin-top: 1px;
+    padding-bottom: 1px;
 }
 
 fieldset .input .link{

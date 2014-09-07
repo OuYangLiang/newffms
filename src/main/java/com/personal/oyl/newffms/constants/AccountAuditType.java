@@ -1,8 +1,8 @@
 package com.personal.oyl.newffms.constants;
 
 public enum AccountAuditType {
-    In("AccountAuditType.In"),
-    Out("AccountAuditType.Out");
+    Add("AccountAuditType.Add"),
+    Subtract("AccountAuditType.Subtract");
     
     private String key;
 

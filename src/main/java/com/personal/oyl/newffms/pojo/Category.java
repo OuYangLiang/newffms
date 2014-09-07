@@ -6,6 +6,8 @@ public class Category extends BasePojo {
     private BigDecimal categoryOid;
     private String categoryDesc;
     private BigDecimal monthlyBudget;
+    private int categoryLevel;
+    private Boolean isLeaf;
     private BigDecimal parentOid;
     private BaseObject baseObject;
 
@@ -31,6 +33,22 @@ public class Category extends BasePojo {
 
     public void setMonthlyBudget(BigDecimal monthlyBudget) {
         this.monthlyBudget = monthlyBudget;
+    }
+
+    public int getCategoryLevel() {
+        return categoryLevel;
+    }
+
+    public void setCategoryLevel(int categoryLevel) {
+        this.categoryLevel = categoryLevel;
+    }
+
+    public Boolean getIsLeaf() {
+        return isLeaf;
+    }
+
+    public void setIsLeaf(Boolean isLeaf) {
+        this.isLeaf = isLeaf;
     }
 
     public BigDecimal getParentOid() {
@@ -65,4 +83,16 @@ public class Category extends BasePojo {
         }
         super.trimAllString();
     }
+    
+    public String getCategoryOidDesc() {
+        return this.categoryOid.toString();
+    }
+    
+    public String getParentOidDesc() {
+        if (null == parentOid)
+            return null;
+        
+        return this.parentOid.toString();
+    }
 }
+

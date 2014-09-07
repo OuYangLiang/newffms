@@ -1,6 +1,7 @@
 package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.personal.oyl.newffms.constants.IncomingType;
 
@@ -11,6 +12,7 @@ public class Incoming extends BasePojo {
     private IncomingType incomingType;
     private Boolean confirmed;
     private BigDecimal ownerOid;
+    private Date incomingTime;
     private BaseObject baseObject;
 
     public BigDecimal getIncomingOid() {
@@ -59,6 +61,14 @@ public class Incoming extends BasePojo {
 
     public void setOwnerOid(BigDecimal ownerOid) {
         this.ownerOid = ownerOid;
+    }
+
+    public Date getIncomingTime() {
+        return incomingTime;
+    }
+
+    public void setIncomingTime(Date incomingTime) {
+        this.incomingTime = incomingTime;
     }
 
     public BaseObject getBaseObject() {

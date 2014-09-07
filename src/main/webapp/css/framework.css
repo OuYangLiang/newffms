@@ -138,15 +138,11 @@ body {
 
 .contentWrapper .mainArea .newline-wrapper .input .selectbox{
     width: 200px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    
-    padding-top: 5px;
-    padding-bottom: 5px;
-    
-    height:24px; 
-    border:none;
-    background: transparent;
+}
+
+.contentWrapper .mainArea .newline-wrapper .input .ui-selectmenu-button{
+    margin-top: 8px;
+    margin-bottom: 2px;
 }
 
 .contentWrapper .mainArea .newline-wrapper .input .link{
@@ -162,6 +158,14 @@ body {
 
 .ui-datepicker {
     font-size: 62.5%;
+}
+
+.ui-menu-item {
+	font-size: 62.5%;
+}
+
+.ui-selectmenu-text {
+	font-size: 75%;
 }
 
 A:link {

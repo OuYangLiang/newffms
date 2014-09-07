@@ -5,6 +5,8 @@
 		<id column="CATEGORY_OID" property="categoryOid" jdbcType="DECIMAL" />
 		<result column="CATEGORY_DESC" property="categoryDesc" jdbcType="NVARCHAR" />
 		<result column="MONTHLY_BUDGET" property="monthlyBudget" jdbcType="DECIMAL" />
+		<result column="CATEGORY_LEVEL" property="categoryLevel" jdbcType="DECIMAL" />
+		<result column="IS_LEAF" property="isLeaf" jdbcType="BIT" />
         <result column="PARENT_OID" property="parentOid" jdbcType="DECIMAL" />
         <result column="CREATE_TIME" property="baseObject.createTime" jdbcType="TIMESTAMP" />
         <result column="UPDATE_TIME" property="baseObject.updateTime" jdbcType="TIMESTAMP" />
@@ -15,13 +17,13 @@
 
 
 	<sql id="Base_Column_List">
-        CATEGORY_OID, CATEGORY_DESC, MONTHLY_BUDGET, PARENT_OID, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
+        CATEGORY_OID, CATEGORY_DESC, MONTHLY_BUDGET, CATEGORY_LEVEL, IS_LEAF, PARENT_OID, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
 	</sql>
 
 
     <select id="select" resultMap="BaseResultMap" parameterType="com.personal.oyl.newffms.pojo.Category">
         SELECT <include refid="Base_Column_List" />
-        FROM CAATEGORY
+        FROM CATEGORY
         <where>
 			<if test="categoryOid != null">
 				CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
@@ -32,6 +34,12 @@
 			<if test="monthlyBudget != null">
 				AND MONTHLY_BUDGET = #{monthlyBudget,jdbcType=DECIMAL}
 			</if>
+			<if test="categoryLevel != null">
+                AND CATEGORY_LEVEL = #{categoryLevel,jdbcType=DECIMAL}
+            </if>
+            <if test="isLeaf != null">
+                AND IS_LEAF = #{isLeaf,jdbcType=DECIMAL}
+            </if>
 			<if test="parentOid != null">
 				AND PARENT_OID = #{parentOid,jdbcType=DECIMAL}
 			</if>
@@ -55,7 +63,7 @@
 
 
     <delete id="delete" parameterType="com.personal.oyl.newffms.pojo.Category" >
-        DELETE FROM CAATEGORY
+        DELETE FROM CATEGORY
         <where>
             <if test="categoryOid != null">
                 CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
@@ -65,6 +73,12 @@
             </if>
             <if test="monthlyBudget != null">
                 AND MONTHLY_BUDGET = #{monthlyBudget,jdbcType=DECIMAL}
+            </if>
+            <if test="categoryLevel != null">
+                AND CATEGORY_LEVEL = #{categoryLevel,jdbcType=DECIMAL}
+            </if>
+            <if test="isLeaf != null">
+                AND IS_LEAF = #{isLeaf,jdbcType=DECIMAL}
             </if>
             <if test="parentOid != null">
                 AND PARENT_OID = #{parentOid,jdbcType=DECIMAL}
@@ -90,7 +104,7 @@
     
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Category">
         INSERT INTO CATEGORY(<include refid="Base_Column_List" />)
-        VALUES (#{categoryOid,jdbcType=DECIMAL}, #{categoryDesc,jdbcType=NVARCHAR}, #{monthlyBudget,jdbcType=DECIMAL}, #{parentOid,jdbcType=DECIMAL},
+        VALUES (#{categoryOid,jdbcType=DECIMAL}, #{categoryDesc,jdbcType=NVARCHAR}, #{monthlyBudget,jdbcType=DECIMAL}, #{categoryLevel,jdbcType=DECIMAL}, #{isLeaf,jdbcType=BIT}, #{parentOid,jdbcType=DECIMAL},
         #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
     </insert>
     
@@ -103,6 +117,12 @@
             </if>
             <if test="monthlyBudget != null">
                 MONTHLY_BUDGET = #{monthlyBudget,jdbcType=DECIMAL},
+            </if>
+            <if test="categoryLevel != null">
+                CATEGORY_LEVEL = #{categoryLevel,jdbcType=DECIMAL},
+            </if>
+            <if test="isLeaf != null">
+                IS_LEAF = #{isLeaf,jdbcType=DECIMAL},
             </if>
             <if test="parentOid != null">
                 PARENT_OID = #{parentOid,jdbcType=DECIMAL},
@@ -138,6 +158,8 @@
         SET
             CATEGORY_DESC = #{categoryDesc,jdbcType=NVARCHAR},
             MONTHLY_BUDGET = #{monthlyBudget,jdbcType=DECIMAL},
+            CATEGORY_LEVEL = #{categoryLevel,jdbcType=DECIMAL},
+            IS_LEAF = #{isLeaf,jdbcType=DECIMAL},
             PARENT_OID = #{parentOid,jdbcType=DECIMAL},
             CREATE_TIME = #{createTime,jdbcType=DECIMAL},
             CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},

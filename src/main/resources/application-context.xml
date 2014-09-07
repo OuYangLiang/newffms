@@ -15,4 +15,5 @@
 
     <import resource="classpath:application-context-security.xml"/>
 	<import resource="classpath:application-context-mybatis.xml"/>
+	<import resource="classpath:application-context-service.xml"/>
 </beans>

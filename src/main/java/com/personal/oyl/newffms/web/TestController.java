@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.web;
 
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class TestController {
     
     @RequestMapping("/viewUser")
     @ResponseBody
-    public UserProfile viewUser() {
+    public UserProfile viewUser() throws SQLException {
         return dao.select(new UserProfile()).get(0);
     }
     

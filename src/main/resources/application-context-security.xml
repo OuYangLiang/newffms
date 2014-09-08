@@ -16,7 +16,7 @@
 	<http pattern="/login*" security="none" />
 
 	<http access-decision-manager-ref="accessDecisionManager"
-		access-denied-page="/accessDenied">
+		access-denied-page="/accessDeniedRouter?q=accessDenied">
 		<intercept-url pattern="/**" access="valueBeAnything" />
 		<form-login login-page="/login" default-target-url="/welcome"
 			always-use-default-target="true" />

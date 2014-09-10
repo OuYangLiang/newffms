@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.personal.oyl.newffms.pojo.extension.Account;
+import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.service.AccountService;
 
 @Controller

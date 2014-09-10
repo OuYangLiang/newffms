@@ -13,6 +13,11 @@ public class Account extends BasePojo {
     private BigDecimal debt;
     private BigDecimal ownerOid;
     private BaseObject baseObject;
+    
+    //extended field
+    private String ownerUserName;
+    private String acntHumanDesc;
+    private BigDecimal payment;
 
     public BigDecimal getAcntOid() {
         return acntOid;
@@ -93,6 +98,47 @@ public class Account extends BasePojo {
             baseObject.trimAllString();
         }
         super.trimAllString();
+    }
+    
+    public String getOwnerUserName() {
+        return ownerUserName;
+    }
+
+    public void setOwnerUserName(String ownerUserName) {
+        this.ownerUserName = ownerUserName;
+    }
+
+    public String getAcntTypeDesc() {
+        return this.getAcntType().getDesc();
+    }
+
+    public void setAcntHumanDesc(String acntHumanDesc) {
+        this.acntHumanDesc = acntHumanDesc;
+    }
+
+    public String getAcntHumanDesc() {
+        if (null ==  acntHumanDesc) {
+            
+            if (null == ownerUserName) {
+                if (null == acntType) {
+                    return this.getAcntDesc();
+                }
+                
+                return this.getAcntTypeDesc() + " " + this.getAcntDesc();
+            }
+            
+            return ownerUserName + " " + this.getAcntTypeDesc() + " " + this.getAcntDesc();
+        }
+        
+        return acntHumanDesc;
+    }
+
+    public BigDecimal getPayment() {
+        return payment;
+    }
+
+    public void setPayment(BigDecimal payment) {
+        this.payment = payment;
     }
 
 }

@@ -8,5 +8,5 @@ import com.personal.oyl.newffms.base.dao.DbActionDao;
 import com.personal.oyl.newffms.pojo.Account;
 
 public interface AccountDao extends BaseDao<Account>, DbActionDao<Account> {
-    public List<com.personal.oyl.newffms.pojo.extension.Account> queryAccounts() throws SQLException;
+    public List<Account> queryAccounts() throws SQLException;
 }

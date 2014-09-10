@@ -1,4 +1,4 @@
-package com.personal.oyl.newffms.pojo.extension;
+package com.personal.oyl.newffms.pojo;
 
 import java.util.List;
 

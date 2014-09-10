@@ -12,6 +12,10 @@ public class Consumption extends BasePojo {
     private Date cpnTime;
     private Boolean confirmed;
     private BaseObject baseObject;
+    
+    //extended field
+    private String cpnDateDesc;
+    private String cpnTimeDesc;
 
     public BigDecimal getCpnOid() {
         return cpnOid;
@@ -76,5 +80,21 @@ public class Consumption extends BasePojo {
             baseObject.trimAllString();
         }
         super.trimAllString();
+    }
+    
+    public String getCpnDateDesc() {
+        return cpnDateDesc;
+    }
+
+    public void setCpnDateDesc(String cpnDateDesc) {
+        this.cpnDateDesc = cpnDateDesc;
+    }
+
+    public String getCpnTimeDesc() {
+        return cpnTimeDesc;
+    }
+
+    public void setCpnTimeDesc(String cpnTimeDesc) {
+        this.cpnTimeDesc = cpnTimeDesc;
     }
 }

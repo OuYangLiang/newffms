@@ -176,7 +176,7 @@
     </update>
     
     
-    <resultMap id="queryAccountsResultMap" type="com.personal.oyl.newffms.pojo.extension.Account">
+    <resultMap id="queryAccountsResultMap" type="com.personal.oyl.newffms.pojo.Account">
         <id column="ACNT_OID" property="acntOid" jdbcType="DECIMAL" />
         <result column="ACNT_DESC" property="acntDesc" jdbcType="NVARCHAR" />
         <result column="ACNT_TYPE" property="acntType" jdbcType="VARCHAR" />

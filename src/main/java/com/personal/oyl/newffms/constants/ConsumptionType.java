@@ -1,20 +1,34 @@
 package com.personal.oyl.newffms.constants;
 
-public enum ConsumptionType {
-    Supermarket("ConsumptionType.Supermarket"),
-    Online("ConsumptionType.Online"),
-    Store("ConsumptionType.Store"),
-    Other("ConsumptionType.Other");
-    
-    private String key;
+import java.util.HashMap;
+import java.util.Map;
 
-    private ConsumptionType(String key)
+public enum ConsumptionType {
+    Supermarket("超市"),
+    Online("网购"),
+    Store("商店"),
+    Other("其它");
+    
+    private String desc;
+
+    private ConsumptionType(String desc)
     {
-        this.key = key;
+        this.desc = desc;
     }
 
-    public String getKey()
+    public String getDesc()
     {
-        return key;
+        return desc;
+    }
+    
+    public static Map<String, String> toMapValue()
+    {
+        Map<String,String> rlt = new HashMap<String,String>();
+        for (ConsumptionType ms : ConsumptionType.values())
+        {
+            rlt.put(ms.name(), ms.getDesc());
+        }
+        
+        return rlt;
     }
 }

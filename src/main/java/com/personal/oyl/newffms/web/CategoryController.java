@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.pojo.Category;
-import com.personal.oyl.newffms.pojo.extension.JqGridJsonRlt;
+import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.service.CategoryService;
 
 @Controller

@@ -15,30 +15,18 @@
         </div>        
         
         <div class="content-header ui-widget-header">
-            消费<span style="font-size: 80%;"> -> 新建</span>
+            消费<span style="font-size: 80%;"> - 新建</span>
         </div>
         
+        <c:url value='/consumption/saveAdd' var='url' />
+        <spring:form id="form" method="post" action="${url}" modelAttribute="cpnForm" >
         <div class="contentWrapper">
             <div class="mainArea">
                 <div class="newline-wrapper ui-widget-content">
-                    <div class="label">消费类型</div>
+                    <div class="label">消费方式</div>
                     
                     <div class="input">
-                        <select class="selectbox">
-                            <option value ="volvo">超市</option>
-                            <option value ="saab">网购</option>
-                            <option value="opel">普通</option>
-                        </select>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">说明</div>
-                    
-                    <div class="input">
-                        <input type="text" class="inputbox"></input>
+                        <spring:select path="consumption.cpnType" items="${cpnTypes}" class="selectbox" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -48,7 +36,7 @@
                     <div class="label">日期</div>
                     
                     <div class="input">
-                        <input id="theDate" type="text" class="inputbox"></input>
+                        <spring:input path="consumption.cpnDateDesc" id="cpnDateDesc" class="inputbox" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -60,6 +48,7 @@
                     <div class="input">
                         <div id="displayTime" class="value">00:00</div>
                         <div id="timeSlider" class="slider" ></div>
+                        <input type="hidden" name="consumption.cpnTimeDesc" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -71,40 +60,46 @@
             </div>
             
             <div class="button-area" style="margin-top: 10px; margin-bottom: 20px;">
-                <button id="btn-add-item">增加</button>
+                <span id="btn-add-item">增加</span>
             </div>
             
             <div>
                 <div id="items">
-                    <fieldset id="item1">
-                        <legend id="item-title1">清单1</legend>
-                        
-                        <div class="input">
-                            <a id="remove-item1" href="javascript:removeItem(1);" class="link">Remove</a>
-                        </div>
-                        
-                        <div class="label">说明</div>
-                        <div class="input"><input type="text" class="inputbox"></input></div>
-                        
-                        <div class="label">类别</div>
-                        <div class="input" style="width: 100px;">
-                            <a href="javascript:selectItemType(1);" id="item-type1" class="link">请选择</a>
-                        </div>
-                        
-                        <div class="label">金额</div>
-                        <div class="input"><input type="text" class="inputbox"></input></div>
-                        
-                        <div class="label">消费人</div>
-                        <div class="input">
-                            <select class="selectbox">
-                                <option value ="volvo">欧阳亮</option>
-                                <option value ="saab">喻敏</option>
-                                <option value="opel">欧阳晓筱</option>
-                            </select>
-                        </div>
-                        
-                        <div style="clear:both;" ></div>
-                    </fieldset>
+                    <c:forEach var="item" items="${ cpnForm.cpnItems }" varStatus="status" >
+                        <fieldset id="item${status.index }">
+                            <legend id="item-title${status.index }">清单${status.index + 1}</legend>
+
+                            <div class="input">
+                                <a id="remove-item${status.index }" href="javascript:removeItem(${status.index });" class="link">Remove</a>
+                            </div>
+
+                            <div class="label">说明</div>
+                            <div class="input">
+                                <spring:input id="itemDesc${status.index }" path="cpnItems[${status.index }].itemDesc" class="inputbox" />
+                            </div>
+
+                            <div class="label">类别</div>
+                            <div class="input" style="width: 100px;">
+                                <spring:input id="categoryDesc${status.index }" path="cpnItems[${status.index }].categoryDesc" class="inputbox" readonly="true" onClick="javascript:selectCategory(${status.index });" />
+                                <input type="hidden" id="categoryOid${status.index }" name="cpnItems[${status.index }].categoryOid" value="${item.categoryOid }" />
+                            </div>
+
+                            <div class="label">金额</div>
+                            <div class="input">
+                                <spring:input id="itemAmount${status.index }" path="cpnItems[${status.index }].amount" class="inputbox" />
+                            </div>
+
+                            <div class="label">消费人</div>
+                            <div class="input">
+                                <spring:select id="itemOwner${status.index }" path='cpnItems[${status.index }].ownerOid' class="selectbox" >
+                                    <spring:option value="-1" label="请选择"/>
+                                    <spring:options items="${users}" itemValue="userOid" itemLabel="userName"/>
+                                </spring:select>
+                            </div>
+
+                            <div style="clear:both;" ></div>
+                        </fieldset>
+                    </c:forEach>
                 </div>
                 
             </div>
@@ -113,39 +108,45 @@
                 付款
             </div>
             
-            <div class="button-area" style="margin-top: 10px; margin-bottom: 20px;" >
-                <button id="btn-add-account">增加</button>
+            <div class="button-area" style="margin-top: 10px; margin-bottom: 20px;">
+                <span id="btn-add-account">增加</span>
             </div>
             
             <div>
                 <div id="accounts">
-                    <fieldset id="account1">
-                        <legend id="account-title1">账户1</legend>
+                    <c:forEach var="item" items="${ cpnForm.accounts }" varStatus="status" >
+                    <fieldset id="account${status.index }">
+                        <legend id="account-title${status.index }">账户${status.index +1 }</legend>
                         <div class="input">
-                            <a id="remove-account1" href="javascript:removeAccount(1);" class="link">Remove</a>
+                            <a id="remove-account${status.index }" href="javascript:removeAccount(${status.index });" class="link">Remove</a>
                         </div>
                         
                         <div class="label">账户</div>
                         <div class="input" style="width: 400px;">
-                            <a href="javascript:selectAccount(1);" id="selectAccount1" class="link">请选择</a>
+                            <spring:input id="acntHumanDesc${status.index }" style="width: 400px;" path="accounts[${status.index }].acntHumanDesc" class="inputbox" readonly="true" onClick="javascript:selectAccount(${status.index });" />
+                            <input type="hidden" id="accountOid${status.index }" name="accounts[${status.index }].acntOid" value="${item.acntOid }" />
                         </div>
                         
                         <div class="label" >支付金额</div>
-                        <div class="input" ><input type="text" class="inputbox"></input></div>
+                        <div class="input" >
+                            <spring:input id="payment${status.index }" path="accounts[${status.index }].payment" class="inputbox" />
+                        </div>
                         
                         <div style="clear:both;" ></div>
-                        
                     </fieldset>
+                    </c:forEach>
                 </div>
                 
                 <div style="text-align: right;padding-right: 50px;margin-bottom: 20px;">总金额: 0.00</div>
             </div>
             
         </div>
+        </spring:form>
         
-        <div id="dialog" title="类型" >
+        
+        <div id="category-select-dialog" title="类型" >
             <div>
-                <table id="gridList" ></table> 
+                <table id="category-select-grid" ></table> 
             </div>
         </div>
         
@@ -163,9 +164,18 @@
         
         <script>
             $( document ).ready(function() {
+            	$ ("#btn-cancel").click(function(){
+                    window.location.href = "consumption-summary.html";
+                });
+                
+                $ ("#btn-save").click(function(){
+                    $ ("#form").submit();
+                });
+            	
+            	$ (".button-area button").button();
             	$( ".selectbox" ).selectmenu();
             	
-                $( "#theDate" ).datepicker({
+                $( "#cpnDateDesc" ).datepicker({
                     dateFormat: "yy-mm-dd",
                     minDate: -7,
                     maxDate: 1,
@@ -187,77 +197,173 @@
                 });
                 
                 
-                var itemCnt = 1;
-                var accountCnt = 1;
-            
-                var itemTemplate = "<fieldset id=\"item\#{itemSeq}\">" + 
-                    "<legend id=\"item-title\#{itemSeq}\">清单\#{itemSeq}</legend>" +
-                    
-                    "<div class=\"input\">" +
-                        "<a id=\"remove-item\#{itemSeq}\" href=\"javascript:removeItem(\#{itemSeq});\" class=\"link\">Remove</a>" +
-                    "</div>" + 
-                    
-                    "<div class=\"label\">说明</div>" +
-                    "<div class=\"input\"><input type=\"text\" class=\"inputbox\"></input></div>" +
-                    
-                    "<div class=\"label\">类别</div>" +
-                    "<div class=\"input\" style=\"width: 100px;\">" +
-                        "<a href=\"javascript:selectItemType(\#{itemSeq});\" id=\"item-type\#{itemSeq}\" class=\"link\">请选择</a>" +
-                    "</div>" +
-                    
-                    "<div class=\"label\">金额</div>" +
-                    "<div class=\"input\"><input type=\"text\" class=\"inputbox\"></input></div>" +
-                    
-                    "<div class=\"label\">消费人</div>" +
-                    "<div class=\"input\">" +
-                        "<select class=\"selectbox\">" +
-                            "<option value =\"volvo\">欧阳亮</option>" +
-                            "<option value =\"saab\">喻敏</option>" +
-                            "<option value=\"opel\">欧阳晓筱</option>" +
-                        "</select>" +
-                    "</div>" +
-                    
-                    "<div style=\"clear:both;\" ></div>" +
-                "</fieldset>" ;
-                
-                var accountTemplate = "<fieldset id=\"account\#{accountSeq}\">" +
-                        "<legend id=\"account-title\#{accountSeq}\">账户\#{accountSeq}</legend>" +
-                        "<div class=\"input\">" +
-                            "<a id=\"remove-account\#{accountSeq}\" href=\"javascript:removeAccount(\#{accountSeq});\" class=\"link\">Remove</a>" +
-                        "</div>" +
-                        
-                        "<div class=\"label\">账户</div>" +
-                        "<div class=\"input\" style=\"width: 400px;\">" +
-                            "<a href=\"javascript:selectAccount(\#{accountSeq});\" id=\"selectAccount\#{accountSeq}\" class=\"link\">请选择</a>" +
-                        "</div>" +
-                        
-                        "<div class=\"label\" >支付金额</div>" +
-                        "<div class=\"input\" ><input type=\"text\" class=\"inputbox\"></input></div>" +
-                        
-                        "<div style=\"clear:both;\" ></div>" +
-                        
-                    "</fieldset>";
-                
-                $ (".button-area button").button();
-                
-                $( "#dialog" ).dialog({
-                    autoOpen: false,
-                    maxHeight: 300,
-                    modal: true,
-                    show: {
-                        effect: "blind",
-                        duration: 1000
-                    },
-                    hide: {
-                        effect: "explode",
-                        duration: 1000
-                    },
-                    buttons: {
-                        "Close": function(){
-                            $( this ).dialog( "close" );
-                        }
-                    }
+                //明细
+                var itemCnt = ${ cpnForm.cpnItems.size() };
+                var itemTemplate = "<fieldset id=\"item\#{itemSeq}\">" +
+	                "<legend id=\"item-title\#{itemSeq}\">清单\#{itemCnt}</legend>" +
+	
+	                "<div class=\"input\">" +
+	                    "<a id=\"remove-item\#{itemSeq}\" href=\"javascript:removeItem(\#{itemSeq});\" class=\"link\">Remove</a>" +
+	                "</div>" +
+	
+	                "<div class=\"label\">说明</div>" +
+	                "<div class=\"input\">" +
+	                    "<input type=\"text\" id=\"itemDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].itemDesc\" class=\"inputbox\" />" +
+	                "</div>" +
+	
+	                "<div class=\"label\">类别</div>" +
+	                "<div class=\"input\" style=\"width: 100px;\">" +
+	                    "<input type=\"text\" id=\"categoryDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].categoryDesc\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectCategory(\#{itemSeq});\" />" +
+	                    "<input type=\"hidden\" id=\"categoryOid\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].categoryOid\" value=\"\" />" +
+	                "</div>" +
+	
+	                "<div class=\"label\">金额</div>" +
+	                "<div class=\"input\">" +
+	                    "<input type=\"text\" id=\"itemAmount\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].amount\" class=\"inputbox\" />" +
+	                "</div>" +
+	
+	                "<div class=\"label\">消费人</div>" +
+	                "<div class=\"input\">" +
+	                    "<select class=\"selectbox\" id=\"itemOwner\#{itemSeq}\" name='cpnItems[\#{itemSeq}].ownerOid'>" +
+	                        "<option value =\"-1\">请选择</option>" +
+	                        <c:forEach var="user" items="${users}" varStatus="status" >
+	                        "<option value =\"${user.userOid}\">${user.userName}</option>" +
+	                        </c:forEach>
+	                    "</select>" +
+	                "</div>" +
+	
+	                "<div style=\"clear:both;\" ></div>" +
+	            "</fieldset>";
+	            
+	            $( "#btn-add-item" ).button();
+                $( "#btn-add-item" ).click(function(){
+                    itemCnt ++;
+                    $ ( "#items" ).append(itemTemplate.replace( /#\{itemSeq\}/g, (itemCnt-1) ).replace( /#\{itemCnt\}/g, itemCnt ) );
+                    $( ".selectbox" ).selectmenu();
                 });
+                
+                removeItem = function(seq){
+                    $ ("#item" + seq).remove();
+                    
+                    if (seq < (itemCnt - 1))
+                    {
+                         seq ++;
+                         while (seq <= (itemCnt - 1))
+                         {
+                        	 $ ( "#itemOwner" + seq).attr("name", "cpnItems[" + (seq-1) + "].ownerOid");
+                             $ ( "#itemOwner" + seq).attr("id", "itemOwner" + (seq-1));
+                             
+                             $ ( "#itemAmount" + seq).attr("name", "cpnItems[" + (seq-1) + "].amount");
+                             $ ( "#itemAmount" + seq).attr("id", "itemAmount" + (seq-1));
+                             
+                             $ ( "#categoryDesc" + seq).attr("name", "cpnItems[" + (seq-1) + "].categoryDesc");
+                             $ ( "#categoryDesc" + seq).attr("onClick", "javascript:selectCategory(" + (seq-1) + ");");
+                             $ ( "#categoryDesc" + seq).attr("id", "categoryDesc" + (seq-1));
+                             $ ( "#categoryOid" + seq).attr("name", "cpnItems[" + (seq-1) + "].categoryOid");
+                             $ ( "#categoryOid" + seq).attr("id", "categoryOid" + (seq-1));
+                             
+                             $ ( "#itemDesc" + seq).attr("name", "cpnItems[" + (seq-1) + "].itemDesc");
+                             $ ( "#itemDesc" + seq).attr("id", "itemDesc" + (seq-1));
+                             
+                             $ ( "#remove-item" + seq).attr("href", "javascript:removeItem(" + (seq-1) + ");");
+                             $ ( "#remove-item" + seq).attr("id", "remove-item" + (seq-1));
+                             
+                             $ ( "#item-title" + seq).html("清单" + (seq));
+                             $ ( "#item-title" + seq).attr("id", "item-title" + (seq-1));
+                             
+                             $ ( "#item" + seq).attr("id", "item" + (seq-1));
+                        
+                             seq++;
+                         }
+                    }
+                    
+                    itemCnt --;
+                 };
+                 
+                 chooseCategory = function(categoryOid, categoryDesc) {
+                     $( "#categoryDesc" + curItem).val(categoryDesc);
+                     $( "#categoryOid" + curItem).val(categoryOid);
+                     $ ( "#category-select-dialog" ).dialog( "close" );
+                 };
+                 
+                 selectCategory = function(seq) {
+                     curItem = seq;
+                     $ ( "#category-select-dialog" ).dialog( "open" );
+                 };
+	            
+                 $( "#category-select-dialog" ).dialog( {
+                     autoOpen: false,
+                     maxHeight: 300,
+                     modal: true,
+                     show: {
+                         effect: "blind",
+                         duration: 1000
+                     },
+                     hide: {
+                         effect: "explode",
+                         duration: 1000
+                     },
+                     buttons: {
+                         "Close": function(){
+                             $( this ).dialog( "close" );
+                         }
+                     }
+                 });
+                 
+                 var categoryFormatter = function (cellvalue, options, rowObject){
+                     if (rowObject.isLeaf)
+                         return "<a href=\"javascript:chooseCategory(" + rowObject.categoryOid + ", '" + cellvalue + "');\" >" + cellvalue + "</a>";
+                     else
+                         return cellvalue;
+                 };
+                 
+                 $("#category-select-grid").jqGrid({
+                     url: "<c:url value='/category/ajaxGetAllCategories' />",
+                     jsonReader: {id: "categoryOidDesc"},
+                     colNames: ["描术", "级别"],
+                     colModel: [
+                         { name: "categoryDesc", width: 155, align: "left", sortable: false, formatter:categoryFormatter },
+                         { name: "categoryLevel", width: 50, align: "center", sortable: false }
+                     ],
+                     
+                     treeGrid: true,
+                     treeReader: {
+                         level_field: "categoryLevel",
+                         parent_id_field: "parentOidDesc",
+                         leaf_field: "isLeaf"
+                     },
+                     ExpandColClick: true,
+                     ExpandColumn: "categoryDesc",
+                     treeIcons: {leaf:'ui-icon-circle-check'},
+                     treeGridModel: "adjacency",
+                     rownumbers: false,
+                     autowidth: true
+                 });
+	            
+	            
+                
+	            
+	            //账户
+	            var accountCnt = ${ cpnForm.accounts.size() };
+                var accountTemplate = "<fieldset id=\"account\#{accountSeq}\">" +
+		                "<legend id=\"account-title\#{accountSeq}\">账户\#{accountCnt}</legend>" +
+		                "<div class=\"input\">" +
+		                    "<a id=\"remove-account\#{accountSeq}\" href=\"javascript:removeAccount(\#{accountSeq});\" class=\"link\">Remove</a>" +
+		                "</div>" +
+		                
+		                "<div class=\"label\">账户</div>" +
+		                "<div class=\"input\" style=\"width: 400px;\">" +
+		                    "<input type=\"text\" id=\"acntHumanDesc\#{accountSeq}\" style=\"width: 400px;\" name=\"accounts[\#{accountSeq}].acntHumanDesc\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectAccount(\#{accountSeq});\" />" +
+		                    "<input type=\"hidden\" id=\"accountOid\#{accountSeq}\" name=\"accounts[\#{accountSeq}].acntOid\" value=\"\" />" +
+		                "</div>" +
+		                
+		                "<div class=\"label\" >支付金额</div>" +
+		                "<div class=\"input\" >" +
+		                    "<input type=\"text\" id=\"payment\#{accountSeq}\" name=\"accounts[\#{accountSeq}].payment\" class=\"inputbox\" />" +
+		                "</div>" +
+		                
+		                "<div style=\"clear:both;\" ></div>" +
+		            "</fieldset>";
                 
                 $( "#account-select-dialog" ).dialog({
                     autoOpen: false,
@@ -277,62 +383,38 @@
                     }
                 });
                 
-                $( "#btn-add-item" ).click(function(){
-                    itemCnt ++;                 
-                    $ ( "#items" ).append($( itemTemplate.replace( /#\{itemSeq\}/g, itemCnt ) ));
-                    $( ".selectbox" ).selectmenu();
-                });
-                
+                $( "#btn-add-account" ).button();
                 $( "#btn-add-account" ).click(function(){
                     accountCnt ++;                 
-                    $ ( "#accounts" ).append($( accountTemplate.replace( /#\{accountSeq\}/g, accountCnt ) ));
+                    $ ( "#accounts" ).append(accountTemplate.replace( /#\{accountSeq\}/g, (accountCnt-1) ).replace( /#\{accountCnt\}/g, accountCnt ) );
                 });
-                
-                removeItem = function(seq){
-                   $ ("#item" + seq).remove();
-                   
-                   if (seq < itemCnt)
-                   {
-                        seq ++;
-                        while (seq <= itemCnt)
-                        {
-                            $ ( "#item-type" + seq).attr("href", "javascript:selectItemType(" + (seq-1) + ");");
-                            $ ( "#item-type" + seq).attr("id", "item-type" + (seq-1));
-                            
-                            $ ( "#remove-item" + seq).attr("href", "javascript:removeItem(" + (seq-1) + ");");
-                            $ ( "#remove-item" + seq).attr("id", "remove-item" + (seq-1));
-                            
-                            $ ( "#item-title" + seq).html("清单" + (seq-1));
-                            $ ( "#item-title" + seq).attr("id", "item-title" + (seq-1));
-                            
-                            $ ( "#item" + seq).attr("id", "item" + (seq-1));
-                       
-                            seq++;
-                        }
-                   }
-                   
-                   itemCnt --;
-                };
                 
                 removeAccount = function(seq){
                    $ ("#account" + seq).remove();
                    
-                   if (seq < accountCnt)
+                   if (seq < (accountCnt -1) )
                    {
                         seq ++;
-                        while (seq <= accountCnt)
+                        while (seq <= (accountCnt -1))
                         {
-                            $ ( "#selectAccount" + seq).attr("href", "javascript:selectAccount(" + (seq-1) + ");");
-                            $ ( "#selectAccount" + seq).attr("id", "selectAccount" + (seq-1));
+                        	$ ( "#account" + seq).attr("id", "account" + (seq-1));
+                        	
+                        	$ ( "#account-title" + seq).html("账户" + seq);
+                            $ ( "#account-title" + seq).attr("id", "account-title" + (seq-1));
                             
                             $ ( "#remove-account" + seq).attr("href", "javascript:removeAccount(" + (seq-1) + ");");
                             $ ( "#remove-account" + seq).attr("id", "remove-account" + (seq-1));
+                        	
+                        	$ ( "#acntHumanDesc" + seq).attr("name", "accounts[" + (seq-1) + "].acntHumanDesc");
+                        	$ ( "#acntHumanDesc" + seq).attr("onClick", "javascript:selectAccount(" + (seq-1) + ");");
+                            $ ( "#acntHumanDesc" + seq).attr("id", "acntHumanDesc" + (seq-1));
                             
-                            $ ( "#account-title" + seq).html("账户" + (seq-1));
-                            $ ( "#account-title" + seq).attr("id", "account-title" + (seq-1));
+                            $ ( "#accountOid" + seq).attr("name", "accounts[" + (seq-1) + "].acntOid");
+                            $ ( "#accountOid" + seq).attr("id", "accountOid" + (seq-1));
+                        	
+                            $ ( "#payment" + seq).attr("name", "accounts[" + (seq-1) + "].payment");
+                            $ ( "#payment" + seq).attr("id", "payment" + (seq-1));
                             
-                            $ ( "#account" + seq).attr("id", "account" + (seq-1));
-                       
                             seq++;
                         }
                    }
@@ -340,20 +422,11 @@
                    accountCnt --;
                 };
                 
-                chooseCategory = function(value){
-                    $( "#item-type" + curItem).html(value);
-                    $ ( "#dialog" ).dialog( "close" );
-                };
                 
-                selectItemType = function(seq)
+                chooseAccount = function(acntOid, acntHumanDesc)
                 {
-                    curItem = seq;
-                    $ ( "#dialog" ).dialog( "open" );
-                };
-                
-                chooseAccount = function(value)
-                {
-                    $( "#selectAccount" + curAccount).html(value);
+                    $( "#acntHumanDesc" + curAccount).val(acntHumanDesc);
+                    $( "#accountOid" + curAccount).val(acntOid);
                     $ ( "#account-select-dialog" ).dialog( "close" );
                 };
                 
@@ -363,38 +436,8 @@
                     $ ( "#account-select-dialog" ).dialog( "open" );
                 };
                 
-                var categoryFormatter = function (cellvalue, options, rowObject){
-                    if (rowObject.isLeaf)
-                        return "<a href=\"javascript:chooseCategory('" + cellvalue + "');\" >" + cellvalue + "</a>";
-                    else
-                        return cellvalue;
-                };
-                
-                $("#gridList").jqGrid({
-                    url: "<c:url value='/category/ajaxGetAllCategories' />",
-                    jsonReader: {id: "categoryOidDesc"},
-                    colNames: ["描术", "级别"],
-                    colModel: [
-                        { name: "categoryDesc", width: 155, align: "left", sortable: false, formatter:categoryFormatter },
-                        { name: "categoryLevel", width: 50, align: "center", sortable: false }
-                    ],
-                    
-                    treeGrid: true,
-                    treeReader: {
-                    	level_field: "categoryLevel",
-                        parent_id_field: "parentOidDesc",
-                        leaf_field: "isLeaf"
-                    },
-                    ExpandColClick: true,
-                    ExpandColumn: "categoryDesc",
-                    treeIcons: {leaf:'ui-icon-circle-check'},
-                    treeGridModel: "adjacency",
-                    rownumbers: false,
-                    autowidth: true
-                });
-                
                 var accountFormatter = function (cellvalue, options, rowObject){
-                    return "<a href=\"javascript:chooseAccount('" + cellvalue + "');\" >" + cellvalue + "</a>";
+                    return "<a href=\"javascript:chooseAccount(" + rowObject.acntOid + ", '" + cellvalue + "');\" >" + cellvalue + "</a>";
                 };
                 
                 $("#account-select-grid").jqGrid({
@@ -408,14 +451,6 @@
                         { name: "balance", width: 180, align: "center", sortable: false}
                     ],
                     autowidth: true
-                });
-                
-                $ ("#btn-cancel").click(function(){
-                    window.location.href = "consumption-summary.html";
-                });
-                
-                $ ("#btn-save").click(function(){
-                    window.location.href = "consumption-add-confirm.html";
                 });
                 
             });

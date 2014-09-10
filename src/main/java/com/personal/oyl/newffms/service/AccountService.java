@@ -3,6 +3,8 @@ package com.personal.oyl.newffms.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.personal.oyl.newffms.pojo.Account;
+
 public interface AccountService {
-    public List<com.personal.oyl.newffms.pojo.extension.Account> queryAccounts() throws SQLException;
+    public List<Account> queryAccounts() throws SQLException;
 }

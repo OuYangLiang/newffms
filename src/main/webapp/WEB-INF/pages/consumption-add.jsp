@@ -86,7 +86,7 @@
 
                             <div class="label">金额</div>
                             <div class="input">
-                                <spring:input id="itemAmount${status.index }" path="cpnItems[${status.index }].amount" class="inputbox" />
+                                <spring:input id="itemAmount${status.index }" path="cpnItems[${status.index }].amount" class="inputbox" onBlur="javascript:checkAmount(this);" />
                             </div>
 
                             <div class="label">消费人</div>
@@ -129,7 +129,7 @@
                         
                         <div class="label" >支付金额</div>
                         <div class="input" >
-                            <spring:input id="payment${status.index }" path="accounts[${status.index }].payment" class="inputbox" />
+                            <spring:input id="payment${status.index }" path="accounts[${status.index }].payment" class="inputbox" onBlur="javascript:checkAmount(this);" />
                         </div>
                         
                         <div style="clear:both;" ></div>
@@ -161,11 +161,12 @@
         <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {
             	$ ("#btn-cancel").click(function(){
-                    window.location.href = "consumption-summary.html";
+                    
                 });
                 
                 $ ("#btn-save").click(function(){
@@ -219,7 +220,7 @@
 	
 	                "<div class=\"label\">金额</div>" +
 	                "<div class=\"input\">" +
-	                    "<input type=\"text\" id=\"itemAmount\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].amount\" class=\"inputbox\" />" +
+	                    "<input type=\"text\" id=\"itemAmount\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].amount\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" />" +
 	                "</div>" +
 	
 	                "<div class=\"label\">消费人</div>" +
@@ -359,7 +360,7 @@
 		                
 		                "<div class=\"label\" >支付金额</div>" +
 		                "<div class=\"input\" >" +
-		                    "<input type=\"text\" id=\"payment\#{accountSeq}\" name=\"accounts[\#{accountSeq}].payment\" class=\"inputbox\" />" +
+		                    "<input type=\"text\" id=\"payment\#{accountSeq}\" name=\"accounts[\#{accountSeq}].payment\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" />" +
 		                "</div>" +
 		                
 		                "<div style=\"clear:both;\" ></div>" +
@@ -452,7 +453,6 @@
                     ],
                     autowidth: true
                 });
-                
             });
         </script>
     </body>

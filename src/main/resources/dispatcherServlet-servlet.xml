@@ -11,14 +11,14 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <mvc:annotation-driven validator="validator" />
+    <!-- <mvc:annotation-driven validator="validator" /> -->
     <!-- <mvc:default-servlet-handler /> -->
 	<context:component-scan base-package="com.personal.oyl.newffms.web" />
 	
-    <bean id="validator"   
+    <!-- <bean id="validator"   
         class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">  
         <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
-    </bean> 
+    </bean> -->
 	
 	<bean id="mappingJacksonHttpMessageConverter"
         class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
@@ -28,15 +28,15 @@
             </list>
         </property>
     </bean>
-	
+    
     <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <!-- <property name="interceptors">
-            <bean class="example.MyInterceptor"/>
-        </property> -->
     </bean>
 
 	<bean id="handlerAdapter"
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer">
+            <bean class="com.personal.oyl.newffms.util.CustomDataBinding" />
+        </property>
 		<property name="messageConverters">
 			<list>
 				<ref bean="mappingJacksonHttpMessageConverter" />

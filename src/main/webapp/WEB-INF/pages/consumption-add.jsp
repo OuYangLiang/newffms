@@ -36,7 +36,7 @@
                     <div class="label">日期</div>
                     
                     <div class="input">
-                        <spring:input path="consumption.cpnDateDesc" id="cpnDateDesc" class="inputbox" />
+                        <spring:input path="consumption.cpnTime" id="cpnTime" class="inputbox" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -48,7 +48,7 @@
                     <div class="input">
                         <div id="displayTime" class="value">00:00</div>
                         <div id="timeSlider" class="slider" ></div>
-                        <input type="hidden" name="consumption.cpnTimeDesc" />
+                        <input type="hidden" id="cpnTimeSlider" name="consumption.cpnTimeSlider" value="${consumption.cpnTimeSlider }" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -176,24 +176,34 @@
             	$ (".button-area button").button();
             	$( ".selectbox" ).selectmenu();
             	
-                $( "#cpnDateDesc" ).datepicker({
+                $( "#cpnTime" ).datepicker({
                     dateFormat: "yy-mm-dd",
-                    minDate: -7,
-                    maxDate: 1,
-                    showAnim: "slide"
+                    minDate: -30,
+                    maxDate: 30,
+                    showAnim: "slide",
+                    onSelect: function(dateText, inst) {
+                    	$("#cpnTime").val(dateText);
+                    }
                 });
                 
+                var cpnTimeSlider = ${cpnForm.consumption.cpnTimeSlider};
+                var timeSliderToDesc = function(cpnTimeSlider) {
+                	var hour = Math.floor(cpnTimeSlider / 4);
+                    var minute = cpnTimeSlider % 4 * 15;
+                    
+                    if (hour < 10) hour = "0" + hour.toString();
+                    if (minute == 0) minute = "0" + minute.toString();
+                    
+                    return hour + ":" + minute;
+                };
+                $( "#displayTime" ).html( timeSliderToDesc(cpnTimeSlider) );
                 $( "#timeSlider" ).slider({
                     max: 95,
                     min: 0,
+                    value: cpnTimeSlider,
                     slide: function( event, ui ) {
-                        var hour = Math.floor(ui.value / 4);
-                        var minute = ui.value % 4 * 15;
-                        
-                        if (hour < 10) hour = "0" + hour.toString();
-                        if (minute == 0) minute = "0" + minute.toString();
-                    
-                        $( "#displayTime" ).html( hour + ":" + minute );
+                    	$( "#cpnTimeSlider" ).val(ui.value);
+                        $( "#displayTime" ).html( timeSliderToDesc(ui.value) );
                     }
                 });
                 

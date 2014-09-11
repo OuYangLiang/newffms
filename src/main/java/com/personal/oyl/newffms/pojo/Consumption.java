@@ -1,6 +1,7 @@
 package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.personal.oyl.newffms.constants.ConsumptionType;
@@ -14,8 +15,21 @@ public class Consumption extends BasePojo {
     private BaseObject baseObject;
     
     //extended field
-    private String cpnDateDesc;
-    private String cpnTimeDesc;
+    private Integer cpnTimeSlider;
+    
+    public void calculateCpnTime() {
+        int hour = cpnTimeSlider / 4;
+        int minute = cpnTimeSlider % 4 * 15;
+        
+        Calendar c = Calendar.getInstance();
+        c.setTime(cpnTime);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        
+        this.setCpnTime(c.getTime());
+    }
 
     public BigDecimal getCpnOid() {
         return cpnOid;
@@ -82,19 +96,12 @@ public class Consumption extends BasePojo {
         super.trimAllString();
     }
     
-    public String getCpnDateDesc() {
-        return cpnDateDesc;
+    public Integer getCpnTimeSlider() {
+        return cpnTimeSlider;
     }
 
-    public void setCpnDateDesc(String cpnDateDesc) {
-        this.cpnDateDesc = cpnDateDesc;
+    public void setCpnTimeSlider(Integer cpnTimeSlider) {
+        this.cpnTimeSlider = cpnTimeSlider;
     }
 
-    public String getCpnTimeDesc() {
-        return cpnTimeDesc;
-    }
-
-    public void setCpnTimeDesc(String cpnTimeDesc) {
-        this.cpnTimeDesc = cpnTimeDesc;
-    }
 }

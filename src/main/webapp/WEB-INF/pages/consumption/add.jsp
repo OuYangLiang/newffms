@@ -6,13 +6,23 @@
     <head>
         <title>This is the title.</title>
         <link rel="stylesheet" href="<c:url value='/css/consumption.css' />" />
+        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
     
     <body>
         <div class="button-area">
             <button id="btn-save">新建</button>
             <button id="btn-cancel">取消</button>
-        </div>        
+        </div>
+        
+        <div id="errorArea" class="ui-widget" style="margin-bottom:5px;display:none;">
+            <div class="ui-state-error ui-corner-all" style="padding-top:5px; padding-bottom:5px;" >
+	            <span class="ui-icon ui-icon-alert" style="float: left; margin-top:4px; margin-left: 50px; margin-right: 5px;"></span>
+	            <span id="errorMsg" style="font-size: 80%;">日你妈的。</span>
+            </div>
+            
+            <div style="clear:both;" ></div>
+        </div>
         
         <div class="content-header ui-widget-header">
             消费<span style="font-size: 80%;"> - 新建</span>
@@ -36,7 +46,7 @@
                     <div class="label">日期</div>
                     
                     <div class="input">
-                        <spring:input path="consumption.cpnTime" id="cpnTime" class="inputbox" readonly="true"/>
+                        <spring:input path="consumption.cpnTime" id="cpnTime" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -48,7 +58,7 @@
                     <div class="input">
                         <div id="displayTime" class="value">00:00</div>
                         <div id="timeSlider" class="slider" ></div>
-                        <input type="hidden" id="cpnTimeSlider" name="consumption.cpnTimeSlider" value="${consumption.cpnTimeSlider }" />
+                        <input type="hidden" id="cpnTimeSlider" name="consumption.cpnTimeSlider" value="${cpnForm.consumption.cpnTimeSlider}" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -75,24 +85,24 @@
 
                             <div class="label">说明</div>
                             <div class="input">
-                                <spring:input id="itemDesc${status.index }" path="cpnItems[${status.index }].itemDesc" class="inputbox" maxlength="30" style="width: 250px;" />
+                                <spring:input data-validation-engine="validate[required]" id="itemDesc${status.index }" path="cpnItems[${status.index }].itemDesc" class="inputbox" maxlength="30" style="width: 250px;" />
                             </div>
 
                             <div class="label">类别</div>
                             <div class="input" style="width: 100px;">
-                                <spring:input id="categoryDesc${status.index }" path="cpnItems[${status.index }].categoryDesc" class="inputbox" readonly="true" onClick="javascript:selectCategory(${status.index });" />
+                                <spring:input data-validation-engine="validate[required]" id="categoryDesc${status.index }" path="cpnItems[${status.index }].categoryDesc" class="inputbox" readonly="true" onClick="javascript:selectCategory(${status.index });" />
                                 <input type="hidden" id="categoryOid${status.index }" name="cpnItems[${status.index }].categoryOid" value="${item.categoryOid }" />
                             </div>
 
                             <div class="label">金额</div>
                             <div class="input">
-                                <spring:input id="itemAmount${status.index }" path="cpnItems[${status.index }].amount" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" style="width: 70px;" />
+                                <spring:input data-validation-engine="validate[required]" id="itemAmount${status.index }" path="cpnItems[${status.index }].amount" class="inputbox" onBlur="javascript:checkItemAmount(this);" maxlength="7" style="width: 70px;" />
                             </div>
 
                             <div class="label">消费人</div>
                             <div class="input">
-                                <spring:select id="itemOwner${status.index }" path='cpnItems[${status.index }].ownerOid' class="selectbox" >
-                                    <spring:option value="-1" label="请选择"/>
+                                <spring:select data-validation-engine="validate[required]" id="itemOwner${status.index }" path='cpnItems[${status.index }].ownerOid' class="selectbox" >
+                                    <!-- <spring:option value="" label="请选择"/> -->
                                     <spring:options items="${users}" itemValue="userOid" itemLabel="userName"/>
                                 </spring:select>
                             </div>
@@ -123,13 +133,13 @@
                         
                         <div class="label">账户</div>
                         <div class="input" style="width: 400px;">
-                            <spring:input id="acntHumanDesc${status.index }" style="width: 400px;" path="accounts[${status.index }].acntHumanDesc" class="inputbox" readonly="true" onClick="javascript:selectAccount(${status.index });" />
+                            <spring:input data-validation-engine="validate[required]" id="acntHumanDesc${status.index }" style="width: 400px;" path="accounts[${status.index }].acntHumanDesc" class="inputbox" readonly="true" onClick="javascript:selectAccount(${status.index });" />
                             <input type="hidden" id="accountOid${status.index }" name="accounts[${status.index }].acntOid" value="${item.acntOid }" />
                         </div>
                         
                         <div class="label" >支付金额</div>
                         <div class="input" >
-                            <spring:input id="payment${status.index }" path="accounts[${status.index }].payment" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
+                            <spring:input data-validation-engine="validate[required]" id="payment${status.index }" path="accounts[${status.index }].payment" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
                         </div>
                         
                         <div style="clear:both;" ></div>
@@ -137,7 +147,7 @@
                     </c:forEach>
                 </div>
                 
-                <div style="text-align: right;padding-right: 50px;margin-bottom: 20px;">总金额: 0.00</div>
+                <div style="text-align: right;padding-right: 50px;margin-bottom: 20px;">总金额: <span id="totalAmountDisplay">0.00</span></div>
             </div>
             
         </div>
@@ -160,17 +170,41 @@
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {
             	$ ("#btn-cancel").click(function(){
-                    
+            		
                 });
                 
                 $ ("#btn-save").click(function(){
-                    $ ("#form").submit();
+                	$("#form").validationEngine();
+                	if ($ ("#form").validationEngine('validate')) {
+                		$("#errorArea").css("display", "");
+                        
+                        var totalPayment = 0;
+                        var totalAmount  = 0;
+                        
+                        for (var i = 0; i < itemCnt; i ++) {
+                            totalAmount += parseFloat($("#itemAmount" + i).val());
+                        }
+                        for (var i = 0; i < accountCnt; i ++) {
+                            totalPayment += parseFloat($("#payment" + i).val());
+                        }
+                        
+                        if (totalAmount != totalPayment) {
+                        	$("#errorArea").css("display", "");
+                            $("#errorMsg").html("消费总金额与支付总金额不匹配。");
+                            
+                            return;
+                        }
+                        
+                        $ ("#form").submit();
+                	}
                 });
             	
             	$ (".button-area button").button();
@@ -207,6 +241,19 @@
                     }
                 });
                 
+                calculateAmount = function() {
+                	var totalAmount = 0;
+                	for (var i = 0; i < itemCnt; i ++) {
+                        totalAmount += parseFloat($("#itemAmount" + i).val());
+                    }
+                	
+                	$("#totalAmountDisplay").html(parseFloat(totalAmount).toFixed(2));
+                };
+                
+                checkItemAmount = function(obj) {
+                	checkAmount(obj);
+                	calculateAmount();
+                };
                 
                 //明细
                 var itemCnt = ${ cpnForm.cpnItems.size() };
@@ -219,24 +266,24 @@
 	
 	                "<div class=\"label\">说明</div>" +
 	                "<div class=\"input\">" +
-	                    "<input type=\"text\" id=\"itemDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].itemDesc\" class=\"inputbox\" maxlength=\"30\" style=\"width: 250px;\" />" +
+	                    "<input type=\"text\" data-validation-engine=\"validate[required]\" id=\"itemDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].itemDesc\" class=\"inputbox\" maxlength=\"30\" style=\"width: 250px;\" />" +
 	                "</div>" +
 	
 	                "<div class=\"label\">类别</div>" +
 	                "<div class=\"input\" style=\"width: 100px;\">" +
-	                    "<input type=\"text\" id=\"categoryDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].categoryDesc\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectCategory(\#{itemSeq});\" />" +
+	                    "<input type=\"text\" data-validation-engine=\"validate[required]\" id=\"categoryDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].categoryDesc\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectCategory(\#{itemSeq});\" />" +
 	                    "<input type=\"hidden\" id=\"categoryOid\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].categoryOid\" value=\"\" />" +
 	                "</div>" +
 	
 	                "<div class=\"label\">金额</div>" +
 	                "<div class=\"input\">" +
-	                    "<input type=\"text\" id=\"itemAmount\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].amount\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" maxlength=\"7\" style=\"width: 70px;\" />" +
+	                    "<input type=\"text\" data-validation-engine=\"validate[required]\" id=\"itemAmount\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].amount\" class=\"inputbox\" onBlur=\"javascript:checkItemAmount(this);\" maxlength=\"7\" style=\"width: 70px;\" />" +
 	                "</div>" +
 	
 	                "<div class=\"label\">消费人</div>" +
 	                "<div class=\"input\">" +
-	                    "<select class=\"selectbox\" id=\"itemOwner\#{itemSeq}\" name='cpnItems[\#{itemSeq}].ownerOid'>" +
-	                        "<option value =\"-1\">请选择</option>" +
+	                    "<select data-validation-engine=\"validate[required]\" id=\"itemOwner\#{itemSeq}\" name='cpnItems[\#{itemSeq}].ownerOid' class=\"selectbox\" >" +
+	                        //"<option value =\"\">请选择</option>" +
 	                        <c:forEach var="user" items="${users}" varStatus="status" >
 	                        "<option value =\"${user.userOid}\">${user.userName}</option>" +
 	                        </c:forEach>
@@ -351,9 +398,6 @@
                      autowidth: true
                  });
 	            
-	            
-                
-	            
 	            //账户
 	            var accountCnt = ${ cpnForm.accounts.size() };
                 var accountTemplate = "<fieldset id=\"account\#{accountSeq}\">" +
@@ -364,13 +408,13 @@
 		                
 		                "<div class=\"label\">账户</div>" +
 		                "<div class=\"input\" style=\"width: 400px;\">" +
-		                    "<input type=\"text\" id=\"acntHumanDesc\#{accountSeq}\" style=\"width: 400px;\" name=\"accounts[\#{accountSeq}].acntHumanDesc\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectAccount(\#{accountSeq});\" />" +
+		                    "<input type=\"text\" data-validation-engine=\"validate[required]\" id=\"acntHumanDesc\#{accountSeq}\" style=\"width: 400px;\" name=\"accounts[\#{accountSeq}].acntHumanDesc\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectAccount(\#{accountSeq});\" />" +
 		                    "<input type=\"hidden\" id=\"accountOid\#{accountSeq}\" name=\"accounts[\#{accountSeq}].acntOid\" value=\"\" />" +
 		                "</div>" +
 		                
 		                "<div class=\"label\" >支付金额</div>" +
 		                "<div class=\"input\" >" +
-		                    "<input type=\"text\" id=\"payment\#{accountSeq}\" name=\"accounts[\#{accountSeq}].payment\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" maxlength=\"7\" />" +
+		                    "<input type=\"text\" data-validation-engine=\"validate[required]\" id=\"payment\#{accountSeq}\" name=\"accounts[\#{accountSeq}].payment\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" maxlength=\"7\" />" +
 		                "</div>" +
 		                
 		                "<div style=\"clear:both;\" ></div>" +
@@ -463,6 +507,7 @@
                     ],
                     autowidth: true
                 });
+                
             });
         </script>
     </body>

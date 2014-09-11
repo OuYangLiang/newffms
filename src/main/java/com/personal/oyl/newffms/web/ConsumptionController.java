@@ -1,17 +1,12 @@
 package com.personal.oyl.newffms.web;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -31,14 +26,6 @@ public class ConsumptionController {
     @Autowired
     private UserProfileService userProfileService;
     
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        dateFormat.setLenient(false);
-//        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-//    }
-    
-    
     @RequestMapping("/initAdd")
     public String initAdd(Model model) throws SQLException {
         
@@ -56,7 +43,7 @@ public class ConsumptionController {
         model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
         model.addAttribute("users", users);
         
-        return "consumption-add";
+        return "consumption/add";
     }
     
     
@@ -67,7 +54,7 @@ public class ConsumptionController {
         
         model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
         
-        return "consumption-add";
+        return "consumption/add";
     }
     
 }

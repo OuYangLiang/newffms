@@ -36,7 +36,7 @@
                     <div class="label">日期</div>
                     
                     <div class="input">
-                        <spring:input path="consumption.cpnTime" id="cpnTime" class="inputbox" />
+                        <spring:input path="consumption.cpnTime" id="cpnTime" class="inputbox" readonly="true"/>
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -75,7 +75,7 @@
 
                             <div class="label">说明</div>
                             <div class="input">
-                                <spring:input id="itemDesc${status.index }" path="cpnItems[${status.index }].itemDesc" class="inputbox" />
+                                <spring:input id="itemDesc${status.index }" path="cpnItems[${status.index }].itemDesc" class="inputbox" maxlength="30" style="width: 250px;" />
                             </div>
 
                             <div class="label">类别</div>
@@ -86,7 +86,7 @@
 
                             <div class="label">金额</div>
                             <div class="input">
-                                <spring:input id="itemAmount${status.index }" path="cpnItems[${status.index }].amount" class="inputbox" onBlur="javascript:checkAmount(this);" />
+                                <spring:input id="itemAmount${status.index }" path="cpnItems[${status.index }].amount" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" style="width: 70px;" />
                             </div>
 
                             <div class="label">消费人</div>
@@ -129,7 +129,7 @@
                         
                         <div class="label" >支付金额</div>
                         <div class="input" >
-                            <spring:input id="payment${status.index }" path="accounts[${status.index }].payment" class="inputbox" onBlur="javascript:checkAmount(this);" />
+                            <spring:input id="payment${status.index }" path="accounts[${status.index }].payment" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
                         </div>
                         
                         <div style="clear:both;" ></div>
@@ -219,7 +219,7 @@
 	
 	                "<div class=\"label\">说明</div>" +
 	                "<div class=\"input\">" +
-	                    "<input type=\"text\" id=\"itemDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].itemDesc\" class=\"inputbox\" />" +
+	                    "<input type=\"text\" id=\"itemDesc\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].itemDesc\" class=\"inputbox\" maxlength=\"30\" style=\"width: 250px;\" />" +
 	                "</div>" +
 	
 	                "<div class=\"label\">类别</div>" +
@@ -230,7 +230,7 @@
 	
 	                "<div class=\"label\">金额</div>" +
 	                "<div class=\"input\">" +
-	                    "<input type=\"text\" id=\"itemAmount\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].amount\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" />" +
+	                    "<input type=\"text\" id=\"itemAmount\#{itemSeq}\" name=\"cpnItems[\#{itemSeq}].amount\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" maxlength=\"7\" style=\"width: 70px;\" />" +
 	                "</div>" +
 	
 	                "<div class=\"label\">消费人</div>" +
@@ -370,7 +370,7 @@
 		                
 		                "<div class=\"label\" >支付金额</div>" +
 		                "<div class=\"input\" >" +
-		                    "<input type=\"text\" id=\"payment\#{accountSeq}\" name=\"accounts[\#{accountSeq}].payment\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" />" +
+		                    "<input type=\"text\" id=\"payment\#{accountSeq}\" name=\"accounts[\#{accountSeq}].payment\" class=\"inputbox\" onBlur=\"javascript:checkAmount(this);\" maxlength=\"7\" />" +
 		                "</div>" +
 		                
 		                "<div style=\"clear:both;\" ></div>" +

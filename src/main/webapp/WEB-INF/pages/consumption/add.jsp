@@ -15,10 +15,15 @@
             <button id="btn-cancel">取消</button>
         </div>
         
-        <div id="errorArea" class="ui-widget" style="margin-bottom:5px;display:none;">
-            <div class="ui-state-error ui-corner-all" style="padding-top:5px; padding-bottom:5px;" >
-	            <span class="ui-icon ui-icon-alert" style="float: left; margin-top:4px; margin-left: 50px; margin-right: 5px;"></span>
-	            <span id="errorMsg" style="font-size: 80%;">日你妈的。</span>
+        <spring:errors path="errors" />
+        
+        <c:url value='/consumption/saveAdd' var='url' />
+        <spring:form id="form" method="post" action="${url}" modelAttribute="cpnForm" >
+        
+        <div id="errorArea" class="ui-widget" style="margin-bottom:5px;display:none">
+            <div class="ui-state-error ui-corner-all" style="margin-right: 400px; padding: 5px 30px;" >
+	            <span class="ui-icon ui-icon-alert" style="float: left; margin-top:5px; "></span>
+	            <span id="errorMsg" style="font-size: 70%;"><spring:errors path="*" /></span>
             </div>
             
             <div style="clear:both;" ></div>
@@ -28,15 +33,16 @@
             消费<span style="font-size: 80%;"> - 新建</span>
         </div>
         
-        <c:url value='/consumption/saveAdd' var='url' />
-        <spring:form id="form" method="post" action="${url}" modelAttribute="cpnForm" >
         <div class="contentWrapper">
             <div class="mainArea">
                 <div class="newline-wrapper ui-widget-content">
                     <div class="label">消费方式</div>
                     
                     <div class="input">
-                        <spring:select path="consumption.cpnType" items="${cpnTypes}" class="selectbox" />
+                        <spring:select path="consumption.cpnType" class="selectbox" >
+                            <spring:option value="" label="请选择"/>
+                            <spring:options items="${cpnTypes}" />
+                        </spring:select>
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -102,7 +108,7 @@
                             <div class="label">消费人</div>
                             <div class="input">
                                 <spring:select data-validation-engine="validate[required]" id="itemOwner${status.index }" path='cpnItems[${status.index }].ownerOid' class="selectbox" >
-                                    <!-- <spring:option value="" label="请选择"/> -->
+                                    <spring:option value="" label="请选择"/>
                                     <spring:options items="${users}" itemValue="userOid" itemLabel="userName"/>
                                 </spring:select>
                             </div>
@@ -177,15 +183,20 @@
         
         <script>
             $( document ).ready(function() {
+            	//验证失败后，显示后台错误信息。
+            	if ('<c:out value="${validation}" />' === 'false') {
+            		$("#errorArea").css("display", "");
+            	}
+            	
             	$ ("#btn-cancel").click(function(){
             		
                 });
                 
                 $ ("#btn-save").click(function(){
+                	//提交表单时，使用使用jquery validation engine进行前端基本验证。
                 	$("#form").validationEngine();
                 	if ($ ("#form").validationEngine('validate')) {
-                		$("#errorArea").css("display", "");
-                        
+                		//前端基本验证通过的话，继续进行业务前端业务验证
                         var totalPayment = 0;
                         var totalAmount  = 0;
                         
@@ -197,8 +208,9 @@
                         }
                         
                         if (totalAmount != totalPayment) {
-                        	$("#errorArea").css("display", "");
-                            $("#errorMsg").html("消费总金额与支付总金额不匹配。");
+                        	//前端业务验证不通过，显示错误信息，不提交表单。
+                            $("#errorMsg").html("消费总金额与支付总金额不匹配，亲。");
+                            $("#errorArea").css("display", "");
                             
                             return;
                         }
@@ -283,7 +295,7 @@
 	                "<div class=\"label\">消费人</div>" +
 	                "<div class=\"input\">" +
 	                    "<select data-validation-engine=\"validate[required]\" id=\"itemOwner\#{itemSeq}\" name='cpnItems[\#{itemSeq}].ownerOid' class=\"selectbox\" >" +
-	                        //"<option value =\"\">请选择</option>" +
+	                        "<option value =\"\">请选择</option>" +
 	                        <c:forEach var="user" items="${users}" varStatus="status" >
 	                        "<option value =\"${user.userOid}\">${user.userName}</option>" +
 	                        </c:forEach>

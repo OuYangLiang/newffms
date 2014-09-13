@@ -172,6 +172,14 @@
             </div>
         </div>
         
+        <div id="last-item-dialog" title="警告">
+            没消费记录吗，亲？
+        </div>
+        
+        <div id="last-account-dialog" title="警告">
+            你想不付钱啊，亲。
+        </div>
+        
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
@@ -267,6 +275,42 @@
                 	calculateAmount();
                 };
                 
+                $( "#last-item-dialog" ).dialog( {
+                    autoOpen: false,
+                    modal: true,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    },
+                    buttons: {
+                        "Close": function(){
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+                
+                $( "#last-account-dialog" ).dialog( {
+                    autoOpen: false,
+                    modal: true,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    },
+                    buttons: {
+                        "Close": function(){
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+                
                 //明细
                 var itemCnt = ${ cpnForm.cpnItems.size() };
                 var itemTemplate = "<fieldset id=\"item\#{itemSeq}\">" +
@@ -313,6 +357,11 @@
                 });
                 
                 removeItem = function(seq){
+                	if (itemCnt == 1) {
+                		$ ( "#last-item-dialog" ).dialog( "open" );
+                        return;
+                    }
+                	
                     $ ("#item" + seq).remove();
                     
                     if (seq < (itemCnt - 1))
@@ -457,6 +506,11 @@
                 });
                 
                 removeAccount = function(seq){
+                    if (accountCnt == 1) {
+                    	$ ( "#last-account-dialog" ).dialog( "open" );
+                    	return;
+                    }
+                   
                    $ ("#account" + seq).remove();
                    
                    if (seq < (accountCnt -1) )

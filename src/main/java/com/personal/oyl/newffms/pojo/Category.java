@@ -6,7 +6,7 @@ public class Category extends BasePojo {
     private BigDecimal categoryOid;
     private String categoryDesc;
     private BigDecimal monthlyBudget;
-    private int categoryLevel;
+    private Integer categoryLevel;
     private Boolean isLeaf;
     private BigDecimal parentOid;
     private BaseObject baseObject;
@@ -35,11 +35,11 @@ public class Category extends BasePojo {
         this.monthlyBudget = monthlyBudget;
     }
 
-    public int getCategoryLevel() {
+    public Integer getCategoryLevel() {
         return categoryLevel;
     }
 
-    public void setCategoryLevel(int categoryLevel) {
+    public void setCategoryLevel(Integer categoryLevel) {
         this.categoryLevel = categoryLevel;
     }
 
@@ -94,5 +94,6 @@ public class Category extends BasePojo {
         
         return this.parentOid.toString();
     }
+
 }
 

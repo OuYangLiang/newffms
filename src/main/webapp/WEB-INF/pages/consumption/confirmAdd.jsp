@@ -60,7 +60,7 @@
                         
                         <div class="label">类别</div>
                         <div class="input" style="width: 300px;">
-                            <div class="confirmed-text">${item.categoryDesc }</div>
+                            <div class="confirmed-text">${item.categoryFullDesc }</div>
                         </div>
                         
                         <div class="label">金额</div>

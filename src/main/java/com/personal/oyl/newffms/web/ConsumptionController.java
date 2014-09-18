@@ -25,6 +25,7 @@ import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.pojo.UserProfile;
 import com.personal.oyl.newffms.pojo.validator.ConsumptionFormValidator;
+import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.service.TransactionService;
 import com.personal.oyl.newffms.service.UserProfileService;
 
@@ -38,6 +39,8 @@ public class ConsumptionController {
     private TransactionService transactionService;
     @Autowired
     private UserProfileService userProfileService;
+    @Autowired
+    private CategoryService categoryService;
     
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -82,6 +85,7 @@ public class ConsumptionController {
         
         for ( ConsumptionItem item : form.getCpnItems() ) {
             item.setUserName(userProfileService.selectByKey(item.getOwnerOid()).getUserName());
+            item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
         }
         
         return "consumption/confirmAdd";

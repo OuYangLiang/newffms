@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import com.personal.oyl.newffms.pojo.BasePojo;
 
 public interface DbActionService<T extends BasePojo> {
-    public void insert(T param) throws Exception;
+    public void insert(T param) throws SQLException;
     
     public void updateByPrimaryKeySelective(T param) throws SQLException;
     

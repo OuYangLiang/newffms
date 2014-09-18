@@ -16,5 +16,17 @@
         
     <bean id="userProfileService"
         class="com.personal.oyl.newffms.service.impl.UserProfileServiceImpl" />
+        
+    <bean id="consumptionService"
+        class="com.personal.oyl.newffms.service.impl.ConsumptionServiceImpl" />
+    
+    <bean id="consumptionItemService"
+        class="com.personal.oyl.newffms.service.impl.ConsumptionItemServiceImpl" />
+    
+    <bean id="accountConsumptionService"
+        class="com.personal.oyl.newffms.service.impl.AccountConsumptionServiceImpl" />
+        
+    <bean id="transactionService"
+        class="com.personal.oyl.newffms.service.impl.TransactionServiceImpl" />
     
 </beans>

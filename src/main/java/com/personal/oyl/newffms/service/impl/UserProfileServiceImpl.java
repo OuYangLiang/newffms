@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,6 +22,19 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfile selectByLoginId(String loginId) throws SQLException {
         UserProfile param = new UserProfile();
         param.setLoginId(loginId.trim());
+        
+        List<UserProfile> list = this.select(param);
+        
+        if (null != list && !list.isEmpty()) {
+            return list.get(0);
+        }
+            
+        return null;
+    }
+
+    public UserProfile selectByKey(BigDecimal userOid) throws SQLException {
+        UserProfile param = new UserProfile();
+        param.setUserOid(userOid);
         
         List<UserProfile> list = this.select(param);
         

@@ -100,11 +100,10 @@
         </where>
     </delete>
     
-    
-    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Consumption">
-        INSERT INTO CONSUMPTION(<include refid="Base_Column_List" />)
-        VALUES (#{cpnOid,jdbcType=DECIMAL}, #{cpnType,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{cpnTime,jdbcType=TIMESTAMP}, #{confirmed,jdbcType=BIT},
-        #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Consumption" useGeneratedKeys="true" keyProperty="cpnOid">
+        INSERT INTO CONSUMPTION(CPN_TYPE, AMOUNT, CPN_TIME, CONFIRMED, CREATE_TIME, CREATE_BY)
+        VALUES (#{cpnType,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{cpnTime,jdbcType=TIMESTAMP}, #{confirmed,jdbcType=BIT},
+        #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR})
     </insert>
     
     

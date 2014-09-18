@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.pojo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ConsumptionForm {
@@ -29,6 +30,32 @@ public class ConsumptionForm {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+    
+    public BigDecimal getTotalItemAmount() {
+        if (null == cpnItems) {
+            return BigDecimal.ZERO;
+        }
+        
+        BigDecimal rlt = BigDecimal.ZERO;
+        for (ConsumptionItem item : this.cpnItems) {
+            rlt = rlt.add(item.getAmount());
+        }
+        
+        return rlt;
+    }
+    
+    public BigDecimal getTotalPayment() {
+        if (null == accounts) {
+            return BigDecimal.ZERO;
+        }
+        
+        BigDecimal rlt = BigDecimal.ZERO;
+        for (Account item : this.accounts) {
+            rlt = rlt.add(item.getPayment());
+        }
+        
+        return rlt;
     }
 
 }

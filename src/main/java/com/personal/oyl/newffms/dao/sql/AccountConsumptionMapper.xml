@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.AccountConsumptionDao">
+    <resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.AccountConsumption">
+        <id column="ACNT_OID" property="acntOid" jdbcType="DECIMAL" />
+        <id column="CPN_OID" property="cpnOid" jdbcType="DECIMAL" />
+        <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ACNT_OID, CPN_OID, AMOUNT
+    </sql>
+
+
+    <delete id="delete" parameterType="com.personal.oyl.newffms.pojo.AccountConsumption" >
+        DELETE FROM ACCOUNT_CONSUMPTION
+        <where>
+            <if test="acntOid != null">
+                ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+            </if>
+            <if test="cpn_oid != null">
+                AND CPN_OID = #{cpn_oid,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </delete>
+    
+    
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.AccountConsumption">
+        INSERT INTO ACCOUNT_CONSUMPTION(<include refid="Base_Column_List" />)
+        VALUES (#{acntOid,jdbcType=DECIMAL}, #{cpnOid,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL})
+    </insert>
+    
+</mapper>

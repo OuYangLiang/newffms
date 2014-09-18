@@ -68,8 +68,8 @@
     
     
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem">
-        INSERT INTO CONSUMPTION_ITEM(<include refid="Base_Column_List" />)
-        VALUES (#{itemOid,jdbcType=DECIMAL}, #{itemDesc,jdbcType=NVARCHAR}, #{amount,jdbcType=DECIMAL},
+        INSERT INTO CONSUMPTION_ITEM(ITEM_DESC, AMOUNT, OWNER_OID, CPN_OID, CATEGORY_OID)
+        VALUES (#{itemDesc,jdbcType=NVARCHAR}, #{amount,jdbcType=DECIMAL},
                 #{ownerOid,jdbcType=DECIMAL}, #{cpnOid,jdbcType=DECIMAL}, #{categoryOid,jdbcType=DECIMAL})
     </insert>
     

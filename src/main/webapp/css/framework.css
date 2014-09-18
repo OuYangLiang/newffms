@@ -168,6 +168,10 @@ body {
 	font-size: 75%;
 }
 
+.ui-tooltip {
+	font-size: 75%;
+}
+
 A:link {
     //color: #000000;
     TEXT-DECORATION: none;

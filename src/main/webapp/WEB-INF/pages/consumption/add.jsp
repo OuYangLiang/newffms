@@ -17,7 +17,7 @@
         
         <spring:errors path="errors" />
         
-        <c:url value='/consumption/saveAdd' var='url' />
+        <c:url value='/consumption/confirmAdd' var='url' />
         <spring:form id="form" method="post" action="${url}" modelAttribute="cpnForm" >
         
         <div id="errorArea" class="ui-widget" style="margin-bottom:5px;display:none">
@@ -264,7 +264,9 @@
                 calculateAmount = function() {
                 	var totalAmount = 0;
                 	for (var i = 0; i < itemCnt; i ++) {
-                        totalAmount += parseFloat($("#itemAmount" + i).val());
+                		if ($("#itemAmount" + i).val() != "") {
+                			totalAmount += parseFloat($("#itemAmount" + i).val());
+                		}
                     }
                 	
                 	$("#totalAmountDisplay").html(parseFloat(totalAmount).toFixed(2));

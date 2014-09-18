@@ -314,6 +314,7 @@
                 });
                 
                 //明细
+                var categoryGridLoaded = false;
                 var itemCnt = ${ cpnForm.cpnItems.size() };
                 var itemTemplate = "<fieldset id=\"item\#{itemSeq}\">" +
 	                "<legend id=\"item-title\#{itemSeq}\">清单\#{itemCnt}</legend>" +
@@ -408,6 +409,40 @@
                  };
                  
                  selectCategory = function(seq) {
+                	 if (!categoryGridLoaded) {
+                		 categoryGridLoaded = true;
+                		 
+                		 var categoryFormatter = function (cellvalue, options, rowObject){
+                             if (rowObject.isLeaf)
+                                 return "<a href=\"javascript:chooseCategory(" + rowObject.categoryOid + ", '" + cellvalue + "');\" >" + cellvalue + "</a>";
+                             else
+                                 return cellvalue;
+                         };
+                         
+                         $("#category-select-grid").jqGrid({
+                             url: "<c:url value='/category/ajaxGetAllCategories' />",
+                             jsonReader: {id: "categoryOidDesc"},
+                             colNames: ["描术", "级别"],
+                             colModel: [
+                                 { name: "categoryDesc", width: 155, align: "left", sortable: false, formatter:categoryFormatter },
+                                 { name: "categoryLevel", width: 50, align: "center", sortable: false }
+                             ],
+                             
+                             treeGrid: true,
+                             treeReader: {
+                                 level_field: "categoryLevel",
+                                 parent_id_field: "parentOidDesc",
+                                 leaf_field: "isLeaf"
+                             },
+                             ExpandColClick: true,
+                             ExpandColumn: "categoryDesc",
+                             treeIcons: {leaf:'ui-icon-circle-check'},
+                             treeGridModel: "adjacency",
+                             rownumbers: false,
+                             autowidth: true
+                         });
+                	 }
+                	 
                      curItem = seq;
                      $ ( "#category-select-dialog" ).dialog( "open" );
                  };
@@ -418,7 +453,7 @@
                      modal: true,
                      show: {
                          effect: "blind",
-                         duration: 1000
+                         duration: 400
                      },
                      hide: {
                          effect: "explode",
@@ -431,37 +466,8 @@
                      }
                  });
                  
-                 var categoryFormatter = function (cellvalue, options, rowObject){
-                     if (rowObject.isLeaf)
-                         return "<a href=\"javascript:chooseCategory(" + rowObject.categoryOid + ", '" + cellvalue + "');\" >" + cellvalue + "</a>";
-                     else
-                         return cellvalue;
-                 };
-                 
-                 $("#category-select-grid").jqGrid({
-                     url: "<c:url value='/category/ajaxGetAllCategories' />",
-                     jsonReader: {id: "categoryOidDesc"},
-                     colNames: ["描术", "级别"],
-                     colModel: [
-                         { name: "categoryDesc", width: 155, align: "left", sortable: false, formatter:categoryFormatter },
-                         { name: "categoryLevel", width: 50, align: "center", sortable: false }
-                     ],
-                     
-                     treeGrid: true,
-                     treeReader: {
-                         level_field: "categoryLevel",
-                         parent_id_field: "parentOidDesc",
-                         leaf_field: "isLeaf"
-                     },
-                     ExpandColClick: true,
-                     ExpandColumn: "categoryDesc",
-                     treeIcons: {leaf:'ui-icon-circle-check'},
-                     treeGridModel: "adjacency",
-                     rownumbers: false,
-                     autowidth: true
-                 });
-	            
 	            //账户
+	            var accountGridLoaded = false;
 	            var accountCnt = ${ cpnForm.accounts.size() };
                 var accountTemplate = "<fieldset id=\"account\#{accountSeq}\">" +
 		                "<legend id=\"account-title\#{accountSeq}\">账户\#{accountCnt}</legend>" +
@@ -488,7 +494,7 @@
                     minWidth: 775,
                     show: {
                         effect: "blind",
-                        duration: 1000
+                        duration: 400
                     },
                     hide: {
                         effect: "explode",
@@ -555,26 +561,30 @@
                 
                 selectAccount = function(seq)
                 {
+                	if (!accountGridLoaded) {
+                		accountGridLoaded = true;
+                		
+                		var accountFormatter = function (cellvalue, options, rowObject){
+                            return "<a href=\"javascript:chooseAccount(" + rowObject.acntOid + ", '" + cellvalue + "');\" >" + cellvalue + "</a>";
+                        };
+                		
+                        $("#account-select-grid").jqGrid({
+                            url: "<c:url value='/account/ajaxGetAllAccounts' />",
+                            jsonReader: {id: "accountOid"},
+                            colNames: ["所有人", "账户类型", "账户", "可用余额"],
+                            colModel: [
+                                { name: "ownerUserName", width: 100, align: "center", sortable: false },
+                                { name: "acntTypeDesc", width: 100,align: "center", sortable: false },
+                                { name: "acntHumanDesc", width: 300, align: "center", sortable: false, formatter:accountFormatter },
+                                { name: "balance", width: 180, align: "center", sortable: false}
+                            ],
+                            autowidth: true
+                        });
+                    }
+                	
                     curAccount = seq;
                     $ ( "#account-select-dialog" ).dialog( "open" );
                 };
-                
-                var accountFormatter = function (cellvalue, options, rowObject){
-                    return "<a href=\"javascript:chooseAccount(" + rowObject.acntOid + ", '" + cellvalue + "');\" >" + cellvalue + "</a>";
-                };
-                
-                $("#account-select-grid").jqGrid({
-                    url: "<c:url value='/account/ajaxGetAllAccounts' />",
-                    jsonReader: {id: "accountOid"},
-                    colNames: ["所有人", "账户类型", "账户", "可用余额"],
-                    colModel: [
-                        { name: "ownerUserName", width: 100, align: "center", sortable: false },
-                        { name: "acntTypeDesc", width: 100,align: "center", sortable: false },
-                        { name: "acntHumanDesc", width: 300, align: "center", sortable: false, formatter:accountFormatter },
-                        { name: "balance", width: 180, align: "center", sortable: false}
-                    ],
-                    autowidth: true
-                });
                 
             });
         </script>

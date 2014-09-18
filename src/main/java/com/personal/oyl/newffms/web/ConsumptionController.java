@@ -1,10 +1,9 @@
 package com.personal.oyl.newffms.web;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +14,18 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.personal.oyl.newffms.constants.ConsumptionType;
-import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
-import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
-import com.personal.oyl.newffms.pojo.UserProfile;
 import com.personal.oyl.newffms.pojo.validator.ConsumptionFormValidator;
 import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.service.TransactionService;
 import com.personal.oyl.newffms.service.UserProfileService;
 
-
 @Controller
 @RequestMapping("/consumption")
-@SessionAttributes("cpnForm")
 public class ConsumptionController {
     
     @Autowired
@@ -48,33 +41,30 @@ public class ConsumptionController {
     }
     
     @RequestMapping("/initAdd")
-    public String initAdd(Model model) throws SQLException {
+    public String initAdd(Model model, HttpSession session) throws SQLException {
         
-        List<UserProfile> users = userProfileService.select(null);
+        ConsumptionForm form = null;
         
-        ConsumptionForm form = new ConsumptionForm();
-        form.setConsumption(new Consumption());
-        form.getConsumption().setCpnTimeSlider(1);
-        form.setCpnItems(new ArrayList<ConsumptionItem>());
-        form.setAccounts(new ArrayList<Account>());
-        form.getCpnItems().add(new ConsumptionItem());
-        form.getAccounts().add(new Account());
+        if (null != session.getAttribute("cpnForm")) {
+            form = (ConsumptionForm) session.getAttribute("cpnForm");
+        }
+        else {
+            form = new ConsumptionForm();
+        }
         
         model.addAttribute("cpnForm", form);
         model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
-        model.addAttribute("users", users);
+        model.addAttribute("users", userProfileService.select(null));
         
         return "consumption/add";
     }
     
     
     @RequestMapping("/confirmAdd")
-    public String confirmAdd(@Valid @ModelAttribute("cpnForm") ConsumptionForm form, BindingResult result, Model model) throws SQLException {
+    public String confirmAdd(@Valid @ModelAttribute("cpnForm") ConsumptionForm form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
-            List<UserProfile> users = userProfileService.select(null);
-            
             model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
-            model.addAttribute("users", users);
+            model.addAttribute("users", userProfileService.select(null));
             model.addAttribute("validation", false);
             
             return "consumption/add";
@@ -88,13 +78,15 @@ public class ConsumptionController {
             item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
         }
         
+        session.setAttribute("cpnForm", form);
+        
         return "consumption/confirmAdd";
     }
     
     
     @RequestMapping("/saveAdd")
-    public String saveAdd(Model model) throws SQLException {
-        ConsumptionForm form = (ConsumptionForm) model.asMap().get("cpnForm");
+    public String saveAdd(Model model, HttpSession session) throws SQLException {
+        ConsumptionForm form = (ConsumptionForm) session.getAttribute("cpnForm");//(ConsumptionForm) model.asMap().get("cpnForm");
         
         form.getConsumption().setAmount(form.getTotalItemAmount());
         form.getConsumption().setConfirmed(true);
@@ -108,7 +100,9 @@ public class ConsumptionController {
         
         transactionService.createConsumption(form);
         
-        return "consumption/add";
+        session.removeAttribute("cpnForm");
+        
+        return "welcome";
     }
     
 }

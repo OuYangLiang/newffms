@@ -153,7 +153,7 @@
                     </c:forEach>
                 </div>
                 
-                <div style="text-align: right;padding-right: 50px;margin-bottom: 20px;">总金额: <span id="totalAmountDisplay">0.00</span></div>
+                <div style="text-align: right;padding-right: 50px;margin-bottom: 20px;">总金额: <span id="totalAmountDisplay">${cpnForm.totalItemAmount }</span></div>
             </div>
             
         </div>

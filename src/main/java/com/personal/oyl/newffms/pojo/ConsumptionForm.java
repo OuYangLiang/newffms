@@ -1,12 +1,22 @@
 package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConsumptionForm {
     private Consumption consumption;
     private List<ConsumptionItem> cpnItems;
     private List<Account> accounts;
+    
+    public ConsumptionForm() {
+        setConsumption(new Consumption());
+        getConsumption().setCpnTimeSlider(1);
+        setCpnItems(new ArrayList<ConsumptionItem>());
+        setAccounts(new ArrayList<Account>());
+        getCpnItems().add(new ConsumptionItem());
+        getAccounts().add(new Account());
+    }
 
     public Consumption getConsumption() {
         return consumption;
@@ -39,7 +49,7 @@ public class ConsumptionForm {
         
         BigDecimal rlt = BigDecimal.ZERO;
         for (ConsumptionItem item : this.cpnItems) {
-            rlt = rlt.add(item.getAmount());
+            rlt = rlt.add(null == item.getAmount() ? BigDecimal.ZERO : item.getAmount());
         }
         
         return rlt;

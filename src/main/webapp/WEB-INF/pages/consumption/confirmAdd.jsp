@@ -121,7 +121,7 @@
         <script>
             $( document ).ready(function() {
                 $ ("#btn-cancel").click(function(){
-                    
+                	window.location.href = "<c:url value='/consumption/initAdd' />";
                 });
                 
                 $ ("#btn-save").click(function(){

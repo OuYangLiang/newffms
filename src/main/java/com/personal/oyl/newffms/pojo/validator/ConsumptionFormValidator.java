@@ -1,13 +1,20 @@
 package com.personal.oyl.newffms.pojo.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
 
 public class ConsumptionFormValidator implements Validator {
+    
+    @Autowired
+    private ConsumptionItemValidator itemValidator;
+    @Autowired
+    private AccountValidator accountValidator;
 
     public boolean supports(Class<?> clazz) {
         return ConsumptionForm.class.equals(clazz);
@@ -34,8 +41,6 @@ public class ConsumptionFormValidator implements Validator {
             return;
         }
         
-        ConsumptionItemValidator itemValidator = new ConsumptionItemValidator();
-        
         int idx = 0;
         for ( ConsumptionItem item : form.getCpnItems() ) {
             try {
@@ -46,6 +51,17 @@ public class ConsumptionFormValidator implements Validator {
                 errors.popNestedPath();
             }
             idx ++;
+        }
+        
+        idx = 0;
+        for ( Account acnt : form.getAccounts() ) {
+            try {
+                errors.pushNestedPath("accounts[" + idx + "]");
+                ValidationUtils.invokeValidator(accountValidator, acnt, errors);
+            }
+            finally {
+                errors.popNestedPath();
+            }
         }
     }
 

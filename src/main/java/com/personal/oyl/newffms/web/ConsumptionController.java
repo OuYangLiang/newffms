@@ -35,9 +35,12 @@ public class ConsumptionController {
     @Autowired
     private CategoryService categoryService;
     
+    @Autowired
+    private ConsumptionFormValidator consumptionFormValidator;
+    
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(new ConsumptionFormValidator());
+        binder.setValidator(consumptionFormValidator);
     }
     
     @RequestMapping("/initAdd")

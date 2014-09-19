@@ -13,8 +13,6 @@ public class ConsumptionValidator implements Validator {
     }
 
     public void validate(Object target, Errors errors) {
-        //Consumption cpn = (Consumption) target;
-        
         ValidationUtils.rejectIfEmpty(errors, "cpnType", null, "消费类型不可以为空哦，亲。");
     }
 

@@ -12,3 +12,19 @@ function checkAmount(obj) {
     
     return true;
 }
+
+function arrContain(arr,value) {
+	for(var i = 0; i < arr.length; i++) {
+		if(arr[i] == value)
+			return true;
+	}
+	
+	return false;
+}
+
+function arrRemove(arr,item) {  
+	for(var i = 0; i < arr.length; i++) {  
+		if(item == arr[i])
+			arr.splice(i,1); 
+	}  
+}

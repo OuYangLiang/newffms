@@ -467,6 +467,11 @@
                  });
                  
 	            //账户
+	            var selectedAccounts = new Array();//用来保存已经使用过的账户oid。
+	            <c:forEach var="item" items="${ cpnForm.accounts }" varStatus="status" >
+	            selectedAccounts.push('${item.acntOid}');
+	            </c:forEach>
+	            
 	            var accountGridLoaded = false;
 	            var accountCnt = ${ cpnForm.accounts.size() };
                 var accountTemplate = "<fieldset id=\"account\#{accountSeq}\">" +
@@ -518,11 +523,15 @@
                     	$ ( "#last-account-dialog" ).dialog( "open" );
                     	return;
                     }
+                    
+                    if (arrContain(selectedAccounts, $("#accountOid" + seq).val())) {
+                        arrRemove(selectedAccounts, $("#accountOid" + seq).val());
+                    }
+                    
+                    $ ("#account" + seq).remove();
                    
-                   $ ("#account" + seq).remove();
-                   
-                   if (seq < (accountCnt -1) )
-                   {
+                    if (seq < (accountCnt -1) )
+                    {
                         seq ++;
                         while (seq <= (accountCnt -1))
                         {
@@ -546,17 +555,23 @@
                             
                             seq++;
                         }
-                   }
+                    }
                    
-                   accountCnt --;
+                    accountCnt --;
                 };
                 
                 
                 chooseAccount = function(acntOid, acntHumanDesc)
                 {
+                	if (arrContain(selectedAccounts, acntOid)) {
+                		alert("该账户已经使用过了，亲。");
+                		return;
+                	}
+                	
                     $( "#acntHumanDesc" + curAccount).val(acntHumanDesc);
                     $( "#accountOid" + curAccount).val(acntOid);
                     $ ( "#account-select-dialog" ).dialog( "close" );
+                    selectedAccounts.push(acntOid);
                 };
                 
                 selectAccount = function(seq)

@@ -39,9 +39,6 @@
             <if test="confirmed != null">
                 AND CONFIRMED = #{confirmed,jdbcType=BIT}
             </if>
-            <if test="userTypeOid != null">
-                AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
-            </if>
             <if test="baseObject != null and baseObject.createTime != null">
                 AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
             </if>
@@ -78,9 +75,6 @@
             </if>
             <if test="confirmed != null">
                 AND CONFIRMED = #{confirmed,jdbcType=BIT}
-            </if>
-            <if test="userTypeOid != null">
-                AND USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL}
             </if>
             <if test="baseObject != null and baseObject.createTime != null">
                 AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}

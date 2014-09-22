@@ -197,7 +197,7 @@
             	}
             	
             	$ ("#btn-cancel").click(function(){
-            		
+            		window.location.href = "<c:url value='/consumption/summary' />";
                 });
                 
                 $ ("#btn-save").click(function(){

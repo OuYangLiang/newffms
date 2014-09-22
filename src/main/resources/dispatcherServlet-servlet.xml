@@ -19,9 +19,12 @@
         class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">  
         <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
     </bean> -->
+    
+    <bean id="customObjectMapper" class="com.personal.oyl.newffms.util.CustomObjectMapper" />
 	
 	<bean id="mappingJacksonHttpMessageConverter"
         class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="objectMapper" ref="customObjectMapper"></property>
         <property name="supportedMediaTypes">
             <list>
                 <value>application/json;charset=UTF-8</value>

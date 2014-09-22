@@ -27,7 +27,7 @@
             <nav>
                 <ul>
                     <li><a href="#">首页</a></li>
-                    <li><a href="consumption-summary.html">消费</a></li>
+                    <li><a href="<c:url value='/consumption/summary' />">消费</a></li>
                     <li><a href="incoming-summary.html">收入</a></li>
                     <li><a href="account-summary.html">账户</a></li>
                     <li><a href="#">成员</a></li>

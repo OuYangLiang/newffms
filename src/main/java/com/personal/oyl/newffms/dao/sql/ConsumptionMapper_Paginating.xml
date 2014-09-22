@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.ConsumptionDao">
+	<resultMap id="GridResultMap" type="com.personal.oyl.newffms.pojo.Consumption">
+		<id column="CPN_OID" property="cpnOid" jdbcType="DECIMAL" />
+		<result column="CPN_TYPE" property="cpnType" jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+		<result column="CPN_TIME" property="cpnTime" jdbcType="TIMESTAMP" />
+		<result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
+		<result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
+        <result column="SEQ_NO" property="baseObject.seqNo" jdbcType="DECIMAL" />
+	</resultMap>
+
+
+	<sql id="Grid_Column_List">
+        CPN_OID, CPN_TYPE, AMOUNT, CPN_TIME, CONFIRMED, CREATE_BY, SEQ_NO
+	</sql>
+
+    <select id="getCountOfSummary" parameterType="com.personal.oyl.newffms.pojo.Consumption" resultType="int">
+        SELECT COUNT(*)
+            FROM CONSUMPTION
+        <where>
+            <if test="cpnType != null">
+                CPN_TYPE = #{cpnType,jdbcType=VARCHAR}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+    
+    <select id="getListOfSummary" parameterType="com.personal.oyl.newffms.pojo.Consumption" resultMap="GridResultMap">
+        SELECT <include refid="Grid_Column_List" />
+            FROM CONSUMPTION
+        <where>
+            <if test="cpnType != null">
+                CPN_TYPE = #{cpnType,jdbcType=VARCHAR}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+        </where>
+        <if test="sortField == null" >
+            ORDER BY CPN_TIME DESC
+        </if>
+        <if test="sortField != null" >
+            ORDER BY #{sortField} #{sortOrder}
+        </if>
+        LIMIT #{start}, #{sizePerPage}
+    </select>
+
+</mapper>

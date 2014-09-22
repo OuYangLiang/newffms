@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -22,18 +23,19 @@ public class ConsumptionItemServiceImpl implements ConsumptionItemService {
     }
 
     public void updateByPrimaryKeySelective(ConsumptionItem param) throws SQLException {
-        // TODO Auto-generated method stub
-
+        dao.updateByKeySelectively(param);
     }
 
     public void updateByPrimaryKey(ConsumptionItem param) throws SQLException {
-        // TODO Auto-generated method stub
-
+        dao.updateByKey(param);
     }
 
     public void delete(ConsumptionItem param) throws SQLException {
-        // TODO Auto-generated method stub
+        dao.delete(param);
+    }
 
+    public List<ConsumptionItem> queryConsumptionItemByCpn(BigDecimal cpnOid) throws SQLException {
+        return dao.queryConsumptionItemByCpn(cpnOid);
     }
 
 }

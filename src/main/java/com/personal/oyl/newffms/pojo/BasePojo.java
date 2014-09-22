@@ -3,6 +3,54 @@ package com.personal.oyl.newffms.pojo;
 import java.lang.reflect.Method;
 
 public abstract class BasePojo {
+    
+    private int start;
+    private int sizePerPage;
+    private int requestPage;
+    private String sortField;
+    private String sortDir;
+    
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getSizePerPage() {
+        return sizePerPage;
+    }
+
+    public void setSizePerPage(int sizePerPage) {
+        this.sizePerPage = sizePerPage;
+    }
+
+    public int getRequestPage() {
+        return requestPage;
+    }
+
+    public void setRequestPage(int requestPage) {
+        this.requestPage = requestPage;
+    }
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
+    public String getSortDir() {
+        return sortDir;
+    }
+
+    public void setSortDir(String sortDir) {
+        this.sortDir = sortDir;
+    }
+
+
     public void setAllEmptyStringToNull() throws Exception {
         Method[] methods = this.getClass().getMethods();
         

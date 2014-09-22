@@ -11,7 +11,7 @@
             sort:"sortField",
             order:"sortDir"
         },
-        altRows: true,
+        //altRows: true,
         rowNum: 10,
         rowList: [10, 20, 50, 100],
         

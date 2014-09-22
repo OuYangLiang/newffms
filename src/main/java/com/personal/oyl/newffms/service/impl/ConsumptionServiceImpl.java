@@ -23,15 +23,23 @@ public class ConsumptionServiceImpl implements ConsumptionService {
     }
 
     public void updateByPrimaryKeySelective(Consumption param) throws SQLException {
-        
+        dao.updateByKeySelectively(param);
     }
 
     public void updateByPrimaryKey(Consumption param) throws SQLException {
-        
+        dao.updateByKey(param);
     }
 
     public void delete(Consumption param) throws SQLException {
-        
+        dao.delete(param);
+    }
+
+    public int getCountOfSummary(Consumption param) throws SQLException {
+        return dao.getCountOfSummary(param);
+    }
+
+    public List<Consumption> getListOfSummary(Consumption param) throws SQLException {
+        return dao.getListOfSummary(param);
     }
 
 }

@@ -3,9 +3,9 @@ package com.personal.oyl.newffms.pojo;
 import java.util.List;
 
 public class JqGridJsonRlt {
-    private int page;
-    private int records;
-    private int total;
+    private int page;//request page
+    private int records;// total records from this query
+    private int total;//total pages from this query
     private List<? extends Object> rows;
 
     public int getPage() {

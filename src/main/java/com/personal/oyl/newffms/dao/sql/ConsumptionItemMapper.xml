@@ -108,4 +108,21 @@
         WHERE ITEM_OID = #{itemOid,jdbcType=DECIMAL}
     </update>
     
+    <resultMap id="queryConsumptionItemByCpnResultMap" type="com.personal.oyl.newffms.pojo.ConsumptionItem">
+        <id column="ITEM_OID" property="itemOid" jdbcType="DECIMAL" />
+        <result column="ITEM_DESC" property="itemDesc" jdbcType="NVARCHAR" />
+        <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+        <result column="CATEGORY_OID" property="categoryOid" jdbcType="DECIMAL" />
+        <result column="CATEGORY_DESC" property="categoryDesc" jdbcType="NVARCHAR" />
+        <result column="USER_NAME" property="userName" jdbcType="NVARCHAR" />
+    </resultMap>
+    <select id="queryConsumptionItemByCpn" parameterType="java.math.BigDecimal" resultMap="queryConsumptionItemByCpnResultMap">
+        SELECT ITEM_OID, ITEM_DESC, AMOUNT, I.CATEGORY_OID, CATEGORY_DESC, USER_NAME
+            FROM CONSUMPTION_ITEM I, USER_PROFILE U, CATEGORY C
+        WHERE
+            I.CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+            AND I.OWNER_OID = U.USER_OID
+            AND I.CATEGORY_OID = C.CATEGORY_OID
+    </select>
+    
 </mapper>

@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +18,22 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
     }
 
     public void updateByPrimaryKeySelective(AccountConsumption param) throws SQLException {
-        
+        // not available
     }
 
     public void updateByPrimaryKey(AccountConsumption param) throws SQLException {
-        
+        // not available
     }
 
     public void delete(AccountConsumption param) throws SQLException {
         dao.delete(param);
+    }
+
+    public void deleteByConsumption(BigDecimal cpnOid) throws SQLException {
+        AccountConsumption param = new AccountConsumption();
+        param.setCpnOid(cpnOid);
+        
+        this.delete(param);
     }
 
 }

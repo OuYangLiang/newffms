@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -40,6 +41,19 @@ public class ConsumptionServiceImpl implements ConsumptionService {
 
     public List<Consumption> getListOfSummary(Consumption param) throws SQLException {
         return dao.getListOfSummary(param);
+    }
+
+    public Consumption selectByKey(BigDecimal cpnOid) throws SQLException {
+        Consumption param = new Consumption();
+        param.setCpnOid(cpnOid);
+        
+        List<Consumption> list = this.select(param);
+        
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        
+        return null;
     }
 
 }

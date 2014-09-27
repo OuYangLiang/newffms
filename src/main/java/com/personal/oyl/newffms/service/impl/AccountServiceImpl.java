@@ -52,4 +52,8 @@ public class AccountServiceImpl implements AccountService {
         return null;
     }
 
+    public List<Account> queryAccountsByConsumption(BigDecimal cpnOid) throws SQLException {
+        return dao.queryAccountsByConsumption(cpnOid);
+    }
+
 }

@@ -38,4 +38,11 @@ public class ConsumptionItemServiceImpl implements ConsumptionItemService {
         return dao.queryConsumptionItemByCpn(cpnOid);
     }
 
+    public void deleteByConsumption(BigDecimal cpnOid) throws SQLException {
+        ConsumptionItem param = new ConsumptionItem();
+        param.setCpnOid(cpnOid);
+        
+        this.delete(param);
+    }
+
 }

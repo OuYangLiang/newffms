@@ -19,8 +19,8 @@
             <if test="acntOid != null">
                 ACNT_OID = #{acntOid,jdbcType=DECIMAL}
             </if>
-            <if test="cpn_oid != null">
-                AND CPN_OID = #{cpn_oid,jdbcType=DECIMAL}
+            <if test="cpnOid != null">
+                AND CPN_OID = #{cpnOid,jdbcType=DECIMAL}
             </if>
         </where>
     </delete>

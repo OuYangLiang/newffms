@@ -191,10 +191,29 @@
         <result column="SEQ_NO" property="baseObject.seqNo" jdbcType="DECIMAL" />
         <result column="USER_NAME" property="ownerUserName" jdbcType="NVARCHAR" />
     </resultMap>
-    
     <select id="queryAccounts" resultMap="queryAccountsResultMap" >
         SELECT ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, USER_NAME
         FROM ACCOUNT, USER_PROFILE
         WHERE ACCOUNT.OWNER_OID = USER_PROFILE.USER_OID
     </select>
+    
+    <resultMap id="queryAccountsByConsumptionResultMap" type="com.personal.oyl.newffms.pojo.Account">
+        <id column="ACNT_OID" property="acntOid" jdbcType="DECIMAL" />
+        <result column="ACNT_DESC" property="acntDesc" jdbcType="NVARCHAR" />
+        <result column="ACNT_TYPE" property="acntType" jdbcType="VARCHAR" />
+        <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+        <result column="QUOTA" property="quota" jdbcType="DECIMAL" />
+        <result column="DEBT" property="debt" jdbcType="DECIMAL" />
+        <result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
+        <result column="PAYMENT" property="payment" jdbcType="DECIMAL" />
+        <result column="USER_NAME" property="ownerUserName" jdbcType="NVARCHAR" />
+    </resultMap>
+    <select id="queryAccountsByConsumption" resultMap="queryAccountsByConsumptionResultMap" parameterType="java.math.BigDecimal" >
+        SELECT A.ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, AMOUNT AS PAYMENT, U.USER_NAME
+        FROM ACCOUNT A, ACCOUNT_CONSUMPTION B, USER_PROFILE U
+        WHERE A.ACNT_OID = B.ACNT_OID
+        AND A.OWNER_OID = U.USER_OID
+        AND B.CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+    </select>
+    
 </mapper>

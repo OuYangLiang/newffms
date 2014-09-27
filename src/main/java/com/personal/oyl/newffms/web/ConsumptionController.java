@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.ConsumptionType;
+import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.validator.ConsumptionFormValidator;
+import com.personal.oyl.newffms.service.AccountService;
 import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
@@ -48,6 +50,8 @@ public class ConsumptionController {
     private ConsumptionService consumptionService;
     @Autowired
     private ConsumptionItemService consumptionItemService;
+    @Autowired
+    private AccountService accountService;
     
     @Autowired
     private ConsumptionFormValidator consumptionFormValidator;
@@ -161,23 +165,114 @@ public class ConsumptionController {
     
     @RequestMapping("/saveAdd")
     public String saveAdd(Model model, HttpSession session) throws SQLException {
-        ConsumptionForm form = (ConsumptionForm) session.getAttribute("cpnForm");//(ConsumptionForm) model.asMap().get("cpnForm");
+        ConsumptionForm form = (ConsumptionForm) session.getAttribute("cpnForm");
         
         form.getConsumption().setAmount(form.getTotalItemAmount());
         form.getConsumption().setConfirmed(false);
-        if (null == form.getConsumption().getBaseObject()) {
-            BaseObject base = new BaseObject();
-            base.setCreateTime(new Date());
-            base.setCreateBy("System");
-            
-            form.getConsumption().setBaseObject(base);
-        }
+        BaseObject base = new BaseObject();
+        base.setCreateTime(new Date());
+        base.setCreateBy("System");
+        
+        form.getConsumption().setBaseObject(base);
         
         transactionService.createConsumption(form);
         
         session.removeAttribute("cpnForm");
         
-        return "welcome";
+        return "consumption/summary";
     }
+    
+    @RequestMapping("/view")
+    public String view(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
+        ConsumptionForm form = new ConsumptionForm();
+        
+        Consumption consumption = consumptionService.selectByKey(cpnOid);
+        List<ConsumptionItem> cItems = consumptionItemService.queryConsumptionItemByCpn(cpnOid);
+        List<Account> acntItems = accountService.queryAccountsByConsumption(cpnOid);
+        
+        form.setConsumption(consumption);
+        form.setCpnItems(cItems);
+        form.setAccounts(acntItems);
+        
+        form.getConsumption().setCpnTypeDesc(form.getConsumption().getCpnType().getDesc());
+        
+        for ( ConsumptionItem item : form.getCpnItems() ) {
+            item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
+        }
+        
+        model.addAttribute("cpnForm", form);
+        
+        return "consumption/view";
+    }
+    
+    @RequestMapping("/initEdit")
+    public String initEdit(@RequestParam(value="cpnOid", required=false) BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
+        
+        ConsumptionForm form = null;
+        
+        if (null != session.getAttribute("cpnForm")) {
+            form = (ConsumptionForm) session.getAttribute("cpnForm");
+        }
+        else {
+            form = new ConsumptionForm();
+            
+            Consumption consumption = consumptionService.selectByKey(cpnOid);
+            List<ConsumptionItem> cItems = consumptionItemService.queryConsumptionItemByCpn(cpnOid);
+            List<Account> acntItems = accountService.queryAccountsByConsumption(cpnOid);
+            
+            form.setConsumption(consumption);
+            form.setCpnItems(cItems);
+            form.setAccounts(acntItems);
+        }
+        
+        model.addAttribute("cpnForm", form);
+        model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
+        model.addAttribute("users", userProfileService.select(null));
+        
+        return "consumption/edit";
+    }
+    
+    @RequestMapping("/confirmEdit")
+    public String confirmEdit(@Valid @ModelAttribute("cpnForm") ConsumptionForm form, BindingResult result, Model model, HttpSession session) throws SQLException {
+        if (result.hasErrors()) {
+            model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
+            model.addAttribute("users", userProfileService.select(null));
+            model.addAttribute("validation", false);
+            
+            return "consumption/edit";
+        }
+        
+        form.getConsumption().calculateCpnTime();
+        form.getConsumption().setCpnTypeDesc(form.getConsumption().getCpnType().getDesc());
+        
+        for ( ConsumptionItem item : form.getCpnItems() ) {
+            item.setUserName(userProfileService.selectByKey(item.getOwnerOid()).getUserName());
+            item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
+        }
+        
+        session.setAttribute("cpnForm", form);
+        
+        return "consumption/confirmEdit";
+    }
+    
+    @RequestMapping("/saveEdit")
+    public String saveEdit(Model model, HttpSession session) throws SQLException {
+        ConsumptionForm form = (ConsumptionForm) session.getAttribute("cpnForm");
+        
+        form.getConsumption().setAmount(form.getTotalItemAmount());
+        
+        Consumption oldObj = consumptionService.selectByKey(form.getConsumption().getCpnOid());
+        form.getConsumption().setBaseObject(new BaseObject());
+        form.getConsumption().getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        form.getConsumption().getBaseObject().setUpdateBy("OYL");
+        form.getConsumption().getBaseObject().setUpdateTime(new Date());
+        
+        transactionService.updateConsumption(form);
+        
+        session.removeAttribute("cpnForm");
+        
+        return "consumption/summary";
+    }
+    
     
 }

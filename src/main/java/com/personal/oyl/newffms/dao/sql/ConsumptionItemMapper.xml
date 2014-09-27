@@ -114,10 +114,11 @@
         <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
         <result column="CATEGORY_OID" property="categoryOid" jdbcType="DECIMAL" />
         <result column="CATEGORY_DESC" property="categoryDesc" jdbcType="NVARCHAR" />
+        <result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
         <result column="USER_NAME" property="userName" jdbcType="NVARCHAR" />
     </resultMap>
     <select id="queryConsumptionItemByCpn" parameterType="java.math.BigDecimal" resultMap="queryConsumptionItemByCpnResultMap">
-        SELECT ITEM_OID, ITEM_DESC, AMOUNT, I.CATEGORY_OID, CATEGORY_DESC, USER_NAME
+        SELECT ITEM_OID, ITEM_DESC, AMOUNT, I.CATEGORY_OID, CATEGORY_DESC, OWNER_OID, USER_NAME
             FROM CONSUMPTION_ITEM I, USER_PROFILE U, CATEGORY C
         WHERE
             I.CPN_OID = #{cpnOid,jdbcType=DECIMAL}

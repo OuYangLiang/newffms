@@ -98,6 +98,16 @@ public class Consumption extends BasePojo {
     }
     
     public Integer getCpnTimeSlider() {
+        
+        if (null == cpnTimeSlider && null != cpnTime) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(cpnTime);
+            int hour   = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            
+            cpnTimeSlider = hour * 4 + (minute / 15);
+        }
+        
         return cpnTimeSlider;
     }
 

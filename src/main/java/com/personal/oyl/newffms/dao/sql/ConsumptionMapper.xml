@@ -103,42 +103,42 @@
     
     <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.Consumption">
         UPDATE CONSUMPTION
+        
         <set>
-            <if test="cpnType != null">
-                CPN_TYPE = #{cpnType,jdbcType=VARCHAR},
-            </if>
-            <if test="amount != null">
-                AMOUNT = #{amount,jdbcType=DECIMAL},
-            </if>
-            <if test="cpnTime != null">
-                CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="confirmed != null">
-                CONFIRMED = #{confirmed,jdbcType=BIT},
-            </if>
-            <if test="baseObject != null and baseObject.createTime != null">
-                CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="baseObject != null and baseObject.updateTime != null">
-                UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="baseObject != null and baseObject.createBy != null">
-                CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
-            </if>
-            <if test="baseObject != null and baseObject.updateBy != null">
-                UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
-            </if>
-            <if test="baseObject != null and baseObject.seqNo != null">
-                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
-            </if>
+        SEQ_NO = SEQ_NO + 1,
+        <if test="cpnType != null">
+            CPN_TYPE = #{cpnType,jdbcType=VARCHAR},
+        </if>
+        <if test="amount != null">
+            AMOUNT = #{amount,jdbcType=DECIMAL},
+        </if>
+        <if test="cpnTime != null">
+            CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="confirmed != null">
+            CONFIRMED = #{confirmed,jdbcType=BIT},
+        </if>
+        <if test="baseObject != null and baseObject.createTime != null">
+            CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="baseObject != null and baseObject.updateTime != null">
+            UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="baseObject != null and baseObject.createBy != null">
+            CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
+        </if>
+        <if test="baseObject != null and baseObject.updateBy != null">
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
+        </if>
         </set>
-        WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+        WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
     
     <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.Consumption">
         UPDATE CONSUMPTION
         SET
+            SEQ_NO = SEQ_NO + 1,
             CPN_TYPE = #{cpnType,jdbcType=VARCHAR},
             AMOUNT = #{amount,jdbcType=DECIMAL},
             CPN_TIME = #{cpnTime,jdbcType=TIMESTAMP},
@@ -146,9 +146,8 @@
             CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
             CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
-            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
-            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
-        WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL}
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+        WHERE CPN_OID = #{cpnOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
 </mapper>

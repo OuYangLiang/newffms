@@ -12,4 +12,6 @@ public interface AccountService extends BaseService<Account>, DbActionService<Ac
     public List<Account> queryAccounts() throws SQLException;
     
     public Account selectByKey(BigDecimal acntOid) throws SQLException;
+    
+    public List<Account> queryAccountsByConsumption(BigDecimal cpnOid) throws SQLException;
 }

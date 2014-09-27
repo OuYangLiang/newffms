@@ -10,4 +10,6 @@ import com.personal.oyl.newffms.pojo.ConsumptionItem;
 
 public interface ConsumptionItemService extends BaseService<ConsumptionItem>, DbActionService<ConsumptionItem> {
     public List<ConsumptionItem> queryConsumptionItemByCpn(BigDecimal cpnOid) throws SQLException;
+    
+    public void deleteByConsumption(BigDecimal cpnOid) throws SQLException;
 }

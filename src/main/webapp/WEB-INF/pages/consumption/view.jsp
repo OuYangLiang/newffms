@@ -1,23 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
 <!doctype html>
 <html>
     <head>
         <title>This is the title.</title>
         <link rel="stylesheet" href="<c:url value='/css/consumption.css' />" />
-        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
     
     <body>
         <div class="button-area">
-            <button id="btn-save">确认</button>
-            <button id="btn-cancel">返回</button>
+            <button id="btn-back">返回</button>
+            <c:if test="${!cpnForm.consumption.confirmed }" >
+	            <button id="btn-edit">修改</button>
+	            <button id="btn-delete">删除</button>
+	            <button id="btn-confirm">确认</button>
+            </c:if>
+            
+            <c:if test="${cpnForm.consumption.confirmed }" >
+                <button id="btn-rollback">撤销</button>
+            </c:if>
         </div>
         
         <div class="content-header ui-widget-header">
-            消费<span style="font-size: 80%;"> - 新建确认</span>
+            消费<span style="font-size: 80%;"> - 查看页面</span>
         </div>
         
         <div class="contentWrapper">
@@ -111,24 +117,34 @@
         
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {
-                $ ("#btn-cancel").click(function(){
-                	window.location.href = "<c:url value='/consumption/initAdd' />";
+            	$ (".button-area button").button();
+            	$ ("#btn-back").click(function(){
+                    window.location.href = "<c:url value='/consumption/summary' />";
                 });
+            	
+            	<c:if test="${!cpnForm.consumption.confirmed }" >
+	            	$ ("#btn-edit").click(function(){
+	                    window.location.href = "<c:url value='/consumption/initEdit' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
+	                });
+	                
+	                $ ("#btn-delete").click(function(){
+	                    window.location.href = "<c:url value='/consumption/delete' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
+	                });
+	                
+	                $ ("#btn-confirm").click(function(){
+	                    window.location.href = "<c:url value='/consumption/confirm' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
+	                });
+                </c:if>
+            	
+                <c:if test="${cpnForm.consumption.confirmed }" >
+	                $ ("#btn-rollback").click(function(){
+	                    window.location.href = "<c:url value='/consumption/rollback' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
+	                });
+                </c:if>
                 
-                $ ("#btn-save").click(function(){
-                	window.location.href = "<c:url value='/consumption/saveAdd' />";
-                });
-                
-                $ (".button-area button").button();
             });
         </script>
     </body>

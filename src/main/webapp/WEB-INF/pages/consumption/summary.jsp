@@ -63,18 +63,12 @@
                         { sortable: false, name: "baseObject.createBy", width: 180, align: "center" },
                         { sortable: false, name: "confirmed", width: 100, align: "center", formatter:function(cellvalue){return cellvalue?"确认":"初始";}},
                         { sortable: false, align: "center", formatter:function (cellvalue, options, rowObject){
-                            if ( rowObject.confirmed  )
-                            {
-                                return "<a href=\"javascript:window.location.href='consumption-view.html'\">查看</a>" + " / " + 
-                                "<a href=\"javascript:window.location.href=''\">撤销</a>";
-                            }
-                            else
-                            {
-                                return "<a href=\"javascript:window.location.href='consumption-view.html'\">查看</a>" + " / " + 
-                                "<a href=\"javascript:window.location.href='consumption-edit.html'\">编辑</a>" + " / " + 
-                                "<a href=\"javascript:window.location.href=''\">确认</a>";
-                            }
-                        } },
+                        	var url = '<c:url value='/consumption/view' />' + '?cpnOid=' + rowObject.cpnOid;
+                        	
+                        	var href = 'javascript:window.location.href="' + url + '"';
+                        	
+                        	return "<a href='" + href + "'>查看</a>";
+                        }},
                     ],
                     
                     subGrid: true,

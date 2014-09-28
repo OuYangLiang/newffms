@@ -120,6 +120,7 @@
     <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.Account">
         UPDATE ACCOUNT
         <set>
+            SEQ_NO = SEQ_NO + 1,
             <if test="acntDesc != null">
                 ACNT_DESC = #{acntDesc,jdbcType=NVARCHAR},
             </if>
@@ -150,17 +151,15 @@
             <if test="baseObject != null and baseObject.updateBy != null">
                 UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
             </if>
-            <if test="baseObject != null and baseObject.seqNo != null">
-                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
-            </if>
         </set>
-        WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+        WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
     
     <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.Account">
         UPDATE ACCOUNT
         SET
+            SEQ_NO = SEQ_NO + 1,
             ACNT_DESC = #{acntDesc,jdbcType=NVARCHAR},
             ACNT_TYPE = #{acntType,jdbcType=VARCHAR},
             BALANCE = #{balance,jdbcType=DECIMAL},
@@ -170,9 +169,8 @@
             CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
             CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
-            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
-            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
-        WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+        WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
     

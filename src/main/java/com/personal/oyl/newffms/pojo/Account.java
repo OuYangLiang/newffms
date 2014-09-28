@@ -140,5 +140,21 @@ public class Account extends BasePojo {
     public void setPayment(BigDecimal payment) {
         this.payment = payment;
     }
+    
+    public void subtract(BigDecimal value) {
+        this.setBalance(balance.subtract(value));
+        
+        if (AccountType.Creditcard.equals(acntType)) {
+            this.setQuota(quota.add(value));
+        }
+    }
+    
+    public void add(BigDecimal value) {
+        this.setBalance(balance.add(value));
+        
+        if (AccountType.Creditcard.equals(acntType)) {
+            this.setQuota(quota.subtract(value));
+        }
+    }
 
 }

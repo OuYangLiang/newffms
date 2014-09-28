@@ -2,14 +2,22 @@ package com.personal.oyl.newffms.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.personal.oyl.newffms.constants.AccountAuditType;
 import com.personal.oyl.newffms.pojo.Account;
+import com.personal.oyl.newffms.pojo.AccountAudit;
 import com.personal.oyl.newffms.pojo.AccountConsumption;
+import com.personal.oyl.newffms.pojo.BaseObject;
+import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
+import com.personal.oyl.newffms.service.AccountAuditService;
 import com.personal.oyl.newffms.service.AccountConsumptionService;
+import com.personal.oyl.newffms.service.AccountService;
 import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
 import com.personal.oyl.newffms.service.TransactionService;
@@ -21,6 +29,10 @@ public class TransactionServiceImpl implements TransactionService {
     private ConsumptionItemService consumptionItemService;
     @Autowired
     private AccountConsumptionService accountConsumptionService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private AccountAuditService accountAuditService;
 
     public void createConsumption(ConsumptionForm form) throws SQLException {
         consumptionService.insert(form.getConsumption());
@@ -68,6 +80,89 @@ public class TransactionServiceImpl implements TransactionService {
         consumptionItemService.deleteByConsumption(cpnOid);
         
         consumptionService.deleteByKey(cpnOid);
+    }
+
+    public void confirmConsumption(BigDecimal cpnOid) throws SQLException {
+        String actor = "OYL2";
+        Date now = new Date();
+        
+        Consumption oldObj = consumptionService.selectByKey(cpnOid);
+        
+        Consumption newObj = new Consumption();
+        newObj.setCpnOid(cpnOid);
+        newObj.setConfirmed(true);
+        newObj.setBaseObject(new BaseObject());
+        newObj.getBaseObject().setUpdateTime(now);
+        newObj.getBaseObject().setUpdateBy(actor);
+        newObj.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        
+        consumptionService.updateByPrimaryKeySelective(newObj);
+        
+        List<AccountConsumption> acntConsumptions = accountConsumptionService.selectByConsumption(cpnOid);
+        for (AccountConsumption acntConsumption : acntConsumptions) {
+            Account oldAcnt = accountService.selectByKey(acntConsumption.getAcntOid());
+            oldAcnt.subtract(acntConsumption.getAmount());
+            oldAcnt.getBaseObject().setUpdateTime(now);
+            oldAcnt.getBaseObject().setUpdateBy(actor);
+            
+            oldAcnt.setAcntDesc(null);
+            oldAcnt.setAcntType(null);
+            oldAcnt.setQuota(null);
+            oldAcnt.setOwnerOid(null);
+            oldAcnt.getBaseObject().setCreateBy(null);
+            oldAcnt.getBaseObject().setCreateTime(null);
+            
+            accountService.updateByPrimaryKeySelective(oldAcnt);
+            
+            AccountAudit audit = new AccountAudit();
+            audit.setBaseObject(new BaseObject());
+            audit.getBaseObject().setCreateBy("OYL");
+            audit.getBaseObject().setCreateTime(now);
+            
+            audit.setAdtDesc(oldObj.getCpnType().getDesc());
+            audit.setAdtType(AccountAuditType.Subtract);
+            audit.setAmount(acntConsumption.getAmount());
+            audit.setConfirmed(true);
+            audit.setAcntOid(oldAcnt.getAcntOid());
+            audit.setCpnOid(oldObj.getCpnOid());
+            
+            accountAuditService.insert(audit);
+        }
+    }
+
+    public void rollbackConsumption(BigDecimal cpnOid) throws SQLException {
+        String actor = "OYL2";
+        Date now = new Date();
+        
+        Consumption oldObj = consumptionService.selectByKey(cpnOid);
+        
+        Consumption newObj = new Consumption();
+        newObj.setCpnOid(cpnOid);
+        newObj.setConfirmed(false);
+        newObj.setBaseObject(new BaseObject());
+        newObj.getBaseObject().setUpdateTime(now);
+        newObj.getBaseObject().setUpdateBy(actor);
+        newObj.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        
+        consumptionService.updateByPrimaryKeySelective(newObj);
+        accountAuditService.deleteByConsumption(cpnOid);
+        
+        List<AccountConsumption> acntConsumptions = accountConsumptionService.selectByConsumption(cpnOid);
+        for (AccountConsumption acntConsumption : acntConsumptions) {
+            Account oldAcnt = accountService.selectByKey(acntConsumption.getAcntOid());
+            oldAcnt.add(acntConsumption.getAmount());
+            oldAcnt.getBaseObject().setUpdateTime(now);
+            oldAcnt.getBaseObject().setUpdateBy(actor);
+            
+            oldAcnt.setAcntDesc(null);
+            oldAcnt.setAcntType(null);
+            oldAcnt.setQuota(null);
+            oldAcnt.setOwnerOid(null);
+            oldAcnt.getBaseObject().setCreateBy(null);
+            oldAcnt.getBaseObject().setCreateTime(null);
+            
+            accountService.updateByPrimaryKeySelective(oldAcnt);
+        }
     }
 
 }

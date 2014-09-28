@@ -124,17 +124,18 @@
     
     
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.AccountAudit">
-        INSERT INTO ACCOUNT_AUDIT(<include refid="Base_Column_List" />)
-        VALUES (#{adtOid,jdbcType=DECIMAL}, #{adtDesc,jdbcType=NVARCHAR}, #{adtType,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL},
+        INSERT INTO ACCOUNT_AUDIT(ADT_DESC, ADT_TYPE, AMOUNT, CONFIRMED, ACNT_OID, REF_ACNT_OID, INCOMING_OID, CPN_OID, CREATE_TIME, CREATE_BY)
+        VALUES (#{adtDesc,jdbcType=NVARCHAR}, #{adtType,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL},
                 #{confirmed,jdbcType=BIT}, #{acntOid,jdbcType=DECIMAL}, #{refAcntOid,jdbcType=DECIMAL},
                 #{incomingOid,jdbcType=DECIMAL}, #{cpnOid,jdbcType=DECIMAL},
-                #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
+                #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR})
     </insert>
     
     
     <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.AccountAudit">
         UPDATE ACCOUNT_AUDIT
         <set>
+            SEQ_NO = SEQ_NO + 1
             <if test="adtDesc != null">
                 ADT_DESC = #{adtDesc,jdbcType=NVARCHAR},
             </if>
@@ -171,17 +172,15 @@
             <if test="baseObject != null and baseObject.updateBy != null">
                 UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
             </if>
-            <if test="baseObject != null and baseObject.seqNo != null">
-                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
-            </if>
         </set>
-        WHERE ADT_OID = #{adtOid,jdbcType=DECIMAL}
+        WHERE ADT_OID = #{adtOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
     
     <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.AccountAudit">
         UPDATE ACCOUNT_AUDIT
         SET
+            SEQ_NO = SEQ_NO + 1,
             ADT_DESC = #{adtDesc,jdbcType=NVARCHAR},
             ADT_TYPE = #{adtType,jdbcType=VARCHAR},
             AMOUNT = #{amount,jdbcType=DECIMAL},
@@ -194,8 +193,7 @@
             UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
             CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
             UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
-            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
-        WHERE ADT_OID = #{adtOid,jdbcType=DECIMAL}
+        WHERE ADT_OID = #{adtOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
 </mapper>

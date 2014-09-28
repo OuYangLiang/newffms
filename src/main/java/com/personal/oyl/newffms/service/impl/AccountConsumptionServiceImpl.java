@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,6 +35,17 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
         param.setCpnOid(cpnOid);
         
         this.delete(param);
+    }
+
+    public List<AccountConsumption> select(AccountConsumption param) throws SQLException {
+        return dao.select(param);
+    }
+
+    public List<AccountConsumption> selectByConsumption(BigDecimal cpnOid) throws SQLException {
+        AccountConsumption param = new AccountConsumption();
+        param.setCpnOid(cpnOid);
+        
+        return this.select(param);
     }
 
 }

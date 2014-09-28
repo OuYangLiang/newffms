@@ -11,4 +11,8 @@ public interface TransactionService {
     public void updateConsumption(ConsumptionForm form) throws SQLException;
     
     public void deleteConsumption(BigDecimal cpnOid) throws SQLException;
+    
+    public void confirmConsumption(BigDecimal cpnOid) throws SQLException;
+    
+    public void rollbackConsumption(BigDecimal cpnOid) throws SQLException;
 }

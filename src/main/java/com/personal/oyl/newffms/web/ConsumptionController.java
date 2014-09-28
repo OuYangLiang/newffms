@@ -280,4 +280,18 @@ public class ConsumptionController {
         
         return "consumption/summary";
     }
+    
+    @RequestMapping("/confirm")
+    public String confirm(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
+        transactionService.confirmConsumption(cpnOid);
+        
+        return "consumption/summary";
+    }
+    
+    @RequestMapping("/rollback")
+    public String rollback(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
+        transactionService.rollbackConsumption(cpnOid);
+        
+        return "consumption/summary";
+    }
 }

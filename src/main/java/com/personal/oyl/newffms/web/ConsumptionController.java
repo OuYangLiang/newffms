@@ -274,5 +274,10 @@ public class ConsumptionController {
         return "consumption/summary";
     }
     
-    
+    @RequestMapping("/delete")
+    public String delete(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
+        transactionService.deleteConsumption(cpnOid);
+        
+        return "consumption/summary";
+    }
 }

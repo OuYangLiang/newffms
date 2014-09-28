@@ -282,7 +282,7 @@
                     modal: true,
                     show: {
                         effect: "blind",
-                        duration: 1000
+                        duration: 300
                     },
                     hide: {
                         effect: "explode",
@@ -300,7 +300,7 @@
                     modal: true,
                     show: {
                         effect: "blind",
-                        duration: 1000
+                        duration: 300
                     },
                     hide: {
                         effect: "explode",
@@ -453,7 +453,7 @@
                      modal: true,
                      show: {
                          effect: "blind",
-                         duration: 400
+                         duration: 300
                      },
                      hide: {
                          effect: "explode",
@@ -499,7 +499,7 @@
                     minWidth: 775,
                     show: {
                         effect: "blind",
-                        duration: 400
+                        duration: 300
                     },
                     hide: {
                         effect: "explode",

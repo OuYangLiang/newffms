@@ -115,6 +115,10 @@
             
         </div>
         
+        <div id="delete-confirm-dialog" title="警告">
+            确定要删除吗?
+        </div>
+        
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
         
@@ -131,7 +135,7 @@
 	                });
 	                
 	                $ ("#btn-delete").click(function(){
-	                    window.location.href = "<c:url value='/consumption/delete' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
+	                	$ ( "#delete-confirm-dialog" ).dialog( "open" );
 	                });
 	                
 	                $ ("#btn-confirm").click(function(){
@@ -145,6 +149,26 @@
 	                });
                 </c:if>
                 
+                $( "#delete-confirm-dialog" ).dialog( {
+                    autoOpen: false,
+                    modal: true,
+                    show: {
+                        effect: "blind",
+                        duration: 300
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    },
+                    buttons: {
+                        "No": function(){
+                            $( this ).dialog( "close" );
+                        },
+	                    "Yes": function(){
+	                    	window.location.href = "<c:url value='/consumption/delete' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
+	                    }
+                    }
+                });
             });
         </script>
     </body>

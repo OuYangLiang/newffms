@@ -56,4 +56,11 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         return null;
     }
 
+    public void deleteByKey(BigDecimal cpnOid) throws SQLException {
+        Consumption param = new Consumption();
+        param.setCpnOid(cpnOid);
+        
+        this.delete(param);
+    }
+
 }

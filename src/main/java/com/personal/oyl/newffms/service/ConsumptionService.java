@@ -12,5 +12,7 @@ public interface ConsumptionService extends BaseService<Consumption>, DbActionSe
         PaginatingService<Consumption> {
     
     public Consumption selectByKey(BigDecimal cpnOid) throws SQLException;
+    
+    public void deleteByKey(BigDecimal cpnOid) throws SQLException;
 
 }

@@ -1,13 +1,12 @@
 package com.personal.oyl.newffms.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.AccountConsumption;
-import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.service.AccountConsumptionService;
@@ -62,6 +61,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
         
         consumptionService.updateByPrimaryKeySelective(form.getConsumption());
+    }
+
+    public void deleteConsumption(BigDecimal cpnOid) throws SQLException {
+        accountConsumptionService.deleteByConsumption(cpnOid);
+        consumptionItemService.deleteByConsumption(cpnOid);
+        
+        consumptionService.deleteByKey(cpnOid);
     }
 
 }

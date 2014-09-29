@@ -12,7 +12,7 @@ public interface TransactionService {
     
     public void deleteConsumption(BigDecimal cpnOid) throws SQLException;
     
-    public void confirmConsumption(BigDecimal cpnOid) throws SQLException;
+    public void confirmConsumption(BigDecimal cpnOid, String operator) throws SQLException;
     
-    public void rollbackConsumption(BigDecimal cpnOid) throws SQLException;
+    public void rollbackConsumption(BigDecimal cpnOid, String operator) throws SQLException;
 }

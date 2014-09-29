@@ -82,8 +82,7 @@ public class TransactionServiceImpl implements TransactionService {
         consumptionService.deleteByKey(cpnOid);
     }
 
-    public void confirmConsumption(BigDecimal cpnOid) throws SQLException {
-        String actor = "OYL2";
+    public void confirmConsumption(BigDecimal cpnOid, String operator) throws SQLException {
         Date now = new Date();
         
         Consumption oldObj = consumptionService.selectByKey(cpnOid);
@@ -93,7 +92,7 @@ public class TransactionServiceImpl implements TransactionService {
         newObj.setConfirmed(true);
         newObj.setBaseObject(new BaseObject());
         newObj.getBaseObject().setUpdateTime(now);
-        newObj.getBaseObject().setUpdateBy(actor);
+        newObj.getBaseObject().setUpdateBy(operator);
         newObj.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
         
         consumptionService.updateByPrimaryKeySelective(newObj);
@@ -103,7 +102,7 @@ public class TransactionServiceImpl implements TransactionService {
             Account oldAcnt = accountService.selectByKey(acntConsumption.getAcntOid());
             oldAcnt.subtract(acntConsumption.getAmount());
             oldAcnt.getBaseObject().setUpdateTime(now);
-            oldAcnt.getBaseObject().setUpdateBy(actor);
+            oldAcnt.getBaseObject().setUpdateBy(operator);
             
             oldAcnt.setAcntDesc(null);
             oldAcnt.setAcntType(null);
@@ -116,7 +115,7 @@ public class TransactionServiceImpl implements TransactionService {
             
             AccountAudit audit = new AccountAudit();
             audit.setBaseObject(new BaseObject());
-            audit.getBaseObject().setCreateBy("OYL");
+            audit.getBaseObject().setCreateBy(operator);
             audit.getBaseObject().setCreateTime(now);
             
             audit.setAdtDesc(oldObj.getCpnType().getDesc());
@@ -130,8 +129,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-    public void rollbackConsumption(BigDecimal cpnOid) throws SQLException {
-        String actor = "OYL2";
+    public void rollbackConsumption(BigDecimal cpnOid, String operator) throws SQLException {
         Date now = new Date();
         
         Consumption oldObj = consumptionService.selectByKey(cpnOid);
@@ -141,7 +139,7 @@ public class TransactionServiceImpl implements TransactionService {
         newObj.setConfirmed(false);
         newObj.setBaseObject(new BaseObject());
         newObj.getBaseObject().setUpdateTime(now);
-        newObj.getBaseObject().setUpdateBy(actor);
+        newObj.getBaseObject().setUpdateBy(operator);
         newObj.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
         
         consumptionService.updateByPrimaryKeySelective(newObj);
@@ -152,7 +150,7 @@ public class TransactionServiceImpl implements TransactionService {
             Account oldAcnt = accountService.selectByKey(acntConsumption.getAcntOid());
             oldAcnt.add(acntConsumption.getAmount());
             oldAcnt.getBaseObject().setUpdateTime(now);
-            oldAcnt.getBaseObject().setUpdateBy(actor);
+            oldAcnt.getBaseObject().setUpdateBy(operator);
             
             oldAcnt.setAcntDesc(null);
             oldAcnt.setAcntType(null);

@@ -24,7 +24,7 @@ public class CustomAccessDecisionVoter implements AccessDecisionVoter<FilterInvo
 
     public int vote(Authentication authentication, FilterInvocation object, Collection<ConfigAttribute> attributes) {
         String url = object.getRequestUrl().toString();  
-          
+        log.info(url);
         Iterator<? extends GrantedAuthority> it = authentication.getAuthorities().iterator();  
           
         while (it.hasNext())  

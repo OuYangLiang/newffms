@@ -15,13 +15,23 @@
 	<http pattern="/css/**" security="none" />
 	<http pattern="/login*" security="none" />
 
-	<http access-decision-manager-ref="accessDecisionManager"
-		access-denied-page="/accessDeniedRouter?q=accessDenied">
+	<http access-decision-manager-ref="accessDecisionManager" access-denied-page="/accessDeniedRouter?q=accessDenied">
+		
 		<intercept-url pattern="/**" access="valueBeAnything" />
+		
+		<!-- <form-login login-page="/login" default-target-url="/welcome"
+			always-use-default-target="true"
+			authentication-success-handler-ref="authenticationSuccessHandlerImpl" /> -->
+			
 		<form-login login-page="/login" default-target-url="/welcome"
-			always-use-default-target="true" />
+            always-use-default-target="true"
+            authentication-success-handler-ref="authenticationSuccessHandlerImpl" />
+            
 		<logout logout-success-url="/login" />
 	</http>
+	
+	<beans:bean id="authenticationSuccessHandlerImpl"
+	   class="com.personal.oyl.newffms.security.AuthenticationSuccessHandlerImpl" />
 
 	<beans:bean id="myUserService"
 		class="com.personal.oyl.newffms.security.MyUserDetailService" />

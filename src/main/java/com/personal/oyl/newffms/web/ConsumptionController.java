@@ -33,6 +33,7 @@ import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
 import com.personal.oyl.newffms.service.TransactionService;
 import com.personal.oyl.newffms.service.UserProfileService;
+import com.personal.oyl.newffms.util.SessionUtil;
 
 @Controller
 @RequestMapping("/consumption")
@@ -171,7 +172,7 @@ public class ConsumptionController {
         form.getConsumption().setConfirmed(false);
         BaseObject base = new BaseObject();
         base.setCreateTime(new Date());
-        base.setCreateBy("System");
+        base.setCreateBy(SessionUtil.getLoginUser(session).getUserName());
         
         form.getConsumption().setBaseObject(base);
         
@@ -264,7 +265,7 @@ public class ConsumptionController {
         Consumption oldObj = consumptionService.selectByKey(form.getConsumption().getCpnOid());
         form.getConsumption().setBaseObject(new BaseObject());
         form.getConsumption().getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
-        form.getConsumption().getBaseObject().setUpdateBy("OYL");
+        form.getConsumption().getBaseObject().setUpdateBy(SessionUtil.getLoginUser(session).getUserName());
         form.getConsumption().getBaseObject().setUpdateTime(new Date());
         
         transactionService.updateConsumption(form);
@@ -282,15 +283,15 @@ public class ConsumptionController {
     }
     
     @RequestMapping("/confirm")
-    public String confirm(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
-        transactionService.confirmConsumption(cpnOid);
+    public String confirm(@RequestParam("cpnOid") BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
+        transactionService.confirmConsumption(cpnOid, SessionUtil.getLoginUser(session).getUserName());
         
         return "consumption/summary";
     }
     
     @RequestMapping("/rollback")
-    public String rollback(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
-        transactionService.rollbackConsumption(cpnOid);
+    public String rollback(@RequestParam("cpnOid") BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
+        transactionService.rollbackConsumption(cpnOid, SessionUtil.getLoginUser(session).getUserName());
         
         return "consumption/summary";
     }

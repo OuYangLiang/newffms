@@ -563,15 +563,36 @@
                 
                 chooseAccount = function(acntOid, acntHumanDesc)
                 {
-                	if (arrContain(selectedAccounts, acntOid)) {
-                		alert("该账户已经使用过了，亲。");
-                		return;
-                	}
-                	
-                    $( "#acntHumanDesc" + curAccount).val(acntHumanDesc);
-                    $( "#accountOid" + curAccount).val(acntOid);
-                    $ ( "#account-select-dialog" ).dialog( "close" );
-                    selectedAccounts.push(acntOid);
+                    var curAcntOid = $( "#accountOid" + curAccount).val();
+                    
+                    if (curAcntOid == "") {
+                        if (arrContain(selectedAccounts, acntOid)) {
+                            alert("该账户已经使用过了，亲。");
+                            return;
+                        }
+                        
+                        $( "#acntHumanDesc" + curAccount).val(acntHumanDesc);
+                        $( "#accountOid" + curAccount).val(acntOid);
+                        $( "#account-select-dialog" ).dialog( "close" );
+                        selectedAccounts.push(acntOid);
+                    }
+                    else {
+                        if ( curAcntOid == acntOid ) {
+                            $( "#account-select-dialog" ).dialog( "close" );
+                            return;
+                        }
+                        
+                        if (arrContain(selectedAccounts, acntOid)) {
+                            alert("该账户已经使用过了，亲。");
+                            return;
+                        }
+                        
+                        $( "#acntHumanDesc" + curAccount).val(acntHumanDesc);
+                        $( "#accountOid" + curAccount).val(acntOid);
+                        $( "#account-select-dialog" ).dialog( "close" );
+                        selectedAccounts.push(acntOid);
+                        arrRemove(selectedAccounts, curAcntOid);
+                    }
                 };
                 
                 selectAccount = function(seq)

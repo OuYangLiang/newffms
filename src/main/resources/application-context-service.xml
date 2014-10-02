@@ -31,5 +31,8 @@
         
     <bean id="transactionService"
         class="com.personal.oyl.newffms.service.impl.TransactionServiceImpl" />
+        
+    <bean id="reportService"
+        class="com.personal.oyl.newffms.service.impl.ReportServiceImpl" />
     
 </beans>

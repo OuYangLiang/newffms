@@ -2,12 +2,16 @@ package com.personal.oyl.newffms.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.ConsumptionDao;
 import com.personal.oyl.newffms.pojo.Consumption;
+import com.personal.oyl.newffms.report.PersonalConsumption;
 import com.personal.oyl.newffms.service.ConsumptionService;
 
 public class ConsumptionServiceImpl implements ConsumptionService {
@@ -61,6 +65,14 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         param.setCpnOid(cpnOid);
         
         this.delete(param);
+    }
+
+    public List<PersonalConsumption> queryPersonalConsumption(Date start, Date end) throws SQLException {
+        Map<String, Date> param = new HashMap<String, Date>();
+        param.put("start", start);
+        param.put("end", end);
+        
+        return dao.queryPersonalConsumption(param);
     }
 
 }

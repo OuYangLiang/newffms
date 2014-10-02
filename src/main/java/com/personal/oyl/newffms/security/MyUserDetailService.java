@@ -63,7 +63,7 @@ public class MyUserDetailService implements UserDetailsService {
         
         
         
-        
+        AUTHORITIES.add(new SimpleGrantedAuthority("/report/consumptionDataSource"));
         
         AUTHORITIES.add(new SimpleGrantedAuthority("/account/ajaxGetAllAccounts"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/category/ajaxGetAllCategories"));

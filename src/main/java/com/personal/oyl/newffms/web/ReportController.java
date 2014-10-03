@@ -3,8 +3,8 @@ package com.personal.oyl.newffms.web;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.pojo.Category;
@@ -23,6 +24,7 @@ import com.personal.oyl.newffms.report.HightChartSeries;
 import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.service.ReportService;
 import com.personal.oyl.newffms.service.UserProfileService;
+import com.personal.oyl.newffms.util.DateUtil;
 
 @Controller
 @RequestMapping("/report")
@@ -41,10 +43,26 @@ public class ReportController {
     
     @RequestMapping("/consumptionDataSource")
     @ResponseBody
-    public HightChartResult consumptionDataSource() throws SQLException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public HightChartResult consumptionDataSource(
+            @RequestParam(value = "queryMethod", required = false) Integer queryMethod,
+            @RequestParam(value = "start", required = false) Date start,
+            @RequestParam(value = "end", required = false) Date end) throws SQLException, ParseException {
         
-        List<CategoryConsumption> categoryConsumptions = reportService.queryCategoryConsumptions(sdf.parse("2009-09-01 00:00:00"), sdf.parse("2014-09-30 23:59:59"));
+        Date startParam = null;
+        Date endParam   = null;
+        
+        if (null == queryMethod || 1 == queryMethod) {
+            startParam = DateUtil.getInstance().getFirstTimeOfCurrentMonth();
+            endParam   = DateUtil.getInstance().getLastTimeOfCurrentMonth();
+        } else if (2 == queryMethod) {
+            startParam = DateUtil.getInstance().getFirstTimeOfLastMonth();
+            endParam   = DateUtil.getInstance().getLastTimeOfLastMonth();
+        } else if (3 == queryMethod) {
+            startParam = DateUtil.getInstance().getBeginTime(start);
+            endParam   = DateUtil.getInstance().getEndTime(end);
+        }
+        
+        List<CategoryConsumption> categoryConsumptions = reportService.queryCategoryConsumptions(startParam, endParam);
         List<Category> allCategories = categoryService.select(null);
         List<UserProfile> allUsers = userProfileService.select(null);
         

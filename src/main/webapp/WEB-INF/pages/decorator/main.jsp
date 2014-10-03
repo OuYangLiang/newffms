@@ -26,8 +26,9 @@
         <div class="pageMenu">
             <nav>
                 <ul>
-                    <li><a href="#">首页</a></li>
+                    <li><a href="<c:url value='/welcome' />">首页</a></li>
                     <li><a href="<c:url value='/consumption/summary' />">消费</a></li>
+                    <li><a href="<c:url value='/report/consumption' />">消费情况</a></li>
                     <li><a href="incoming-summary.html">收入</a></li>
                     <li><a href="account-summary.html">账户</a></li>
                     <li><a href="#">成员</a></li>

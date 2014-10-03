@@ -172,7 +172,7 @@ public class ConsumptionController {
         form.getConsumption().setConfirmed(false);
         BaseObject base = new BaseObject();
         base.setCreateTime(new Date());
-        base.setCreateBy(SessionUtil.getLoginUser(session).getUserName());
+        base.setCreateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());
         
         form.getConsumption().setBaseObject(base);
         
@@ -265,7 +265,7 @@ public class ConsumptionController {
         Consumption oldObj = consumptionService.selectByKey(form.getConsumption().getCpnOid());
         form.getConsumption().setBaseObject(new BaseObject());
         form.getConsumption().getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
-        form.getConsumption().getBaseObject().setUpdateBy(SessionUtil.getLoginUser(session).getUserName());
+        form.getConsumption().getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());
         form.getConsumption().getBaseObject().setUpdateTime(new Date());
         
         transactionService.updateConsumption(form);
@@ -284,14 +284,14 @@ public class ConsumptionController {
     
     @RequestMapping("/confirm")
     public String confirm(@RequestParam("cpnOid") BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
-        transactionService.confirmConsumption(cpnOid, SessionUtil.getLoginUser(session).getUserName());
+        transactionService.confirmConsumption(cpnOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
         
         return "consumption/summary";
     }
     
     @RequestMapping("/rollback")
     public String rollback(@RequestParam("cpnOid") BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
-        transactionService.rollbackConsumption(cpnOid, SessionUtil.getLoginUser(session).getUserName());
+        transactionService.rollbackConsumption(cpnOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
         
         return "consumption/summary";
     }

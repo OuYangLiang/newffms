@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -33,12 +34,17 @@ public class ReportController {
     @Autowired
     private UserProfileService userProfileService;
     
+    @RequestMapping("/consumption")
+    public String consumption(Model model) {
+        return "/report/consumption";
+    }
+    
     @RequestMapping("/consumptionDataSource")
     @ResponseBody
     public HightChartResult consumptionDataSource() throws SQLException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         
-        List<CategoryConsumption> categoryConsumptions = reportService.queryCategoryConsumptions(sdf.parse("2014-09-01 00:00:00 000"), sdf.parse("2014-09-30 23:59:59 999"));
+        List<CategoryConsumption> categoryConsumptions = reportService.queryCategoryConsumptions(sdf.parse("2009-09-01 00:00:00"), sdf.parse("2014-09-30 23:59:59"));
         List<Category> allCategories = categoryService.select(null);
         List<UserProfile> allUsers = userProfileService.select(null);
         

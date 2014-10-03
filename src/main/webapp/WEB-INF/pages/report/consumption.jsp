@@ -48,6 +48,23 @@
             <div class="mainArea">
                 <div id="container" style="padding: 0 20px" ></div>
             </div>
+            
+            <div class="content-title ui-widget-header">
+                明细
+            </div>
+        
+            <div class="mainArea" style="width: 50%; float: left; padding: 0 0 0 0;">
+                <div>
+                    <div id="container2" style="padding: 0 20px" ></div>
+                </div>
+            </div>
+            <div class="mainArea" style="width: 50%; float: right; padding: 0 0 0 0;">
+                <div>
+                    <div id="container3" style="padding: 0 20px" ></div>
+                </div>
+            </div>
+            <div style="clear:both;" ></div>
+            
         </div>
         
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
@@ -108,12 +125,44 @@
                     drilldown: {series:[]}
                 };
             	
+            	var options2 = {
+           		    title: {
+           	            text: 'title'
+           	        },
+           	        tooltip: {
+           	            pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+           	        },
+           	        plotOptions: {
+           	            pie: {
+           	                allowPointSelect: false,
+           	                showInLegend: true,
+           	                cursor: 'pointer',
+           	                dataLabels: {
+           	                    enabled: true,
+           	                    format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                            }
+                        }
+                    },
+           	        series: [],
+           	        drilldown: {series:[]}
+           	    };
             	
-            	$.getJSON('<c:url value="/report/consumptionDataSource" />', function(data) {
+            	var refresh = function(data) {
             		options.series = data.colRlt.series;
-            		options.drilldown = {};
+                    options.drilldown = {};
                     options.drilldown.series = data.colRlt.drilldown;
                     $('#container').highcharts(options);
+                    
+                    options2.series = data.pieRltOfAll.series;
+                    options2.drilldown = {};
+                    options2.drilldown.series = data.pieRltOfAll.drilldown;
+                    $('#container2').highcharts(options2);
+                    
+                    $('#container3').highcharts(options2);
+            	};
+            	
+            	$.getJSON('<c:url value="/report/consumptionDataSource" />', function(data) {
+            		refresh(data);
             	});
             	
             	$("#r3").click(function(){
@@ -123,20 +172,14 @@
                 $("#r1").click(function(){
                     $ ("#dateArea").attr("style", "display:none;");
                     $.getJSON('<c:url value="/report/consumptionDataSource?queryMethod=1" />', function(data) {
-                    	options.series = data.colRlt.series;
-                        options.drilldown = {};
-                        options.drilldown.series = data.colRlt.drilldown;
-                        $('#container').highcharts(options);
+                    	refresh(data);
                     });
                 });
                 
                 $("#r2").click(function(){
                     $ ("#dateArea").attr("style", "display:none;");
                     $.getJSON('<c:url value="/report/consumptionDataSource?queryMethod=2" />', function(data) {
-                    	options.series = data.colRlt.series;
-                        options.drilldown = {};
-                        options.drilldown.series = data.colRlt.drilldown;
-                        $('#container').highcharts(options);
+                    	refresh(data);
                     });
                 });
                 
@@ -148,10 +191,7 @@
                     	
                     	var queryStr = "?queryMethod=3&start=" + p1 + "&end=" + p2;
                     	$.getJSON('<c:url value="/report/consumptionDataSource" />' + queryStr, function(data) {
-                            options.series = data.colRlt.series;
-                            options.drilldown = {};
-                            options.drilldown.series = data.colRlt.drilldown;
-                            $('#container').highcharts(options);
+                    		refresh(data);
                         });
                     }
                 });

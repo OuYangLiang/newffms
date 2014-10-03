@@ -1,6 +1,7 @@
 package com.personal.oyl.newffms.web;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -73,14 +74,132 @@ public class ReportController {
             categoryConsumptionsMap.put(item.getCategoryOid() + "_" + item.getUserOid(), item);
         }
         
-        //初始化返回对象
         HighChartResult rlt = new HighChartResult();
-        HighChartGraphResult colRlt = new HighChartGraphResult();
+        HighChartGraphResult colRlt = this.columnResult(categoryConsumptions, allCategories, allUsers);
+        HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories, allUsers);
+        rlt.setColRlt(colRlt);
+        rlt.setPieRltOfAll(pieRltOfAll);
+        
+        return rlt;
+    }
+    
+    
+    private HighChartGraphResult pieResultOfAll(List<CategoryConsumption> categoryConsumptions, List<Category> allCategories, List<UserProfile> allUsers) {
+        Map<String, CategoryConsumption> categoryConsumptionsMap = new HashMap<String, CategoryConsumption>();
+        Map<BigDecimal, BigDecimal> sumMap = new HashMap<BigDecimal, BigDecimal>();
+        for (CategoryConsumption item : categoryConsumptions) {
+            categoryConsumptionsMap.put(item.getCategoryOid() + "_" + item.getUserOid(), item);
+            
+            if (BigDecimal.valueOf(-1).equals(item.getUserOid())) {
+                BigDecimal key = null;
+                if (item.getCategoryLevel() == 0) {
+                    key = BigDecimal.valueOf(-1);
+                }else {
+                    key = item.getParentOid();
+                }
+                
+                if (sumMap.containsKey(key)) {
+                    BigDecimal oldSum = sumMap.get(key);
+                    oldSum = oldSum.add(item.getTotal());
+                    sumMap.put(key, oldSum);
+                } else {
+                    sumMap.put(key, item.getTotal());
+                }
+            }
+        }
+        
+        //初始化返回对象
+        HighChartGraphResult rlt = new HighChartGraphResult();
         List<HightChartSeries> seriesList = new ArrayList<HightChartSeries>();
         List<HightChartSeries> drilldownList = new ArrayList<HightChartSeries>();
-        colRlt.setSeries(seriesList);
-        colRlt.setDrilldown(drilldownList);
-        rlt.setColRlt(colRlt);
+        rlt.setSeries(seriesList);
+        rlt.setDrilldown(drilldownList);
+        
+        HightChartSeries series = new HightChartSeries();
+        series.setName("Title");
+        series.setType("pie");
+        series.setData(new ArrayList<HightChartSeries>());
+        seriesList.add(series);
+        
+        
+        for (Category category : allCategories) {
+            //处理series
+            if (category.getCategoryLevel() == 0) {
+                BigDecimal usedAmt = categoryConsumptionsMap.get(category.getCategoryOid() + "_-1").getTotal();
+                if (usedAmt.compareTo(BigDecimal.ZERO) == 0) {
+                    //金额为0的不需要在pie图呈现。
+                    continue;
+                }
+                
+                BigDecimal totalAmt = sumMap.get(BigDecimal.valueOf(-1));
+                BigDecimal percent  = usedAmt.divide(totalAmt, 4, RoundingMode.HALF_UP);
+                
+                HightChartSeries innerSeries = new HightChartSeries();
+                innerSeries.setName(category.getCategoryDesc());
+                innerSeries.setType("pie");
+                innerSeries.setY(percent);
+                if (!category.getIsLeaf()) {
+                    innerSeries.setDrilldown(category.getCategoryOid().toString());
+                }
+                
+                series.getData().add(innerSeries);
+            }
+            
+            //处理drilldown
+            if (!category.getIsLeaf()) {
+                if (categoryConsumptionsMap.get(category.getCategoryOid() + "_-1").getTotal().compareTo(BigDecimal.ZERO) == 0) {
+                    continue;
+                }
+                
+                HightChartSeries drillDownSeries = new HightChartSeries();
+                drillDownSeries.setId(category.getCategoryOid().toString());
+                drillDownSeries.setType("pie");
+                drillDownSeries.setName(category.getCategoryDesc());
+                drillDownSeries.setData(new ArrayList<HightChartSeries>());
+                
+                for (CategoryConsumption item : categoryConsumptions) {
+                    if (category.getCategoryOid().equals(item.getParentOid()) && BigDecimal.valueOf(-1).equals(item.getUserOid())) {
+                        BigDecimal usedAmt = item.getTotal();
+                        if (usedAmt.compareTo(BigDecimal.ZERO) == 0) {
+                            //金额为0的不需要在pie图呈现。
+                            continue;
+                        }
+                        
+                        BigDecimal totalAmt = sumMap.get((item.getParentOid() == null ? BigDecimal.valueOf(-1) : item.getParentOid()));
+                        BigDecimal percent  = usedAmt.divide(totalAmt, 4, RoundingMode.HALF_UP);
+                        
+                        HightChartSeries innerSeries = new HightChartSeries();
+                        innerSeries.setName(item.getCategoryDesc());
+                        innerSeries.setY(percent);
+                        if (!item.getIsLeaf()) {
+                            innerSeries.setDrilldown(item.getCategoryOid().toString());
+                        }
+                        
+                        drillDownSeries.getData().add(innerSeries);
+                    }
+                }
+                
+                drilldownList.add(drillDownSeries);
+            }
+        }
+        
+        return rlt;
+    }
+    
+    
+    private HighChartGraphResult columnResult(List<CategoryConsumption> categoryConsumptions, List<Category> allCategories, List<UserProfile> allUsers) {
+        //List转Map，key为categoryOid + "_" + userOid，userOid为-1表示所有人
+        Map<String, CategoryConsumption> categoryConsumptionsMap = new HashMap<String, CategoryConsumption>();
+        for (CategoryConsumption item : categoryConsumptions) {
+            categoryConsumptionsMap.put(item.getCategoryOid() + "_" + item.getUserOid(), item);
+        }
+        
+        //初始化返回对象
+        HighChartGraphResult rlt = new HighChartGraphResult();
+        List<HightChartSeries> seriesList = new ArrayList<HightChartSeries>();
+        List<HightChartSeries> drilldownList = new ArrayList<HightChartSeries>();
+        rlt.setSeries(seriesList);
+        rlt.setDrilldown(drilldownList);
         
         
         //处理series
@@ -169,6 +288,5 @@ public class ReportController {
         }
         
         return rlt;
-        
     }
 }

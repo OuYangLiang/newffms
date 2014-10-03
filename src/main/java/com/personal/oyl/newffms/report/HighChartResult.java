@@ -1,7 +1,8 @@
 package com.personal.oyl.newffms.report;
 
 public class HighChartResult {
-    HighChartGraphResult colRlt;
+    private HighChartGraphResult colRlt;
+    private HighChartGraphResult pieRltOfAll;
 
     public HighChartGraphResult getColRlt() {
         return colRlt;
@@ -10,4 +11,13 @@ public class HighChartResult {
     public void setColRlt(HighChartGraphResult colRlt) {
         this.colRlt = colRlt;
     }
+
+    public HighChartGraphResult getPieRltOfAll() {
+        return pieRltOfAll;
+    }
+
+    public void setPieRltOfAll(HighChartGraphResult pieRltOfAll) {
+        this.pieRltOfAll = pieRltOfAll;
+    }
+
 }

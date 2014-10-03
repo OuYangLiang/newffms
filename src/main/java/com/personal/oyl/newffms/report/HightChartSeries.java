@@ -8,6 +8,7 @@ public class HightChartSeries {
     private String name;
     private String drilldown;
     private BigDecimal y;
+    private String type;
     private List<HightChartSeries> data;
 
     public String getId() {
@@ -48,5 +49,13 @@ public class HightChartSeries {
 
     public void setData(List<HightChartSeries> data) {
         this.data = data;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

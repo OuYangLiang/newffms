@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.UserProfile;
 import com.personal.oyl.newffms.report.CategoryConsumption;
-import com.personal.oyl.newffms.report.HightChartResult;
+import com.personal.oyl.newffms.report.HighChartGraphResult;
+import com.personal.oyl.newffms.report.HighChartResult;
 import com.personal.oyl.newffms.report.HightChartSeries;
 import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.service.ReportService;
@@ -43,7 +44,7 @@ public class ReportController {
     
     @RequestMapping("/consumptionDataSource")
     @ResponseBody
-    public HightChartResult consumptionDataSource(
+    public HighChartResult consumptionDataSource(
             @RequestParam(value = "queryMethod", required = false) Integer queryMethod,
             @RequestParam(value = "start", required = false) Date start,
             @RequestParam(value = "end", required = false) Date end) throws SQLException, ParseException {
@@ -73,11 +74,14 @@ public class ReportController {
         }
         
         //初始化返回对象
-        HightChartResult rlt = new HightChartResult();
+        HighChartResult rlt = new HighChartResult();
+        HighChartGraphResult colRlt = new HighChartGraphResult();
         List<HightChartSeries> seriesList = new ArrayList<HightChartSeries>();
         List<HightChartSeries> drilldownList = new ArrayList<HightChartSeries>();
-        rlt.setSeries(seriesList);
-        rlt.setDrilldown(drilldownList);
+        colRlt.setSeries(seriesList);
+        colRlt.setDrilldown(drilldownList);
+        rlt.setColRlt(colRlt);
+        
         
         //处理series
         HightChartSeries series = new HightChartSeries();

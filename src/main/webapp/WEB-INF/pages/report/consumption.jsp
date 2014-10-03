@@ -110,9 +110,9 @@
             	
             	
             	$.getJSON('<c:url value="/report/consumptionDataSource" />', function(data) {
-            		options.series = data.series;
+            		options.series = data.colRlt.series;
             		options.drilldown = {};
-                    options.drilldown.series = data.drilldown;
+                    options.drilldown.series = data.colRlt.drilldown;
                     $('#container').highcharts(options);
             	});
             	
@@ -123,9 +123,9 @@
                 $("#r1").click(function(){
                     $ ("#dateArea").attr("style", "display:none;");
                     $.getJSON('<c:url value="/report/consumptionDataSource?queryMethod=1" />', function(data) {
-                    	options.series = data.series;
+                    	options.series = data.colRlt.series;
                         options.drilldown = {};
-                        options.drilldown.series = data.drilldown;
+                        options.drilldown.series = data.colRlt.drilldown;
                         $('#container').highcharts(options);
                     });
                 });
@@ -133,9 +133,9 @@
                 $("#r2").click(function(){
                     $ ("#dateArea").attr("style", "display:none;");
                     $.getJSON('<c:url value="/report/consumptionDataSource?queryMethod=2" />', function(data) {
-                    	options.series = data.series;
+                    	options.series = data.colRlt.series;
                         options.drilldown = {};
-                        options.drilldown.series = data.drilldown;
+                        options.drilldown.series = data.colRlt.drilldown;
                         $('#container').highcharts(options);
                     });
                 });
@@ -148,9 +148,9 @@
                     	
                     	var queryStr = "?queryMethod=3&start=" + p1 + "&end=" + p2;
                     	$.getJSON('<c:url value="/report/consumptionDataSource" />' + queryStr, function(data) {
-                            options.series = data.series;
+                            options.series = data.colRlt.series;
                             options.drilldown = {};
-                            options.drilldown.series = data.drilldown;
+                            options.drilldown.series = data.colRlt.drilldown;
                             $('#container').highcharts(options);
                         });
                     }

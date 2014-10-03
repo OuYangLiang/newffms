@@ -2,9 +2,18 @@ package com.personal.oyl.newffms.report;
 
 import java.util.List;
 
-public class HightChartResult {
+public class HighChartGraphResult {
+    private String title;
     private List<HightChartSeries> series;
     private List<HightChartSeries> drilldown;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public List<HightChartSeries> getSeries() {
         return series;

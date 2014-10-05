@@ -23,8 +23,7 @@
 			always-use-default-target="true"
 			authentication-success-handler-ref="authenticationSuccessHandlerImpl" /> -->
 			
-		<form-login login-page="/login" default-target-url="/welcome"
-            always-use-default-target="true"
+		<form-login login-page="/login"
             authentication-success-handler-ref="authenticationSuccessHandlerImpl" />
             
 		<logout logout-success-url="/login" />

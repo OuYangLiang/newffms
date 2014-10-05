@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CommonController {
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+    
     @RequestMapping("/welcome")
     public String welcome() {
         return "welcome";

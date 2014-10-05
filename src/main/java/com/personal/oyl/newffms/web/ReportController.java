@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,16 +53,25 @@ public class ReportController {
         
         Date startParam = null;
         Date endParam   = null;
+        String title = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         
         if (null == queryMethod || 1 == queryMethod) {
             startParam = DateUtil.getInstance().getFirstTimeOfCurrentMonth();
             endParam   = DateUtil.getInstance().getLastTimeOfCurrentMonth();
+            title = sdf.format(startParam);
+            
         } else if (2 == queryMethod) {
             startParam = DateUtil.getInstance().getFirstTimeOfLastMonth();
             endParam   = DateUtil.getInstance().getLastTimeOfLastMonth();
+            title = sdf.format(startParam);
+            
         } else if (3 == queryMethod) {
             startParam = DateUtil.getInstance().getBeginTime(start);
             endParam   = DateUtil.getInstance().getEndTime(end);
+            
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            title = sdf.format(startParam) + " ~ " + sdf.format(endParam);
         }
         
         List<CategoryConsumption> categoryConsumptions = reportService.queryCategoryConsumptions(startParam, endParam);
@@ -78,6 +88,11 @@ public class ReportController {
         HighChartGraphResult colRlt = this.columnResult(categoryConsumptions, allCategories, allUsers);
         HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories, allUsers);
         HighChartGraphResult pieRltOfUser = this.pieResultOfUser(categoryConsumptions, allCategories, allUsers);
+        
+        colRlt.setTitle(title);
+        pieRltOfAll.setTitle(title);
+        pieRltOfUser.setTitle(title);
+        
         rlt.setColRlt(colRlt);
         rlt.setPieRltOfAll(pieRltOfAll);
         rlt.setPieRltOfUser(pieRltOfUser);
@@ -108,7 +123,7 @@ public class ReportController {
         List<HightChartSeries> seriesList = new ArrayList<HightChartSeries>();
         rlt.setSeries(seriesList);
         HightChartSeries series = new HightChartSeries();
-        series.setName("Title");
+        series.setName("消费比");
         series.setType("pie");
         series.setData(new ArrayList<HightChartSeries>());
         seriesList.add(series);
@@ -160,7 +175,7 @@ public class ReportController {
         rlt.setDrilldown(drilldownList);
         
         HightChartSeries series = new HightChartSeries();
-        series.setName("Title");
+        series.setName("比例");
         series.setType("pie");
         series.setData(new ArrayList<HightChartSeries>());
         seriesList.add(series);

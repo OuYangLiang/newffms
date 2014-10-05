@@ -9,7 +9,7 @@
 
     <body>
         <div class="content-header ui-widget-header">
-            消费情况统计
+            消费情况查询
         </div>
         
         <div class="contentWrapper">
@@ -42,7 +42,7 @@
             </div>
         
             <div class="content-title ui-widget-header">
-                明细
+                消费情况柱状图
             </div>
         
             <div class="mainArea">
@@ -50,7 +50,7 @@
             </div>
             
             <div class="content-title ui-widget-header">
-                明细
+                消费情况比例图
             </div>
         
             <div class="mainArea" style="width: 50%; float: left; padding: 0 0 0 0;">
@@ -71,7 +71,6 @@
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/highcharts.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/drilldown.src.js' />" charset="utf-8"></script>
         
@@ -105,7 +104,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: "Value"
+                            text: ""
                         }
                     },
                     plotOptions: {
@@ -136,7 +135,6 @@
            	            pie: {
            	                allowPointSelect: false,
            	                showInLegend: true,
-           	                cursor: 'pointer',
            	                dataLabels: {
            	                    enabled: true,
            	                    format: '<b>{point.name}</b>: {point.percentage:.2f} %',
@@ -173,14 +171,17 @@
             		options.series = data.colRlt.series;
                     options.drilldown = {};
                     options.drilldown.series = data.colRlt.drilldown;
+                    options.title.text = data.colRlt.title;
                     $('#container').highcharts(options);
                     
                     options2.series = data.pieRltOfAll.series;
                     options2.drilldown = {};
                     options2.drilldown.series = data.pieRltOfAll.drilldown;
+                    options2.title.text = data.pieRltOfAll.title;
                     $('#container2').highcharts(options2);
                     
                     options3.series = data.pieRltOfUser.series;
+                    options3.title.text = data.pieRltOfUser.title;
                     $('#container3').highcharts(options3);
             	};
             	

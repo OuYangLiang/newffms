@@ -147,6 +147,28 @@
            	        drilldown: {series:[]}
            	    };
             	
+            	var options3 = {
+                        title: {
+                            text: 'title'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: false,
+                                showInLegend: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                                }
+                            }
+                        },
+                        series: [],
+                        drilldown: {series:[]}
+                    };
+            	
             	var refresh = function(data) {
             		options.series = data.colRlt.series;
                     options.drilldown = {};
@@ -158,7 +180,8 @@
                     options2.drilldown.series = data.pieRltOfAll.drilldown;
                     $('#container2').highcharts(options2);
                     
-                    $('#container3').highcharts(options2);
+                    options3.series = data.pieRltOfUser.series;
+                    $('#container3').highcharts(options3);
             	};
             	
             	$.getJSON('<c:url value="/report/consumptionDataSource" />', function(data) {

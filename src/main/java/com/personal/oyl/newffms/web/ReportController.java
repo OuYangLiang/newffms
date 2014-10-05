@@ -77,8 +77,52 @@ public class ReportController {
         HighChartResult rlt = new HighChartResult();
         HighChartGraphResult colRlt = this.columnResult(categoryConsumptions, allCategories, allUsers);
         HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories, allUsers);
+        HighChartGraphResult pieRltOfUser = this.pieResultOfUser(categoryConsumptions, allCategories, allUsers);
         rlt.setColRlt(colRlt);
         rlt.setPieRltOfAll(pieRltOfAll);
+        rlt.setPieRltOfUser(pieRltOfUser);
+        
+        return rlt;
+    }
+    
+    
+    private HighChartGraphResult pieResultOfUser(List<CategoryConsumption> categoryConsumptions, List<Category> allCategories, List<UserProfile> allUsers) {
+        BigDecimal total = BigDecimal.ZERO;
+        Map<String, BigDecimal> userSumMap = new HashMap<String, BigDecimal>();
+        
+        for (CategoryConsumption item : categoryConsumptions) {
+            if (item.getCategoryLevel() == 0 && !BigDecimal.valueOf(-1).equals(item.getUserOid())) {
+                total = total.add(item.getTotal());
+                
+                if (userSumMap.containsKey(item.getUserName())) {
+                    BigDecimal oldValue = userSumMap.get(item.getUserName());
+                    userSumMap.put(item.getUserName(), oldValue.add(item.getTotal()));
+                } else {
+                    userSumMap.put(item.getUserName(), item.getTotal());
+                }
+            }
+        }
+        
+        //初始化返回对象
+        HighChartGraphResult rlt = new HighChartGraphResult();
+        List<HightChartSeries> seriesList = new ArrayList<HightChartSeries>();
+        rlt.setSeries(seriesList);
+        HightChartSeries series = new HightChartSeries();
+        series.setName("Title");
+        series.setType("pie");
+        series.setData(new ArrayList<HightChartSeries>());
+        seriesList.add(series);
+        
+        for (Map.Entry<String, BigDecimal> entry : userSumMap.entrySet() ) {
+            BigDecimal userTotal = entry.getValue();
+            
+            HightChartSeries innerSeries = new HightChartSeries();
+            innerSeries.setName(entry.getKey());
+            innerSeries.setType("pie");
+            innerSeries.setY(userTotal.divide(total, 4, RoundingMode.HALF_UP));
+            
+            series.getData().add(innerSeries);
+        }
         
         return rlt;
     }
@@ -238,9 +282,46 @@ public class ReportController {
             seriesList.add(series);
         }
         
+        series = new HightChartSeries();
+        series.setName("预算");
+        series.setType("spline");
+        series.setData(new ArrayList<HightChartSeries>());
+        for (Category category : allCategories) {
+            if (category.getCategoryLevel() == 0) {
+                HightChartSeries innerSeries = new HightChartSeries();
+                innerSeries.setName(category.getCategoryDesc());
+                innerSeries.setY(category.getMonthlyBudget());
+                innerSeries.setDrilldown(category.getCategoryOid().toString());
+                
+                series.getData().add(innerSeries);
+            }
+        }
+        seriesList.add(series);
+        
         //处理drilldown
         for (Category category : allCategories) {
             if (!category.getIsLeaf()) {
+                series = new HightChartSeries();
+                series.setType("spline");
+                series.setId(category.getCategoryOid().toString());
+                series.setName("预算");
+                series.setData(new ArrayList<HightChartSeries>());
+                
+                for (Category inner : allCategories) {
+                    if (category.getCategoryOid().equals(inner.getParentOid())) {
+                        HightChartSeries innerSeries = new HightChartSeries();
+                        innerSeries.setType("spline");
+                        innerSeries.setName(inner.getCategoryDesc());
+                        innerSeries.setY(inner.getMonthlyBudget());
+                        if (!inner.getIsLeaf()) {
+                            innerSeries.setDrilldown(inner.getCategoryOid().toString());
+                        }
+                        
+                        series.getData().add(innerSeries);
+                    }
+                }
+                drilldownList.add(series);
+                
                 //先处理所有人的情况
                 series = new HightChartSeries();
                 series.setId(category.getCategoryOid() + "_-1");

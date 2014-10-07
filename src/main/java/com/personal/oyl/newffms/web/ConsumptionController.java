@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.personal.oyl.newffms.constants.Constants;
 import com.personal.oyl.newffms.constants.ConsumptionType;
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
@@ -29,33 +28,14 @@ import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.validator.ConsumptionFormValidator;
-import com.personal.oyl.newffms.service.AccountService;
-import com.personal.oyl.newffms.service.CategoryService;
-import com.personal.oyl.newffms.service.ConsumptionItemService;
-import com.personal.oyl.newffms.service.ConsumptionService;
-import com.personal.oyl.newffms.service.TransactionService;
-import com.personal.oyl.newffms.service.UserProfileService;
 import com.personal.oyl.newffms.util.DateUtil;
 import com.personal.oyl.newffms.util.SessionUtil;
 
 @Controller
 @RequestMapping("/consumption")
-public class ConsumptionController {
+public class ConsumptionController extends BaseController{
     
     private static final String SESSION_KEY_SEARCH_PARAM_CONSUMPTION = "SESSION_KEY_SEARCH_PARAM_CONSUMPTION";
-    
-    @Autowired
-    private TransactionService transactionService;
-    @Autowired
-    private UserProfileService userProfileService;
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private ConsumptionService consumptionService;
-    @Autowired
-    private ConsumptionItemService consumptionItemService;
-    @Autowired
-    private AccountService accountService;
     
     @Autowired
     private ConsumptionFormValidator consumptionFormValidator;
@@ -63,27 +43,6 @@ public class ConsumptionController {
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(consumptionFormValidator);
-    }
-    
-    protected boolean isKeepSearchParameter(HttpServletRequest request)
-    {
-        String keepSP = request.getParameter("keepSp");
-        
-        if (Constants.VALUE_YES.equalsIgnoreCase(keepSP)) {
-            return true;
-        }
-        
-        return false;
-
-    }
-
-    
-    protected void clearSearchParameter(HttpServletRequest request, HttpSession session, String sessionKey_)
-    {
-        if(!isKeepSearchParameter(request))
-        {
-            session.removeAttribute(sessionKey_);
-        }
     }
     
     @RequestMapping("summary")
@@ -119,6 +78,7 @@ public class ConsumptionController {
         Consumption searchParam = new Consumption();
         searchParam.setCpnTimeFrom(DateUtil.getInstance().getBeginTime(cpnTimeFrom));
         searchParam.setCpnTimeTo(DateUtil.getInstance().getEndTime(cpnTimeTo));
+        
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION, searchParam);
         
         return "OK";
@@ -126,7 +86,7 @@ public class ConsumptionController {
     
     @RequestMapping("/listOfSummary")
     @ResponseBody
-    public JqGridJsonRlt listOfSummary(@RequestParam(value = "requestPage", required = true) int requestPage,
+    public JqGridJsonRlt<Consumption> listOfSummary(@RequestParam(value = "requestPage", required = true) int requestPage,
             @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
             @RequestParam(value = "sortField", required = true) String sortField,
             @RequestParam(value = "sortDir", required = true) String sortDir, HttpSession session) throws SQLException {
@@ -146,21 +106,12 @@ public class ConsumptionController {
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION, searchParam);
         
-        int count = consumptionService.getCountOfSummary(searchParam);
-        List<Consumption> list = consumptionService.getListOfSummary(searchParam);
-        
-        JqGridJsonRlt rlt = new JqGridJsonRlt();
-        rlt.setRows(list);
-        rlt.setPage(requestPage);
-        rlt.setRecords(count);
-        rlt.setTotal(BigDecimal.valueOf(count).divide(BigDecimal.valueOf(sizePerPage), BigDecimal.ROUND_UP).intValue());
-        
-        return rlt;
+        return this.initPaging(consumptionService, searchParam);
     }
     
     @RequestMapping("/listOfItemSummary")
     @ResponseBody
-    public JqGridJsonRlt listOfItemSummary(@RequestParam("cpnOid") BigDecimal cpnOid) throws SQLException {
+    public JqGridJsonRlt<ConsumptionItem> listOfItemSummary(@RequestParam("cpnOid") BigDecimal cpnOid) throws SQLException {
         
         List<ConsumptionItem> list = consumptionItemService.queryConsumptionItemByCpn(cpnOid);
         
@@ -168,7 +119,7 @@ public class ConsumptionController {
             item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
         }
         
-        JqGridJsonRlt rlt = new JqGridJsonRlt();
+        JqGridJsonRlt<ConsumptionItem> rlt = new JqGridJsonRlt<ConsumptionItem>();
         rlt.setRows(list);
         rlt.setPage(1);
         rlt.setRecords(list.size());

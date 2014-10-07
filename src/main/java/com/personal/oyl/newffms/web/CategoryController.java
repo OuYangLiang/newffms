@@ -20,9 +20,9 @@ public class CategoryController {
     
     @RequestMapping("/ajaxGetAllCategories")
     @ResponseBody
-    public JqGridJsonRlt alaxGetAllAccounts() {
+    public JqGridJsonRlt<Category> alaxGetAllAccounts() {
         
-        JqGridJsonRlt rlt = new JqGridJsonRlt();
+        JqGridJsonRlt<Category> rlt = new JqGridJsonRlt<Category>();
         
         try {
             List<Category> list =  categoryService.select(null);

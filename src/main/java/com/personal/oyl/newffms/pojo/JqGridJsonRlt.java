@@ -2,11 +2,11 @@ package com.personal.oyl.newffms.pojo;
 
 import java.util.List;
 
-public class JqGridJsonRlt {
+public class JqGridJsonRlt <T extends BasePojo> {
     private int page;//request page
     private int records;// total records from this query
     private int total;//total pages from this query
-    private List<? extends Object> rows;
+    private List<T> rows;
 
     public int getPage() {
         return page;
@@ -32,11 +32,11 @@ public class JqGridJsonRlt {
         this.total = total;
     }
 
-    public List<? extends Object> getRows() {
+    public List<T> getRows() {
         return rows;
     }
 
-    public void setRows(List<? extends Object> rows) {
+    public void setRows(List<T> rows) {
         this.rows = rows;
     }
 }

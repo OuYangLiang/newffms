@@ -20,11 +20,11 @@
         SELECT COUNT(*)
             FROM CONSUMPTION
         <where>
-            <if test="cpnType != null">
-                CPN_TYPE = #{cpnType,jdbcType=VARCHAR}
+            <if test="cpnTimeFrom != null">
+                CPN_TIME >= #{cpnTimeFrom,jdbcType=TIMESTAMP}
             </if>
-            <if test="confirmed != null">
-                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            <if test="cpnTimeTo != null">
+                <![CDATA[ AND CPN_TIME <= #{cpnTimeTo,jdbcType=TIMESTAMP} ]]>
             </if>
         </where>
     </select>
@@ -33,18 +33,18 @@
         SELECT <include refid="Grid_Column_List" />
             FROM CONSUMPTION
         <where>
-            <if test="cpnType != null">
-                CPN_TYPE = #{cpnType,jdbcType=VARCHAR}
+            <if test="cpnTimeFrom != null">
+                CPN_TIME >= #{cpnTimeFrom,jdbcType=TIMESTAMP}
             </if>
-            <if test="confirmed != null">
-                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            <if test="cpnTimeTo != null">
+                <![CDATA[ AND CPN_TIME <= #{cpnTimeTo,jdbcType=TIMESTAMP} ]]>
             </if>
         </where>
         <if test="sortField == null" >
             ORDER BY CPN_TIME DESC
         </if>
         <if test="sortField != null" >
-            ORDER BY #{sortField} #{sortOrder}
+            ORDER BY ${sortField} ${sortDir}
         </if>
         LIMIT #{start}, #{sizePerPage}
     </select>

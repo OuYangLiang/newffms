@@ -197,7 +197,7 @@
             	}
             	
             	$ ("#btn-cancel").click(function(){
-            		window.location.href = "<c:url value='/consumption/summary' />";
+            		window.location.href = "<c:url value='/consumption/summary?keepSp=Y' />";
                 });
                 
                 $ ("#btn-save").click(function(){

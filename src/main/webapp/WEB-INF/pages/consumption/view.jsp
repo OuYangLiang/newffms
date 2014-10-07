@@ -126,7 +126,7 @@
             $( document ).ready(function() {
             	$ (".button-area button").button();
             	$ ("#btn-back").click(function(){
-                    window.location.href = "<c:url value='/consumption/summary' />";
+                    window.location.href = "<c:url value='/consumption/summary?keepSp=Y' />";
                 });
             	
             	<c:if test="${!cpnForm.consumption.confirmed }" >

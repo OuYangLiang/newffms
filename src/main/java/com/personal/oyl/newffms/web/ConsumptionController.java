@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.personal.oyl.newffms.constants.Constants;
 import com.personal.oyl.newffms.constants.ConsumptionType;
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
@@ -33,6 +35,7 @@ import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
 import com.personal.oyl.newffms.service.TransactionService;
 import com.personal.oyl.newffms.service.UserProfileService;
+import com.personal.oyl.newffms.util.DateUtil;
 import com.personal.oyl.newffms.util.SessionUtil;
 
 @Controller
@@ -62,35 +65,89 @@ public class ConsumptionController {
         binder.setValidator(consumptionFormValidator);
     }
     
-    @RequestMapping("summary")
-    public String summary() throws SQLException {
+    protected boolean isKeepSearchParameter(HttpServletRequest request)
+    {
+        String keepSP = request.getParameter("keepSp");
+        
+        if (Constants.VALUE_YES.equalsIgnoreCase(keepSP)) {
+            return true;
+        }
+        
+        return false;
 
-        return "consumption/summary";
+    }
+
+    
+    protected void clearSearchParameter(HttpServletRequest request, HttpSession session, String sessionKey_)
+    {
+        if(!isKeepSearchParameter(request))
+        {
+            session.removeAttribute(sessionKey_);
+        }
     }
     
-    @RequestMapping("/listOfSummary")
-    @ResponseBody
-    public JqGridJsonRlt listOfSummary(@RequestParam("requestPage") int requestPage, @RequestParam("sizePerPage") int sizePerPage,
-            @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, HttpSession session) throws SQLException {
+    @RequestMapping("summary")
+    public String summary(HttpServletRequest request, HttpSession session) throws SQLException {
+        this.clearSearchParameter(request, session, SESSION_KEY_SEARCH_PARAM_CONSUMPTION);
+        
+        //初始化查询条件。
+        
+        //设置默认查询条件值，并放入session中
         
         Consumption searchParam = (Consumption) session.getAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION);
         
         if (null == searchParam) {
             searchParam = new Consumption();
-            searchParam.setBaseObject(new BaseObject());
+            searchParam.setCpnTimeFrom(DateUtil.getInstance().getFirstTimeOfLastMonth());
+            searchParam.setCpnTimeTo(DateUtil.getInstance().getEndTime(new Date()));
+            
+            searchParam.setRequestPage(1);
+            searchParam.setSizePerPage(10);
+            searchParam.setSortField("CPN_TIME");
+            searchParam.setSortDir("desc");
+            
             session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION, searchParam);
         }
+
+        return "consumption/summary";
+    }
+    
+    @RequestMapping("search")
+    @ResponseBody
+    public String search(@RequestParam("cpnTimeFrom") Date cpnTimeFrom, @RequestParam("cpnTimeTo") Date cpnTimeTo, HttpSession session) {
+        //从页面接受查询参数，并放入session中。
+        Consumption searchParam = new Consumption();
+        searchParam.setCpnTimeFrom(DateUtil.getInstance().getBeginTime(cpnTimeFrom));
+        searchParam.setCpnTimeTo(DateUtil.getInstance().getEndTime(cpnTimeTo));
+        session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION, searchParam);
         
-        searchParam.setSizePerPage(sizePerPage);
+        return "OK";
+    }
+    
+    @RequestMapping("/listOfSummary")
+    @ResponseBody
+    public JqGridJsonRlt listOfSummary(@RequestParam(value = "requestPage", required = true) int requestPage,
+            @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
+            @RequestParam(value = "sortField", required = true) String sortField,
+            @RequestParam(value = "sortDir", required = true) String sortDir, HttpSession session) throws SQLException {
+        
+        //从session中取出查询对象并查询
+
+        Consumption searchParam = (Consumption) session.getAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION);
+        
         searchParam.setStart( (requestPage - 1) * sizePerPage );
-        //searchParam.getBaseObject().setSortField(sortField);
-        //searchParam.getBaseObject().setSortDir(sortDir);
-        //searchParam.getBaseObject().setRequestPage(requestPage);
+        searchParam.setSizePerPage(sizePerPage);
+        searchParam.setRequestPage(requestPage);
+        
+        if (sortField != null && !sortField.trim().isEmpty()) {
+            searchParam.setSortField(sortField);
+            searchParam.setSortDir(sortDir);
+        }
+        
+        session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION, searchParam);
         
         int count = consumptionService.getCountOfSummary(searchParam);
-        
         List<Consumption> list = consumptionService.getListOfSummary(searchParam);
-        
         
         JqGridJsonRlt rlt = new JqGridJsonRlt();
         rlt.setRows(list);
@@ -286,13 +343,13 @@ public class ConsumptionController {
     public String confirm(@RequestParam("cpnOid") BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
         transactionService.confirmConsumption(cpnOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
         
-        return "consumption/summary";
+        return "redirect:/consumption/summary?keepSp=Y";
     }
     
     @RequestMapping("/rollback")
     public String rollback(@RequestParam("cpnOid") BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
         transactionService.rollbackConsumption(cpnOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
         
-        return "consumption/summary";
+        return "redirect:/consumption/summary?keepSp=Y";
     }
 }

@@ -17,6 +17,8 @@ public class Consumption extends BasePojo {
     //extended field
     private Integer cpnTimeSlider;
     private String cpnTypeDesc;
+    private Date cpnTimeFrom;
+    private Date cpnTimeTo;
     
     public void calculateCpnTime() {
         int hour = cpnTimeSlider / 4;
@@ -30,6 +32,22 @@ public class Consumption extends BasePojo {
         c.set(Calendar.MILLISECOND, 0);
         
         this.setCpnTime(c.getTime());
+    }
+
+    public Date getCpnTimeFrom() {
+        return cpnTimeFrom;
+    }
+
+    public void setCpnTimeFrom(Date cpnTimeFrom) {
+        this.cpnTimeFrom = cpnTimeFrom;
+    }
+
+    public Date getCpnTimeTo() {
+        return cpnTimeTo;
+    }
+
+    public void setCpnTimeTo(Date cpnTimeTo) {
+        this.cpnTimeTo = cpnTimeTo;
     }
 
     public BigDecimal getCpnOid() {

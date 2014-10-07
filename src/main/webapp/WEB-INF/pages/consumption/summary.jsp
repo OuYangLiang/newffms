@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
 <!doctype html>
 <html>
     <head>
         <title>This is the title.</title>
+        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
     
     <body>
@@ -18,9 +20,21 @@
         
         <div class="contentWrapper">
             <div class="mainArea">
-                Apache Maven is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information.
-                <br/><br/><br/>
-                If you think that Maven could help your project, you can find out more information about in the "About Maven" section of the navigation. This includes an in-depth description of what Maven is, a list of some of its main features, and a set of frequently asked questions about what Maven is.
+                <div class="newline-wrapper ui-widget-content" >
+                    <div class="input" style="width:100%">
+                        <form id="form" method="post" >
+                        <span style="margin-left:200px;">起始日期</span>
+                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
+                        
+                        <span style="margin-left:50px;">结束日期</span>
+                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.cpnTimeTo }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeTo" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
+                        
+                        <span id="btn-query" style="margin-left:20px; margin-top:-5px;">查询</span>
+                        </form>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
             </div>
             
             <div class="content-title ui-widget-header">
@@ -54,10 +68,16 @@
             	
             	$("#gridList").jqGrid({
                     url: "<c:url value='/consumption/listOfSummary' />",
+                    
+                    page: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.requestPage}' />",
+                    sortname: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.sortField}' />",
+                    sortorder: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.sortDir}' />",
+                    rowNum: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.sizePerPage}' />",
+                    
                     jsonReader: {id: "cpnOid"},
                     colNames: ["日期", "消费类型", "总金额", "登记人", "状态", ""],
                     colModel: [
-                        { sortable: false, name: "cpnTime", width: 155, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i'}},
+                        { sortable: true, index:"CPN_TIME", name: "cpnTime", width: 155, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i'}},
                         { sortable: false, name: "cpnType", width: 190,align: "center" },
                         { sortable: false, name: "amount", width: 190,align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
                         { sortable: false, name: "baseObject.createBy", width: 180, align: "center" },
@@ -91,6 +111,31 @@
                         });
                         
                     }
+                });
+            	
+            	$ ("#btn-query").button();
+            	
+            	$( "#start" ).datepicker({
+                    dateFormat: "yy-mm-dd",
+                    showAnim: "slide"
+                });
+                
+                $( "#end" ).datepicker({
+                    dateFormat: "yy-mm-dd",
+                    showAnim: "slide"
+                });
+            	
+                $ ("#btn-query").click(function(){
+                    $.ajax({
+                    	cache: true,
+                    	url: "<c:url value='/consumption/search' />",
+                    	type: "POST",
+                    	async: true,
+                    	data: $('#form').serialize(),
+                    	success: function() {
+                    		$("#gridList").trigger("reloadGrid");
+                    	}
+                    });
                 });
             });
         </script>

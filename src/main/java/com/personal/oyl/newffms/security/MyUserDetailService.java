@@ -47,6 +47,7 @@ public class MyUserDetailService implements UserDetailsService {
         AUTHORITIES.add(new SimpleGrantedAuthority("/user/add"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/user/saveAdd"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/summary"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/search"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/listOfSummary"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/listOfItemSummary"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/initAdd"));

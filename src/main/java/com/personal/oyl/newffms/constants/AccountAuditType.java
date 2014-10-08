@@ -1,18 +1,18 @@
 package com.personal.oyl.newffms.constants;
 
 public enum AccountAuditType {
-    Add("AccountAuditType.Add"),
-    Subtract("AccountAuditType.Subtract");
+    Add("增加"),
+    Subtract("扣减");
     
-    private String key;
+    private String desc;
 
-    private AccountAuditType(String key)
+    private AccountAuditType(String desc)
     {
-        this.key = key;
+        this.desc = desc;
     }
 
-    public String getKey()
+    public String getDesc()
     {
-        return key;
+        return desc;
     }
 }

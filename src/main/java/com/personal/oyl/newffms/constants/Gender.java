@@ -1,19 +1,19 @@
 package com.personal.oyl.newffms.constants;
 
 public enum Gender {
-    Male("Gender.Male"),
-    Female("Gender.Female");
+    Male("男"),
+    Female("女");
     
-    private String key;
+    private String desc;
 
-    private Gender(String key)
+    private Gender(String desc)
     {
-        this.key = key;
+        this.desc = desc;
     }
 
-    public String getKey()
+    public String getDesc()
     {
-        return key;
+        return desc;
     }
 
 }

@@ -21,6 +21,7 @@
     </bean> -->
     
     <bean id="customObjectMapper" class="com.personal.oyl.newffms.util.CustomObjectMapper" />
+    <bean id="exceptionHanlder" class="com.personal.oyl.newffms.web.ExceptionHandler" />
 	
 	<bean id="mappingJacksonHttpMessageConverter"
         class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">

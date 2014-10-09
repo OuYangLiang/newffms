@@ -5,4 +5,6 @@ public interface Constants {
     
     public static final String VALUE_YES = "Y";
     public static final String VALUE_NO  = "N";
+    
+    public static final int CATEGORY_LEVEL_ROOT = 0;
 }

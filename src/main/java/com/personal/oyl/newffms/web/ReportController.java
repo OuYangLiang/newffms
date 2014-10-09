@@ -8,8 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.personal.oyl.newffms.constants.Constants;
 import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.UserProfile;
 import com.personal.oyl.newffms.report.CategoryConsumption;
@@ -40,16 +43,21 @@ public class ReportController {
     private UserProfileService userProfileService;
     
     @RequestMapping("/consumption")
-    public String consumption(Model model) {
+    public String consumption(Model model) throws SQLException {
+        List<Category> rootCategories = categoryService.selectByLevel(Constants.CATEGORY_LEVEL_ROOT);
+        model.addAttribute("rootCategories", rootCategories);
+        
         return "/report/consumption";
     }
+    
     
     @RequestMapping("/consumptionDataSource")
     @ResponseBody
     public HighChartResult consumptionDataSource(
             @RequestParam(value = "queryMethod", required = false) Integer queryMethod,
             @RequestParam(value = "start", required = false) Date start,
-            @RequestParam(value = "end", required = false) Date end) throws SQLException, ParseException {
+            @RequestParam(value = "end", required = false) Date end,
+            @RequestParam(value = "excludeCategories", required = false) String excludeCategories) throws SQLException, ParseException {
         
         Date startParam = null;
         Date endParam   = null;
@@ -74,20 +82,28 @@ public class ReportController {
             title = sdf.format(startParam) + " ~ " + sdf.format(endParam);
         }
         
-        List<CategoryConsumption> categoryConsumptions = reportService.queryCategoryConsumptions(startParam, endParam);
-        List<Category> allCategories = categoryService.select(null);
-        List<UserProfile> allUsers = userProfileService.select(null);
+        List<UserProfile> allUsers = userProfileService.selectAllUsers();
+        List<Category> allCategories = null;
+        List<CategoryConsumption> categoryConsumptions = null;
         
-        //List转Map，key为categoryOid + "_" + userOid，userOid为-1表示所有人
-        Map<String, CategoryConsumption> categoryConsumptionsMap = new HashMap<String, CategoryConsumption>();
-        for (CategoryConsumption item : categoryConsumptions) {
-            categoryConsumptionsMap.put(item.getCategoryOid() + "_" + item.getUserOid(), item);
+        if (null == excludeCategories) {
+            allCategories = categoryService.selectAllCategories();
+            categoryConsumptions = reportService.queryCategoryConsumptions(startParam, endParam, null);
+        } else {
+            String[] excludeCategoryOidStrs = excludeCategories.split("\\|");
+            Set<BigDecimal> excludeCategoryOids = new HashSet<BigDecimal>();
+            for (String excludeCategoryOidStr : excludeCategoryOidStrs) {
+                excludeCategoryOids.add(new BigDecimal(excludeCategoryOidStr));
+            }
+            
+            allCategories = categoryService.selectAllCategoriesWithExclusion(excludeCategoryOids);
+            categoryConsumptions = reportService.queryCategoryConsumptions(startParam, endParam, excludeCategoryOids);
         }
         
         HighChartResult rlt = new HighChartResult();
         HighChartGraphResult colRlt = this.columnResult(categoryConsumptions, allCategories, allUsers);
-        HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories, allUsers);
-        HighChartGraphResult pieRltOfUser = this.pieResultOfUser(categoryConsumptions, allCategories, allUsers);
+        HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories);
+        HighChartGraphResult pieRltOfUser = this.pieResultOfUser(categoryConsumptions);
         
         colRlt.setTitle(title);
         pieRltOfAll.setTitle(title);
@@ -101,7 +117,7 @@ public class ReportController {
     }
     
     
-    private HighChartGraphResult pieResultOfUser(List<CategoryConsumption> categoryConsumptions, List<Category> allCategories, List<UserProfile> allUsers) {
+    private HighChartGraphResult pieResultOfUser(List<CategoryConsumption> categoryConsumptions) {
         BigDecimal total = BigDecimal.ZERO;
         Map<String, BigDecimal> userSumMap = new HashMap<String, BigDecimal>();
         
@@ -143,7 +159,7 @@ public class ReportController {
     }
     
     
-    private HighChartGraphResult pieResultOfAll(List<CategoryConsumption> categoryConsumptions, List<Category> allCategories, List<UserProfile> allUsers) {
+    private HighChartGraphResult pieResultOfAll(List<CategoryConsumption> categoryConsumptions, List<Category> allCategories) {
         Map<String, CategoryConsumption> categoryConsumptionsMap = new HashMap<String, CategoryConsumption>();
         Map<BigDecimal, BigDecimal> sumMap = new HashMap<BigDecimal, BigDecimal>();
         for (CategoryConsumption item : categoryConsumptions) {

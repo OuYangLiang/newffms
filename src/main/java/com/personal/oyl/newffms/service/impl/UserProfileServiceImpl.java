@@ -45,4 +45,8 @@ public class UserProfileServiceImpl implements UserProfileService {
         return null;
     }
 
+    public List<UserProfile> selectAllUsers() throws SQLException {
+        return this.select(null);
+    }
+
 }

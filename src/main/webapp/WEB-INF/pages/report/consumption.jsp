@@ -14,27 +14,49 @@
         
         <div class="contentWrapper">
             <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content" style="padding-top: 15px; padding-bottom: 15px; margin-bottom: 5px;">
-                    <div class="input" style="width:100%">
-                        <input type="radio" name="queryMethod" id="r1" style="margin-left:160px;" checked="true">当前月</input>
-                        <input type="radio" name="queryMethod" id="r2" style="margin-left:20px;">前一月</input>
-                        <input type="radio" name="queryMethod" id="r3" style="margin-left:20px;">按指定日期查询</input>
+                <div class="newline-wrapper ui-widget-content" >
+                    <div class="label">时间</div>
+                
+                    <div class="input" >
+                    
+                        <div style="float: left;width: 100px;"><input type="radio" name="queryMethod" id="r1" class="ratio" checked="true">当前月</input></div>
+                        <div style="float: left;width: 100px;"><input type="radio" name="queryMethod" id="r2" class="ratio" >前一月</input></div>
+                        <div style="float: left;width: 100px;"><input type="radio" name="queryMethod" id="r3" class="ratio" >指定日期</input></div>
+                        <div style="float: left;width: 100px;"><input type="checkbox" id="r4" class="checkbox">排除类别</input></div>
                     </div>
                     
                     <div style="clear:both;" ></div>
                 </div>
             
                 <div class="newline-wrapper ui-widget-content" style="display:none;" id="dateArea">
-                    <div class="input" style="width:100%">
+                    <div class="label">日期范围</div>
+                
+                    <div class="input" >
                         <form id="form" method="post">
-                        <span style="margin-left:200px;">起始日期</span>
+                        <span >起始日期</span>
                         <input style="width: 100px;" type="text" name="start" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         
-                        <span style="margin-left:50px;">结束日期</span>
+                        <span style="margin-left:30px;">结束日期</span>
                         <input style="width: 100px;" type="text" name="end" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         
                         <span id="btn-query" style="margin-left:20px; margin-top:-5px;">查询</span>
                         </form>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
+                
+                <div class="newline-wrapper ui-widget-content" style="display:none;" id="categoryArea">
+                    <div class="label">排除类别</div>
+                    
+                    <div class="input">
+                        <c:forEach var="item" items="${ rootCategories }" varStatus="status" >
+                            <div style="float: left;width: 100px;">
+                                <input type="checkbox" id="category${status.index }" value="${item.categoryOid }" onclick="javascript:doQuery();" class="checkbox" ><c:out value="${ item.categoryDesc }" /></input>
+                            </div>
+                            
+                            <c:if test="${ (status.index + 1) % 4 == 0 && status.index != 0}" ><br/><div style="clear:both;" ></div></c:if>
+                        </c:forEach>
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -189,37 +211,76 @@
             		refresh(data);
             	});
             	
-            	$("#r3").click(function(){
-                    $ ("#dateArea").attr("style", "display:''");
-                });
+            	doQuery = function() {
+            	    var selectedCategories = [];
+                    
+                    var i = 0;
+                    
+                    while ( $("#category" + i).length > 0) {
+                        if ($("#category" + i).prop("checked")) {
+                            selectedCategories.push($("#category" + i).val());
+                        }
+                        
+                        i++;
+                    }
+                    
+                    var queryStr;
+                    if ($("#r1").prop("checked")) {
+                        queryStr = "?queryMethod=1";
+                    } else if ($("#r2").prop("checked")) {
+                        queryStr = "?queryMethod=2";
+                    } else if ($("#r3").prop("checked")) {
+                        $("#form").validationEngine();
+                        if ($ ("#form").validationEngine('validate')) {
+                            var p1 = $("#start").val();
+                            var p2 = $("#end").val();
+                            
+                            queryStr = "?queryMethod=3&start=" + p1 + "&end=" + p2;
+                        }else {
+                        	alert("not pass");
+                            return;
+                            alert("not pass");
+                        }
+                            
+                    }
+                    
+                    if (selectedCategories.length != 0) {
+                        queryStr = queryStr + "&excludeCategories=" + selectedCategories.join("|");
+                    }
+                    
+                    
+                    $.getJSON('<c:url value="/report/consumptionDataSource" />' + queryStr, function(data) {
+                        refresh(data);
+                    });
+            	};
+            	
                 
                 $("#r1").click(function(){
                     $ ("#dateArea").attr("style", "display:none;");
-                    $.getJSON('<c:url value="/report/consumptionDataSource?queryMethod=1" />', function(data) {
-                    	refresh(data);
-                    });
+                    doQuery();
                 });
                 
                 $("#r2").click(function(){
                     $ ("#dateArea").attr("style", "display:none;");
-                    $.getJSON('<c:url value="/report/consumptionDataSource?queryMethod=2" />', function(data) {
-                    	refresh(data);
-                    });
+                    doQuery();
+                });
+                
+                $("#r3").click(function(){
+                	$ ("#dateArea").attr("style", "display:''");
+                });
+                
+                $("#r4").click(function(){
+                	if ($("#r4").prop("checked")) {
+                		$ ("#categoryArea").attr("style", "display:''");
+                	} else {
+                		$ ("#categoryArea").attr("style", "display:none;");
+                	}
                 });
                 
                 $ ("#btn-query").click(function(){
-                    $("#form").validationEngine();
-                    if ($ ("#form").validationEngine('validate')) {
-                    	var p1 = $("#start").val();
-                    	var p2 = $("#end").val();
-                    	
-                    	var queryStr = "?queryMethod=3&start=" + p1 + "&end=" + p2;
-                    	$.getJSON('<c:url value="/report/consumptionDataSource" />' + queryStr, function(data) {
-                    		refresh(data);
-                        });
-                    }
+                	doQuery();
                 });
-            	
+                
             });
         </script>
     </body>

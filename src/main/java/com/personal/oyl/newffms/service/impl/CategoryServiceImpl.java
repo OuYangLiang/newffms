@@ -2,7 +2,11 @@ package com.personal.oyl.newffms.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,6 +50,60 @@ public class CategoryServiceImpl implements CategoryService {
         }
         
         return rlt.toString();
+    }
+
+    public List<Category> selectByLevel(Integer categoryLevel) throws SQLException {
+        Category param = new Category();
+        param.setCategoryLevel(categoryLevel);
+        
+        return this.select(param);
+    }
+
+    public List<Category> selectAllCategories() throws SQLException {
+        return this.select(null);
+    }
+
+    public List<Category> selectAllCategoriesWithExclusion(Set<BigDecimal> excludingRootCategoryOids)
+            throws SQLException {
+        List<Category> allCategories = this.selectAllCategories();
+        
+        Map<BigDecimal, Category> catMap = new HashMap<BigDecimal, Category>();
+        for (Category category : allCategories) {
+            catMap.put(category.getCategoryOid(), category);
+        }
+        
+        //第一步，先排除所有非root Cateogry
+        Iterator<Category> it = allCategories.iterator();
+        while (it.hasNext()) {
+            Category item = it.next();
+            
+            if (item.getCategoryLevel() != 0) {
+                
+                Category pItem = catMap.get(item.getParentOid());
+                
+                while(pItem.getCategoryLevel() != 0) {
+                    pItem = catMap.get(pItem.getParentOid());
+                }
+                
+                if (excludingRootCategoryOids.contains(pItem.getCategoryOid())) {
+                    it.remove();
+                }
+            } 
+        }
+        
+        //第二步，排除所有root Category
+        it = allCategories.iterator();
+        while (it.hasNext()) {
+            Category item = it.next();
+            
+            if (item.getCategoryLevel() == 0) {
+                if (excludingRootCategoryOids.contains(item.getCategoryOid())) {
+                    it.remove();
+                }
+            } 
+        }
+        
+        return allCategories;
     }
 
 }

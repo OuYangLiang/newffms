@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,11 +28,18 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private UserProfileService userProfileService;
 
-    public List<CategoryConsumption> queryCategoryConsumptions(Date start, Date end) throws SQLException {
-        
+    public List<CategoryConsumption> queryCategoryConsumptions(Date start, Date end,
+            Set<BigDecimal> excludingRootCategoryOids) throws SQLException {
+
         List<PersonalConsumption> personalConsumptions = consumptionService.queryPersonalConsumption(start, end);
-        List<Category> allCategories = categoryService.select(null);
-        List<UserProfile> allUsers = userProfileService.select(null);
+        List<UserProfile> allUsers = userProfileService.selectAllUsers();
+        List<Category> allCategories = null;
+        
+        if (null == excludingRootCategoryOids) {
+            allCategories = categoryService.selectAllCategories();
+        } else {
+            allCategories = categoryService.selectAllCategoriesWithExclusion(excludingRootCategoryOids);
+        }
         
         List<CategoryConsumption> rlt = new ArrayList<CategoryConsumption>();
         
@@ -60,9 +68,14 @@ public class ReportServiceImpl implements ReportService {
         //开始干活。
         
         for (PersonalConsumption personalConsumption : personalConsumptions) {
-            personalConsumption.setUserName(userMap.get(personalConsumption.getUserOid()).getUserName());//需要优化
-            
             BigDecimal key = personalConsumption.getCategoryOid();
+            
+            if (!catMap.containsKey(key)) {
+                //对应的category已经被排除。
+                continue;
+            }
+            
+            personalConsumption.setUserName(userMap.get(personalConsumption.getUserOid()).getUserName());//需要优化
             
             do {
                 Category category = catMap.get(key);

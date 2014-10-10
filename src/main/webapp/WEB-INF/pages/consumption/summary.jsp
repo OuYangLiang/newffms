@@ -125,7 +125,7 @@
             	
                 $ ("#btn-query").click(function(){
                     $.ajax({
-                    	cache: true,
+                    	cache: false,
                     	url: "<c:url value='/consumption/search' />",
                     	type: "POST",
                     	async: true,

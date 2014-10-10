@@ -207,9 +207,15 @@
                     $('#container3').highcharts(options3);
             	};
             	
-            	$.getJSON('<c:url value="/report/consumptionDataSource" />', function(data) {
-            		refresh(data);
-            	});
+            	$.ajax({
+                    cache: false,
+                    url: '<c:url value="/report/consumptionDataSource" />',
+                    type: "POST",
+                    async: true,
+                    success: function(data) {
+                        refresh(data);
+                    }
+                });
             	
             	doQuery = function() {
             	    var selectedCategories = [];
@@ -237,9 +243,7 @@
                             
                             queryStr = "?queryMethod=3&start=" + p1 + "&end=" + p2;
                         }else {
-                        	alert("not pass");
                             return;
-                            alert("not pass");
                         }
                             
                     }
@@ -248,9 +252,14 @@
                         queryStr = queryStr + "&excludeCategories=" + selectedCategories.join("|");
                     }
                     
-                    
-                    $.getJSON('<c:url value="/report/consumptionDataSource" />' + queryStr, function(data) {
-                        refresh(data);
+                    $.ajax({
+                        cache: false,
+                        url: '<c:url value="/report/consumptionDataSource" />' + queryStr,
+                        type: "POST",
+                        async: true,
+                        success: function(data) {
+                            refresh(data);
+                        }
                     });
             	};
             	

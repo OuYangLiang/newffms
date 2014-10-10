@@ -138,6 +138,12 @@ public class ReportController {
         HighChartGraphResult rlt = new HighChartGraphResult();
         List<HightChartSeries> seriesList = new ArrayList<HightChartSeries>();
         rlt.setSeries(seriesList);
+        
+        if (total.compareTo(BigDecimal.ZERO) == 0) {
+            //总消费为0的话，值图无意义。
+            return rlt;
+        }
+        
         HightChartSeries series = new HightChartSeries();
         series.setName("消费比");
         series.setType("pie");

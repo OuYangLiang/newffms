@@ -29,6 +29,9 @@
     <bean id="accountAuditService"
         class="com.personal.oyl.newffms.service.impl.AccountAuditServiceImpl" />
         
+    <bean id="incomingService"
+        class="com.personal.oyl.newffms.service.impl.IncomingServiceImpl" />
+        
     <bean id="transactionService"
         class="com.personal.oyl.newffms.service.impl.TransactionServiceImpl" />
         

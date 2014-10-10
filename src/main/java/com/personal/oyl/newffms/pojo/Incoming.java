@@ -12,8 +12,11 @@ public class Incoming extends BasePojo {
     private IncomingType incomingType;
     private Boolean confirmed;
     private BigDecimal ownerOid;
-    private Date incomingTime;
+    private Date incomingDate;
     private BaseObject baseObject;
+    
+    //extended field
+    private String owner;
 
     public BigDecimal getIncomingOid() {
         return incomingOid;
@@ -63,12 +66,12 @@ public class Incoming extends BasePojo {
         this.ownerOid = ownerOid;
     }
 
-    public Date getIncomingTime() {
-        return incomingTime;
+    public Date getIncomingDate() {
+        return incomingDate;
     }
 
-    public void setIncomingTime(Date incomingTime) {
-        this.incomingTime = incomingTime;
+    public void setIncomingDate(Date incomingDate) {
+        this.incomingDate = incomingDate;
     }
 
     public BaseObject getBaseObject() {
@@ -77,6 +80,14 @@ public class Incoming extends BasePojo {
 
     public void setBaseObject(BaseObject baseObject) {
         this.baseObject = baseObject;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Override

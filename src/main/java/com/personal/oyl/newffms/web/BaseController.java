@@ -17,6 +17,7 @@ import com.personal.oyl.newffms.service.AccountService;
 import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
+import com.personal.oyl.newffms.service.IncomingService;
 import com.personal.oyl.newffms.service.TransactionService;
 import com.personal.oyl.newffms.service.UserProfileService;
 
@@ -33,6 +34,8 @@ public class BaseController {
     protected ConsumptionItemService consumptionItemService;
     @Autowired
     protected AccountService accountService;
+    @Autowired
+    protected IncomingService incomingService;
     
     protected boolean isKeepSearchParameter(HttpServletRequest request)
     {

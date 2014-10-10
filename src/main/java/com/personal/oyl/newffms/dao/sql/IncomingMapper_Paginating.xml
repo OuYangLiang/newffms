@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.IncomingDao">
+	<resultMap id="GridResultMap" type="com.personal.oyl.newffms.pojo.Incoming">
+		<id column="INCOMING_OID" property="incomingOid" jdbcType="DECIMAL" />
+        <result column="INCOMING_DESC" property="incomingDesc" jdbcType="NVARCHAR" />
+        <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+        <result column="INCOMING_TYPE" property="incomingType" jdbcType="VARCHAR" />
+        <result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
+        <result column="OWNER" property="owner" jdbcType="NVARCHAR" />
+        <result column="INCOMING_DATE" property="incomingDate" jdbcType="TIMESTAMP" />
+        <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
+	</resultMap>
+
+
+	<sql id="Grid_Column_List">
+        INCOMING_OID, INCOMING_DESC, AMOUNT, INCOMING_TYPE, CONFIRMED, U.USER_NAME AS OWNER, INCOMING_DATE, I.CREATE_BY
+	</sql>
+
+    <select id="getCountOfSummary" parameterType="com.personal.oyl.newffms.pojo.Incoming" resultType="int">
+        SELECT COUNT(*)
+            FROM INCOMING
+        <where>
+            <if test="ownerOid != null">
+                OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="incomingType != null">
+                INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <select id="getListOfSummary" parameterType="com.personal.oyl.newffms.pojo.Incoming" resultMap="GridResultMap">
+        SELECT <include refid="Grid_Column_List" />
+            FROM INCOMING I, USER_PROFILE U
+            WHERE I.OWNER_OID = U.USER_OID
+        <where>
+            <if test="ownerOid != null">
+                OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="incomingType != null">
+                INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <if test="sortField == null" >
+            ORDER BY INCOMING_DATE DESC
+        </if>
+        <if test="sortField != null" >
+            ORDER BY ${sortField} ${sortDir}
+        </if>
+        LIMIT #{start}, #{sizePerPage}
+    </select>
+
+</mapper>

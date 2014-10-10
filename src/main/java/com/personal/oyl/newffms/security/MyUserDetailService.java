@@ -70,6 +70,24 @@ public class MyUserDetailService implements UserDetailsService {
         AUTHORITIES.add(new SimpleGrantedAuthority("/account/ajaxGetAllAccounts"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/category/ajaxGetAllCategories"));
         
+        
+        
+        
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/summary"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/search"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/listOfSummary"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/initAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/confirmAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/saveAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/view"));
+        
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/delete"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/confirm"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/rollback"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/initEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/confirmEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/saveEdit"));
+        
         return new User(username, user.getLoginPwd(), AUTHORITIES);
     }
 

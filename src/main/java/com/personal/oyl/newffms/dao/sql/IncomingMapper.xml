@@ -8,7 +8,7 @@
 		<result column="INCOMING_TYPE" property="incomingType" jdbcType="VARCHAR" />
 		<result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
         <result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
-        <result column="INCOMING_TIME" property="incomingTime" jdbcType="TIMESTAMP" />
+        <result column="INCOMING_DATE" property="incomingTime" jdbcType="TIMESTAMP" />
         <result column="CREATE_TIME" property="baseObject.createTime" jdbcType="TIMESTAMP" />
         <result column="UPDATE_TIME" property="baseObject.updateTime" jdbcType="TIMESTAMP" />
         <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
@@ -18,7 +18,7 @@
 
 
 	<sql id="Base_Column_List">
-        INCOMING_OID, INCOMING_DESC, AMOUNT, INCOMINT_TYPE, CONFIRMED, OWNER_OID, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
+        INCOMING_OID, INCOMING_DESC, AMOUNT, INCOMINT_TYPE, CONFIRMED, OWNER_OID, INCOMING_DATE, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
 	</sql>
 
 
@@ -44,6 +44,9 @@
 			<if test="ownerOid != null">
 				AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
 			</if>
+			<if test="incomingDate != null">
+                AND INCOMING_DATE = #{incomingDate,jdbcType=TIMESTAMP}
+            </if>
 			<if test="baseObject != null and baseObject.createTime != null">
                 AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
             </if>
@@ -84,6 +87,9 @@
             <if test="ownerOid != null">
                 AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
             </if>
+            <if test="incomingDate != null">
+                AND INCOMING_DATE = #{incomingDate,jdbcType=TIMESTAMP}
+            </if>
             <if test="baseObject != null and baseObject.createTime != null">
                 AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
             </if>
@@ -106,7 +112,7 @@
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Incoming">
         INSERT INTO INCOMING(<include refid="Base_Column_List" />)
         VALUES (#{incomingOid,jdbcType=DECIMAL}, #{incomingDesc,jdbcType=NVARCHAR}, #{balance,jdbcType=DECIMAL}, #{incomingType,jdbcType=VARCHAR},
-                #{confirmed,jdbcType=BIT}, #{ownerOid,jdbcType=DECIMAL},
+                #{confirmed,jdbcType=BIT}, #{ownerOid,jdbcType=DECIMAL}, #{incomingDate,jdbcType=TIMESTAMP}
                 #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
     </insert>
     
@@ -128,6 +134,9 @@
             </if>
             <if test="ownerOid != null">
                 OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            </if>
+            <if test="incomingDate != null">
+                INCOMING_DATE = #{incomingDate,jdbcType=TIMESTAMP},
             </if>
             <if test="baseObject != null and baseObject.createTime != null">
                 CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
@@ -157,6 +166,7 @@
             INCOMINT_TYPE = #{incomingtype,jdbcType=VARCHAR},
             CONFIRMED = #{confirmed,jdbcType=BIT},
             OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
+            INCOMING_DATE = #{incomingDate,jdbcType=TIMESTAMP},
             CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
             CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},

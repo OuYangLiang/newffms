@@ -21,4 +21,10 @@ public interface TransactionService {
     public void createIncoming(Incoming form) throws SQLException;
     
     public void updateIncoming(Incoming form) throws SQLException;
+    
+    public void deleteIncoming(BigDecimal incomingOid) throws SQLException;
+    
+    public void confirmIncoming(BigDecimal incomingOid, String operator) throws SQLException;
+    
+    public void rollbackIncoming(BigDecimal incomingOid, String operator) throws SQLException;
 }

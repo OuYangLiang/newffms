@@ -11,5 +11,7 @@ import com.personal.oyl.newffms.pojo.Incoming;
 public interface IncomingService extends BaseService<Incoming>, DbActionService<Incoming>, PaginatingService<Incoming> {
     
     public Incoming selectByKey(BigDecimal incomingOid) throws SQLException;
+    
+    public void deleteByKey(BigDecimal incomingOid) throws SQLException;
 
 }

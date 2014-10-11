@@ -194,4 +194,20 @@ public class TransactionServiceImpl implements TransactionService {
         accountIncomingService.insert(param);
     }
 
+    public void deleteIncoming(BigDecimal incomingOid) throws SQLException {
+        accountIncomingService.deleteByIncoming(incomingOid);
+        
+        incomingService.deleteByKey(incomingOid);
+    }
+
+    public void confirmIncoming(BigDecimal incomingOid, String operator) throws SQLException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void rollbackIncoming(BigDecimal incomingOid, String operator) throws SQLException {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

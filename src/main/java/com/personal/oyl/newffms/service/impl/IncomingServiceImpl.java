@@ -12,34 +12,34 @@ import com.personal.oyl.newffms.service.IncomingService;
 
 public class IncomingServiceImpl implements IncomingService {
     @Autowired
-    private IncomingDao incomingDao;
+    private IncomingDao dao;
 
     public List<Incoming> select(Incoming param) throws SQLException {
-        return incomingDao.select(param);
+        return dao.select(param);
     }
 
     public void insert(Incoming param) throws SQLException {
-        incomingDao.insert(param);
+        dao.insert(param);
     }
 
     public void updateByPrimaryKeySelective(Incoming param) throws SQLException {
-        incomingDao.updateByKeySelectively(param);
+        dao.updateByKeySelectively(param);
     }
 
     public void updateByPrimaryKey(Incoming param) throws SQLException {
-        incomingDao.updateByKey(param);
+        dao.updateByKey(param);
     }
 
     public void delete(Incoming param) throws SQLException {
-        incomingDao.delete(param);
+        dao.delete(param);
     }
 
     public int getCountOfSummary(Incoming param) throws SQLException {
-        return incomingDao.getCountOfSummary(param);
+        return dao.getCountOfSummary(param);
     }
 
     public List<Incoming> getListOfSummary(Incoming param) throws SQLException {
-        return incomingDao.getListOfSummary(param);
+        return dao.getListOfSummary(param);
     }
 
     public Incoming selectByKey(BigDecimal incomingOid) throws SQLException {
@@ -53,6 +53,13 @@ public class IncomingServiceImpl implements IncomingService {
         }
         
         return null;
+    }
+
+    public void deleteByKey(BigDecimal incomingOid) throws SQLException {
+        Incoming param = new Incoming();
+        param.setIncomingOid(incomingOid);
+        
+        this.delete(param);
     }
 
 }

@@ -287,7 +287,7 @@ public class ConsumptionController extends BaseController{
     public String delete(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
         transactionService.deleteConsumption(cpnOid);
         
-        return "consumption/summary";
+        return "redirect:/consumption/summary?keepSp=Y";
     }
     
     @RequestMapping("/confirm")

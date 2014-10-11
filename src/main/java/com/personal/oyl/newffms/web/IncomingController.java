@@ -226,4 +226,25 @@ public class IncomingController extends BaseController{
         
         return "incoming/summary";
     }
+    
+    @RequestMapping("/delete")
+    public String delete(@RequestParam("incomingOid") BigDecimal incomingOid, Model model) throws SQLException {
+        transactionService.deleteIncoming(incomingOid);
+        
+        return "redirect:/incoming/summary?keepSp=Y";
+    }
+    
+    @RequestMapping("/confirm")
+    public String confirm(@RequestParam("incomingOid") BigDecimal incomingOid, Model model, HttpSession session) throws SQLException {
+        transactionService.confirmIncoming(incomingOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
+        
+        return "redirect:/incoming/summary?keepSp=Y";
+    }
+    
+    @RequestMapping("/rollback")
+    public String rollback(@RequestParam("incomingOid") BigDecimal incomingOid, Model model, HttpSession session) throws SQLException {
+        transactionService.rollbackIncoming(incomingOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
+        
+        return "redirect:/incoming/summary?keepSp=Y";
+    }
 }

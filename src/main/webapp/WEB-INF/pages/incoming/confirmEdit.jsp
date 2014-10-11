@@ -5,11 +5,11 @@
     <body>
         <div class="button-area">
             <button id="btn-save">确认</button>
-            <button id="btn-cancel">返回</button>
+            <button id="btn-back">返回</button>
         </div>
         
         <div class="content-header ui-widget-header">
-            收入<span style="font-size: 80%;"> - 新建确认</span>
+            收入<span style="font-size: 80%;"> - 修改确认</span>
         </div>
         
         <div class="contentWrapper">
@@ -82,12 +82,12 @@
         
         <script>
             $( document ).ready(function() {
-            	$ ("#btn-cancel").click(function(){
-                    window.location.href = "<c:url value='/incoming/initAdd' />";
+            	$ ("#btn-back").click(function(){
+                    window.location.href = "<c:url value='/incoming/initEdit' />";
                 });
                 
                 $ ("#btn-save").click(function(){
-                    window.location.href = "<c:url value='/incoming/saveAdd' />";
+                    window.location.href = "<c:url value='/incoming/saveEdit' />";
                 });
                 
                 $ (".button-area button").button();

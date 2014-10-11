@@ -47,4 +47,11 @@ public class AccountIncomingServiceImpl implements AccountIncomingService {
         return null;
     }
 
+    public void deleteByIncoming(BigDecimal incomingOid) throws SQLException {
+        AccountIncoming param = new AccountIncoming();
+        param.setIncomingOid(incomingOid);
+        
+        dao.delete(param);
+    }
+
 }

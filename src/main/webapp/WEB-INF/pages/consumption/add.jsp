@@ -11,7 +11,7 @@
     <body>
         <div class="button-area">
             <button id="btn-save">新建</button>
-            <button id="btn-cancel">取消</button>
+            <button id="btn-cancel">返回</button>
         </div>
         
         <spring:errors path="errors" />

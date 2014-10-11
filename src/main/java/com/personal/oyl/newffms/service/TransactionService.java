@@ -19,4 +19,6 @@ public interface TransactionService {
     
     
     public void createIncoming(Incoming form) throws SQLException;
+    
+    public void updateIncoming(Incoming form) throws SQLException;
 }

@@ -10,4 +10,6 @@ import com.personal.oyl.newffms.pojo.AccountIncoming;
 public interface AccountIncomingService extends BaseService<AccountIncoming>, DbActionService<AccountIncoming> {
 
     public AccountIncoming selectByIncoming(BigDecimal incomingOid) throws SQLException;
+    
+    public void deleteByIncoming(BigDecimal incomingOid) throws SQLException;
 }

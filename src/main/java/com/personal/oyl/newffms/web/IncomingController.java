@@ -21,11 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.IncomingType;
 import com.personal.oyl.newffms.pojo.Account;
-import com.personal.oyl.newffms.pojo.AccountIncoming;
 import com.personal.oyl.newffms.pojo.BaseObject;
-import com.personal.oyl.newffms.pojo.Consumption;
-import com.personal.oyl.newffms.pojo.ConsumptionForm;
-import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.validator.IncomingValidator;
@@ -172,5 +168,62 @@ public class IncomingController extends BaseController{
         model.addAttribute("incomingForm", form);
         
         return "incoming/view";
+    }
+    
+    @RequestMapping("/initEdit")
+    public String initEdit(@RequestParam(value="incomingOid", required=false) BigDecimal incomingOid, Model model, HttpSession session) throws SQLException {
+        
+        Incoming form = null;
+        
+        if (null != session.getAttribute("incomingForm")) {
+            form = (Incoming) session.getAttribute("incomingForm");
+        }
+        else {
+            form = incomingService.selectByKey(incomingOid);
+            Account acnt = accountService.queryAccountsByIncoming(incomingOid);
+            
+            form.setAcntOid(acnt.getAcntOid());
+            form.setAcntHumanDesc(acnt.getAcntHumanDesc());
+        }
+        
+        model.addAttribute("incomingForm", form);
+        model.addAttribute("incomingTypes", IncomingType.toMapValue());
+        model.addAttribute("users", userProfileService.selectAllUsers());
+        
+        return "incoming/edit";
+    }
+    
+    @RequestMapping("/confirmEdit")
+    public String confirmEdit(@Valid @ModelAttribute("incomingForm") Incoming form, BindingResult result, Model model, HttpSession session) throws SQLException {
+        if (result.hasErrors()) {
+            model.addAttribute("incomingTypes", IncomingType.toMapValue());
+            model.addAttribute("users", userProfileService.selectAllUsers());
+            model.addAttribute("validation", false);
+            
+            return "incoming/edit";
+        }
+        
+        form.setOwner(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        
+        session.setAttribute("incomingForm", form);
+        
+        return "incoming/confirmEdit";
+    }
+    
+    @RequestMapping("/saveEdit")
+    public String saveEdit(Model model, HttpSession session) throws SQLException {
+        Incoming form = (Incoming) session.getAttribute("incomingForm");
+        
+        Incoming oldObj = incomingService.selectByKey(form.getIncomingOid());
+        form.setBaseObject(new BaseObject());
+        form.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        form.getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());
+        form.getBaseObject().setUpdateTime(new Date());
+        
+        transactionService.updateIncoming(form);
+        
+        session.removeAttribute("incomingForm");
+        
+        return "incoming/summary";
     }
 }

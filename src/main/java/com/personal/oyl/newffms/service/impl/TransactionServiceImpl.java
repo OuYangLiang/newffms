@@ -182,4 +182,16 @@ public class TransactionServiceImpl implements TransactionService {
         
     }
 
+    public void updateIncoming(Incoming form) throws SQLException {
+        incomingService.updateByPrimaryKeySelective(form);
+        
+        accountIncomingService.deleteByIncoming(form.getIncomingOid());
+        
+        AccountIncoming param = new AccountIncoming();
+        param.setAcntOid(form.getAcntOid());
+        param.setIncomingOid(form.getIncomingOid());
+        
+        accountIncomingService.insert(param);
+    }
+
 }

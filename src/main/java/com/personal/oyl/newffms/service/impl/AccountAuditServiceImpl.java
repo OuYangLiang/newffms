@@ -41,4 +41,11 @@ public class AccountAuditServiceImpl implements AccountAuditService {
         this.delete(param);
     }
 
+    public void deleteByIncoming(BigDecimal incomingOid) throws SQLException {
+        AccountAudit param = new AccountAudit();
+        param.setIncomingOid(incomingOid);
+        
+        this.delete(param);
+    }
+
 }

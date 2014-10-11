@@ -201,13 +201,78 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public void confirmIncoming(BigDecimal incomingOid, String operator) throws SQLException {
-        // TODO Auto-generated method stub
+        Date now = new Date();
+        Incoming oldObj = incomingService.selectByKey(incomingOid);
         
+        Incoming newObj = new Incoming();
+        newObj.setIncomingOid(incomingOid);
+        newObj.setConfirmed(true);
+        newObj.setBaseObject(new BaseObject());
+        newObj.getBaseObject().setUpdateTime(now);
+        newObj.getBaseObject().setUpdateBy(operator);
+        newObj.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        
+        incomingService.updateByPrimaryKeySelective(newObj);
+        
+        AccountIncoming acntIncoming = accountIncomingService.selectByIncoming(incomingOid);
+        Account oldAcnt = accountService.selectByKey(acntIncoming.getAcntOid());
+        oldAcnt.add(oldObj.getAmount());
+        oldAcnt.getBaseObject().setUpdateTime(now);
+        oldAcnt.getBaseObject().setUpdateBy(operator);
+        
+        oldAcnt.setAcntDesc(null);
+        oldAcnt.setAcntType(null);
+        oldAcnt.setQuota(null);
+        oldAcnt.setOwnerOid(null);
+        oldAcnt.getBaseObject().setCreateBy(null);
+        oldAcnt.getBaseObject().setCreateTime(null);
+        
+        accountService.updateByPrimaryKeySelective(oldAcnt);
+        
+        AccountAudit audit = new AccountAudit();
+        audit.setBaseObject(new BaseObject());
+        audit.getBaseObject().setCreateBy(operator);
+        audit.getBaseObject().setCreateTime(now);
+        
+        audit.setAdtDesc("[" + oldObj.getIncomingType().getDesc() + "], " + oldObj.getIncomingDesc());
+        audit.setAdtType(AccountAuditType.Add);
+        audit.setAmount(oldObj.getAmount());
+        audit.setConfirmed(true);
+        audit.setAcntOid(oldAcnt.getAcntOid());
+        audit.setIncomingOid(incomingOid);
+        
+        accountAuditService.insert(audit);
     }
 
     public void rollbackIncoming(BigDecimal incomingOid, String operator) throws SQLException {
-        // TODO Auto-generated method stub
+        Date now = new Date();
+        Incoming oldObj = incomingService.selectByKey(incomingOid);
         
+        Incoming newObj = new Incoming();
+        newObj.setIncomingOid(incomingOid);
+        newObj.setConfirmed(false);
+        newObj.setBaseObject(new BaseObject());
+        newObj.getBaseObject().setUpdateTime(now);
+        newObj.getBaseObject().setUpdateBy(operator);
+        newObj.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        
+        incomingService.updateByPrimaryKeySelective(newObj);
+        accountAuditService.deleteByIncoming(incomingOid);
+        
+        AccountIncoming acntIncoming = accountIncomingService.selectByIncoming(incomingOid);
+        Account oldAcnt = accountService.selectByKey(acntIncoming.getAcntOid());
+        oldAcnt.subtract(oldObj.getAmount());
+        oldAcnt.getBaseObject().setUpdateTime(now);
+        oldAcnt.getBaseObject().setUpdateBy(operator);
+        
+        oldAcnt.setAcntDesc(null);
+        oldAcnt.setAcntType(null);
+        oldAcnt.setQuota(null);
+        oldAcnt.setOwnerOid(null);
+        oldAcnt.getBaseObject().setCreateBy(null);
+        oldAcnt.getBaseObject().setCreateTime(null);
+        
+        accountService.updateByPrimaryKeySelective(oldAcnt);
     }
 
 }

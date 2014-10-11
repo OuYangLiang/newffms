@@ -9,4 +9,6 @@ import com.personal.oyl.newffms.pojo.AccountAudit;
 
 public interface AccountAuditService extends BaseService<AccountAudit>, DbActionService<AccountAudit> {
     public void deleteByConsumption(BigDecimal cpnOid) throws SQLException;
+    
+    public void deleteByIncoming(BigDecimal incomingOid) throws SQLException;
 }

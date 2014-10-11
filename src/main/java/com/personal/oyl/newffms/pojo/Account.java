@@ -145,7 +145,7 @@ public class Account extends BasePojo {
         this.setBalance(balance.subtract(value));
         
         if (AccountType.Creditcard.equals(acntType)) {
-            this.setQuota(quota.add(value));
+            this.setDebt(debt.add(value));
         }
     }
     
@@ -153,7 +153,7 @@ public class Account extends BasePojo {
         this.setBalance(balance.add(value));
         
         if (AccountType.Creditcard.equals(acntType)) {
-            this.setQuota(quota.subtract(value));
+            this.setDebt(debt.subtract(value));
         }
     }
 

@@ -8,7 +8,7 @@
 		<result column="INCOMING_TYPE" property="incomingType" jdbcType="VARCHAR" />
 		<result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
         <result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
-        <result column="INCOMING_DATE" property="incomingTime" jdbcType="TIMESTAMP" />
+        <result column="INCOMING_DATE" property="incomingDate" jdbcType="TIMESTAMP" />
         <result column="CREATE_TIME" property="baseObject.createTime" jdbcType="TIMESTAMP" />
         <result column="UPDATE_TIME" property="baseObject.updateTime" jdbcType="TIMESTAMP" />
         <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />

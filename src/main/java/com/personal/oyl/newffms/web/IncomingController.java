@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.web;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -19,7 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.IncomingType;
+import com.personal.oyl.newffms.pojo.Account;
+import com.personal.oyl.newffms.pojo.AccountIncoming;
 import com.personal.oyl.newffms.pojo.BaseObject;
+import com.personal.oyl.newffms.pojo.Consumption;
+import com.personal.oyl.newffms.pojo.ConsumptionForm;
+import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.validator.IncomingValidator;
@@ -152,5 +158,19 @@ public class IncomingController extends BaseController{
         session.removeAttribute("incomingForm");
         
         return "incoming/summary";
+    }
+    
+    @RequestMapping("/view")
+    public String view(@RequestParam("incomingOid") BigDecimal incomingOid, Model model) throws SQLException {
+        Incoming form = incomingService.selectByKey(incomingOid);
+        Account acnt = accountService.queryAccountsByIncoming(incomingOid);
+        
+        form.setOwner(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        form.setAcntOid(acnt.getAcntOid());
+        form.setAcntHumanDesc(acnt.getAcntHumanDesc());
+        
+        model.addAttribute("incomingForm", form);
+        
+        return "incoming/view";
     }
 }

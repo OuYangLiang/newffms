@@ -83,7 +83,7 @@
                         { sortable: false, name: "baseObject.createBy", width: 180, align: "center" },
                         { sortable: false, name: "confirmed", width: 100, align: "center", formatter:function(cellvalue){return cellvalue?"确认":"初始";}},
                         { sortable: false, align: "center", formatter:function (cellvalue, options, rowObject){
-                            var url = '<c:url value='/incomping/view' />' + '?incomingOid=' + rowObject.incomingOid;
+                            var url = '<c:url value='/incoming/view' />' + '?incomingOid=' + rowObject.incomingOid;
                             
                             var href = 'javascript:window.location.href="' + url + '"';
                             

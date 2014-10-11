@@ -12,4 +12,6 @@ public interface AccountDao extends BaseDao<Account>, DbActionDao<Account> {
     public List<Account> queryAccounts() throws SQLException;
     
     public List<Account> queryAccountsByConsumption(BigDecimal cpnOid) throws SQLException;
+    
+    public Account queryAccountsByIncoming(BigDecimal incomingOid) throws SQLException;
 }

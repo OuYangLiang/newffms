@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -39,6 +40,19 @@ public class IncomingServiceImpl implements IncomingService {
 
     public List<Incoming> getListOfSummary(Incoming param) throws SQLException {
         return incomingDao.getListOfSummary(param);
+    }
+
+    public Incoming selectByKey(BigDecimal incomingOid) throws SQLException {
+        Incoming param = new Incoming();
+        param.setIncomingOid(incomingOid);
+        
+        List<Incoming> list = this.select(param);
+        
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        
+        return null;
     }
 
 }

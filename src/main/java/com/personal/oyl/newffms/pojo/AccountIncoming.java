@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class AccountIncoming extends BasePojo {
     private BigDecimal acntOid;
+    private BigDecimal incomingOid;
 
     public BigDecimal getAcntOid() {
         return acntOid;
@@ -20,7 +21,5 @@ public class AccountIncoming extends BasePojo {
     public void setIncomingOid(BigDecimal incomingOid) {
         this.incomingOid = incomingOid;
     }
-
-    private BigDecimal incomingOid;
 
 }

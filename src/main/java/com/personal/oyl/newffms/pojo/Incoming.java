@@ -17,6 +17,8 @@ public class Incoming extends BasePojo {
     
     //extended field
     private String owner;
+    private BigDecimal acntOid;
+    private String acntHumanDesc;
 
     public BigDecimal getIncomingOid() {
         return incomingOid;
@@ -88,6 +90,22 @@ public class Incoming extends BasePojo {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public BigDecimal getAcntOid() {
+        return acntOid;
+    }
+
+    public void setAcntOid(BigDecimal acntOid) {
+        this.acntOid = acntOid;
+    }
+
+    public String getAcntHumanDesc() {
+        return acntHumanDesc;
+    }
+
+    public void setAcntHumanDesc(String acntHumanDesc) {
+        this.acntHumanDesc = acntHumanDesc;
     }
 
     @Override

@@ -18,7 +18,7 @@
 
 
 	<sql id="Base_Column_List">
-        INCOMING_OID, INCOMING_DESC, AMOUNT, INCOMINT_TYPE, CONFIRMED, OWNER_OID, INCOMING_DATE, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
+        INCOMING_OID, INCOMING_DESC, AMOUNT, INCOMING_TYPE, CONFIRMED, OWNER_OID, INCOMING_DATE, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
 	</sql>
 
 
@@ -109,11 +109,11 @@
     </delete>
     
     
-    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Incoming">
-        INSERT INTO INCOMING(<include refid="Base_Column_List" />)
-        VALUES (#{incomingOid,jdbcType=DECIMAL}, #{incomingDesc,jdbcType=NVARCHAR}, #{balance,jdbcType=DECIMAL}, #{incomingType,jdbcType=VARCHAR},
-                #{confirmed,jdbcType=BIT}, #{ownerOid,jdbcType=DECIMAL}, #{incomingDate,jdbcType=TIMESTAMP}
-                #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Incoming" useGeneratedKeys="true" keyProperty="incomingOid">
+        INSERT INTO INCOMING(INCOMING_DESC, AMOUNT, INCOMING_TYPE, CONFIRMED, OWNER_OID, INCOMING_DATE, CREATE_TIME, CREATE_BY)
+        VALUES (#{incomingDesc,jdbcType=NVARCHAR}, #{amount,jdbcType=DECIMAL}, #{incomingType,jdbcType=VARCHAR},
+                #{confirmed,jdbcType=BIT}, #{ownerOid,jdbcType=DECIMAL}, #{incomingDate,jdbcType=TIMESTAMP},
+                #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR})
     </insert>
     
     
@@ -126,8 +126,8 @@
             <if test="amount != null">
                 AMOUNT = #{amount,jdbcType=DECIMAL},
             </if>
-            <if test="incomingtype != null">
-                INCOMINT_TYPE = #{incomingtype,jdbcType=VARCHAR},
+            <if test="incomingType != null">
+                INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR},
             </if>
             <if test="confirmed != null">
                 CONFIRMED = #{confirmed,jdbcType=BIT},
@@ -163,7 +163,7 @@
         SET
             INCOMING_DESC = #{incomingDesc,jdbcType=NVARCHAR},
             AMOUNT = #{amount,jdbcType=DECIMAL},
-            INCOMINT_TYPE = #{incomingtype,jdbcType=VARCHAR},
+            INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR},
             CONFIRMED = #{confirmed,jdbcType=BIT},
             OWNER_OID = #{ownerOid,jdbcType=DECIMAL},
             INCOMING_DATE = #{incomingDate,jdbcType=TIMESTAMP},

@@ -32,6 +32,9 @@
     <bean id="incomingService"
         class="com.personal.oyl.newffms.service.impl.IncomingServiceImpl" />
         
+    <bean id="accountIncomingService"
+        class="com.personal.oyl.newffms.service.impl.AccountIncomingServiceImpl" />
+        
     <bean id="transactionService"
         class="com.personal.oyl.newffms.service.impl.TransactionServiceImpl" />
         

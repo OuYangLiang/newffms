@@ -1,5 +1,8 @@
 package com.personal.oyl.newffms.constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum IncomingType {
     Salary("工资"),
     Bonus("奖金"),
@@ -16,5 +19,16 @@ public enum IncomingType {
     public String getDesc()
     {
         return desc;
+    }
+    
+    public static Map<String, String> toMapValue()
+    {
+        Map<String,String> rlt = new HashMap<String,String>();
+        for (IncomingType ms : IncomingType.values())
+        {
+            rlt.put(ms.name(), ms.getDesc());
+        }
+        
+        return rlt;
     }
 }

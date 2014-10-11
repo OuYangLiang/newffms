@@ -11,15 +11,19 @@ import com.personal.oyl.newffms.constants.AccountAuditType;
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.AccountAudit;
 import com.personal.oyl.newffms.pojo.AccountConsumption;
+import com.personal.oyl.newffms.pojo.AccountIncoming;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
+import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.service.AccountAuditService;
 import com.personal.oyl.newffms.service.AccountConsumptionService;
+import com.personal.oyl.newffms.service.AccountIncomingService;
 import com.personal.oyl.newffms.service.AccountService;
 import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
+import com.personal.oyl.newffms.service.IncomingService;
 import com.personal.oyl.newffms.service.TransactionService;
 
 public class TransactionServiceImpl implements TransactionService {
@@ -33,6 +37,10 @@ public class TransactionServiceImpl implements TransactionService {
     private AccountService accountService;
     @Autowired
     private AccountAuditService accountAuditService;
+    @Autowired
+    private IncomingService incomingService;
+    @Autowired
+    private AccountIncomingService accountIncomingService;
 
     public void createConsumption(ConsumptionForm form) throws SQLException {
         consumptionService.insert(form.getConsumption());
@@ -161,6 +169,17 @@ public class TransactionServiceImpl implements TransactionService {
             
             accountService.updateByPrimaryKeySelective(oldAcnt);
         }
+    }
+
+    public void createIncoming(Incoming form) throws SQLException {
+        incomingService.insert(form);
+        
+        AccountIncoming param = new AccountIncoming();
+        param.setAcntOid(form.getAcntOid());
+        param.setIncomingOid(form.getIncomingOid());
+        
+        accountIncomingService.insert(param);
+        
     }
 
 }

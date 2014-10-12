@@ -47,6 +47,12 @@
 			<if test="incomingDate != null">
                 AND INCOMING_DATE = #{incomingDate,jdbcType=TIMESTAMP}
             </if>
+            <if test="incomingDateFrom != null">
+                AND INCOMING_DATE >= #{incomingDateFrom,jdbcType=TIMESTAMP}
+            </if>
+            <if test="incomingDateTo != null">
+                AND INCOMING_DATE <![CDATA[<=]]> #{incomingDateTo,jdbcType=TIMESTAMP}
+            </if>
 			<if test="baseObject != null and baseObject.createTime != null">
                 AND CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP}
             </if>

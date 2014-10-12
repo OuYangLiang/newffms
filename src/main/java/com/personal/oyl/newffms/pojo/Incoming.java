@@ -19,6 +19,8 @@ public class Incoming extends BasePojo {
     private String owner;
     private BigDecimal acntOid;
     private String acntHumanDesc;
+    private Date incomingDateFrom;
+    private Date incomingDateTo;
 
     public BigDecimal getIncomingOid() {
         return incomingOid;
@@ -106,6 +108,22 @@ public class Incoming extends BasePojo {
 
     public void setAcntHumanDesc(String acntHumanDesc) {
         this.acntHumanDesc = acntHumanDesc;
+    }
+
+    public Date getIncomingDateFrom() {
+        return incomingDateFrom;
+    }
+
+    public void setIncomingDateFrom(Date incomingDateFrom) {
+        this.incomingDateFrom = incomingDateFrom;
+    }
+
+    public Date getIncomingDateTo() {
+        return incomingDateTo;
+    }
+
+    public void setIncomingDateTo(Date incomingDateTo) {
+        this.incomingDateTo = incomingDateTo;
     }
 
     @Override

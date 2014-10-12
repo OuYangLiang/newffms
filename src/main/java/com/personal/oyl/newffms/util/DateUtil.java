@@ -79,6 +79,30 @@ public class DateUtil {
         return c.getTime();
     }
     
+    public Date getFirstTimeOfYear(String year) {
+        Calendar c = Calendar.getInstance();
+        c.set(Integer.parseInt(year), 0, 1, 0, 0, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        
+        return c.getTime();
+    }
+    
+    public Date getLastTimeOfYear(String year) {
+        Calendar c = Calendar.getInstance();
+        c.set(Integer.parseInt(year), 11, 31, 23, 59, 59);
+        c.set(Calendar.MILLISECOND, 999);
+        
+        return c.getTime();
+    }
+    
+    public Date getNextMonthTime(Date param) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(param);
+        c.add(Calendar.MONTH, 1);
+        
+        return c.getTime();
+    }
+    
     public static void main(String[] args) {
         System.out.println(DateUtil.getInstance().getFirstTimeOfCurrentMonth());
         System.out.println(DateUtil.getInstance().getFirstTimeOfLastMonth());

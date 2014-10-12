@@ -2,6 +2,8 @@ package com.personal.oyl.newffms.service;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 
 import com.personal.oyl.newffms.base.service.BaseService;
 import com.personal.oyl.newffms.base.service.DbActionService;
@@ -13,5 +15,7 @@ public interface IncomingService extends BaseService<Incoming>, DbActionService<
     public Incoming selectByKey(BigDecimal incomingOid) throws SQLException;
     
     public void deleteByKey(BigDecimal incomingOid) throws SQLException;
+    
+    public List<Incoming> selectByIncomingDateRange(Date incomingDateFrom, Date incomingDateTo) throws SQLException;
 
 }

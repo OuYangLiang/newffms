@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,14 @@ public class IncomingServiceImpl implements IncomingService {
         param.setIncomingOid(incomingOid);
         
         this.delete(param);
+    }
+
+    public List<Incoming> selectByIncomingDateRange(Date incomingDateFrom, Date incomingDateTo) throws SQLException {
+        Incoming param = new Incoming();
+        param.setIncomingDateFrom(incomingDateFrom);
+        param.setIncomingDateTo(incomingDateTo);
+        
+        return this.select(param);
     }
 
 }

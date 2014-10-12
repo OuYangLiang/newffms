@@ -21,13 +21,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.Constants;
+import com.personal.oyl.newffms.constants.IncomingType;
 import com.personal.oyl.newffms.pojo.Category;
+import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.UserProfile;
 import com.personal.oyl.newffms.report.CategoryConsumption;
 import com.personal.oyl.newffms.report.HighChartGraphResult;
 import com.personal.oyl.newffms.report.HighChartResult;
 import com.personal.oyl.newffms.report.HightChartSeries;
 import com.personal.oyl.newffms.service.CategoryService;
+import com.personal.oyl.newffms.service.IncomingService;
 import com.personal.oyl.newffms.service.ReportService;
 import com.personal.oyl.newffms.service.UserProfileService;
 import com.personal.oyl.newffms.util.DateUtil;
@@ -41,6 +44,8 @@ public class ReportController {
     private CategoryService categoryService;
     @Autowired
     private UserProfileService userProfileService;
+    @Autowired
+    private IncomingService incomingService;
     
     @RequestMapping("/consumption")
     public String consumption(Model model) throws SQLException {
@@ -112,6 +117,142 @@ public class ReportController {
         rlt.setColRlt(colRlt);
         rlt.setPieRltOfAll(pieRltOfAll);
         rlt.setPieRltOfUser(pieRltOfUser);
+        
+        return rlt;
+    }
+    
+    @RequestMapping("/incoming")
+    public String incoming(Model model) throws SQLException {
+        return "/report/incoming";
+    }
+    
+    public static List<String> months(String start, String end) {
+        Date startParam = DateUtil.getInstance().getFirstTimeOfYear(start);
+        Date endParam   = DateUtil.getInstance().getLastTimeOfYear(end);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
+        
+        List<String> rlt = new ArrayList<String>();
+        
+        while (startParam.before(endParam)) {
+            rlt.add(sdf.format(startParam));
+            
+            startParam = DateUtil.getInstance().getNextMonthTime(startParam);
+        }
+        
+        return rlt;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(months("2013", "2014"));
+    }
+    
+    @RequestMapping("/incomingDataSource")
+    @ResponseBody
+    public HighChartResult incomingDataSource(@RequestParam("start") String start, @RequestParam("end") String end)
+            throws SQLException {
+        
+        Date startParam = DateUtil.getInstance().getFirstTimeOfYear(start);
+        Date endParam   = DateUtil.getInstance().getLastTimeOfYear(end);
+        
+        List<Incoming> incomings = incomingService.selectByIncomingDateRange(startParam, endParam);
+        List<String> allMonths = months(start, end);
+        
+        //按月分总额，每个用户的总额，每个收入类别的总额
+        Map<String, BigDecimal> total = new HashMap<String, BigDecimal>();
+        Map<String, BigDecimal> userTotal = new HashMap<String, BigDecimal>();//key: userOid-yyMM
+        Map<String, BigDecimal> typeTotal = new HashMap<String, BigDecimal>();//key: type-yyMM
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
+        for (Incoming incoming : incomings) {
+            String date = sdf.format(incoming.getIncomingDate());
+            
+            String key = date;
+            if (total.containsKey(key)) {
+                total.put(key, total.get(key).add(incoming.getAmount()));
+            } else {
+                total.put(key, incoming.getAmount());
+            }
+            
+            key = incoming.getOwnerOid() + "-" + date;
+            if (userTotal.containsKey(key)) {
+                userTotal.put(key, userTotal.get(key).add(incoming.getAmount()));
+            } else {
+                userTotal.put(key, incoming.getAmount());
+            }
+            
+            key = incoming.getIncomingType().getDesc() + "-" + date;
+            if (typeTotal.containsKey(key)) {
+                typeTotal.put(key, typeTotal.get(key).add(incoming.getAmount()));
+            } else {
+                typeTotal.put(key, incoming.getAmount());
+            }
+        }
+        
+        List<UserProfile> allUsers = userProfileService.selectAllUsers();
+        Map<String, String> incomingTypes = IncomingType.toMapValue();
+        
+        HighChartGraphResult first = new HighChartGraphResult();
+        HighChartGraphResult second = new HighChartGraphResult();
+        
+        first.setSeries(new ArrayList<HightChartSeries>());
+        second.setSeries(new ArrayList<HightChartSeries>());
+        
+        
+        //处理总入收
+        HightChartSeries series = new HightChartSeries();
+        series.setName("全部");
+        series.setData(new ArrayList<HightChartSeries>());
+        
+        for (String month : allMonths) {
+            HightChartSeries innerSeries = new HightChartSeries();
+            innerSeries.setName(month);
+            BigDecimal y = total.get(month);
+            innerSeries.setY(null == y ? BigDecimal.ZERO : y);
+            series.getData().add(innerSeries);
+        }
+        
+        first.getSeries().add(series);
+        second.getSeries().add(series);
+        
+        //按人分组
+        for (UserProfile user : allUsers) {
+            series = new HightChartSeries();
+            series.setName(user.getUserName());
+            series.setData(new ArrayList<HightChartSeries>());
+            
+            for (String month : allMonths) {
+                HightChartSeries innerSeries = new HightChartSeries();
+                innerSeries.setName(month);
+                BigDecimal y = userTotal.get(user.getUserOid() + "-" + month);
+                innerSeries.setY(null == y ? BigDecimal.ZERO : y);
+                series.getData().add(innerSeries);
+            }
+            
+            first.getSeries().add(series);
+        }
+        
+        //按收入类别分组
+        for (Map.Entry<String, String> entry : incomingTypes.entrySet()) {
+            series = new HightChartSeries();
+            series.setName(entry.getValue());
+            series.setData(new ArrayList<HightChartSeries>());
+            
+            for (String month : allMonths) {
+                HightChartSeries innerSeries = new HightChartSeries();
+                innerSeries.setName(month);
+                BigDecimal y = typeTotal.get(entry.getValue() + "-" + month);
+                innerSeries.setY(null == y ? BigDecimal.ZERO : y);
+                series.getData().add(innerSeries);
+            }
+            
+            second.getSeries().add(series);
+        }
+        
+        HighChartResult rlt = new HighChartResult();
+        rlt.setIncomingOfUser(first);
+        rlt.setIncomingOfType(second);
         
         return rlt;
     }

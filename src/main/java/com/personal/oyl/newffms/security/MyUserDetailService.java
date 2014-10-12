@@ -66,6 +66,7 @@ public class MyUserDetailService implements UserDetailsService {
         AUTHORITIES.add(new SimpleGrantedAuthority("/report/consumption"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/report/incoming"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/report/consumptionDataSource"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/report/incomingDataSource"));
         
         AUTHORITIES.add(new SimpleGrantedAuthority("/account/ajaxGetAllAccounts"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/category/ajaxGetAllCategories"));

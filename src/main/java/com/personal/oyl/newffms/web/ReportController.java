@@ -123,6 +123,15 @@ public class ReportController {
     
     @RequestMapping("/incoming")
     public String incoming(Model model) throws SQLException {
+        
+        String[] years = new String[15];
+        
+        for (int i = 0; i < 15; i++)
+            years[i] = Integer.toString(2010 + i);
+        
+        model.addAttribute("years", years);
+        model.addAttribute("curYear", "2014");
+        
         return "/report/incoming";
     }
     
@@ -131,7 +140,6 @@ public class ReportController {
         Date endParam   = DateUtil.getInstance().getLastTimeOfYear(end);
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
         
         List<String> rlt = new ArrayList<String>();
         
@@ -196,18 +204,22 @@ public class ReportController {
         HighChartGraphResult first = new HighChartGraphResult();
         HighChartGraphResult second = new HighChartGraphResult();
         
+        String title = start.equals(end) ? end + "年收入情况" : start + "年 ~ " + end + "年收入情况";
+        first.setTitle(title);
+        second.setTitle(title);
+        
         first.setSeries(new ArrayList<HightChartSeries>());
         second.setSeries(new ArrayList<HightChartSeries>());
         
         
         //处理总入收
         HightChartSeries series = new HightChartSeries();
-        series.setName("全部");
+        series.setName("总收入");
         series.setData(new ArrayList<HightChartSeries>());
         
         for (String month : allMonths) {
             HightChartSeries innerSeries = new HightChartSeries();
-            innerSeries.setName(month);
+            innerSeries.setName(month.endsWith("01") ? month.substring(0, 2) + "年1月" : month.substring(2, 4) + "月");
             BigDecimal y = total.get(month);
             innerSeries.setY(null == y ? BigDecimal.ZERO : y);
             series.getData().add(innerSeries);
@@ -224,7 +236,7 @@ public class ReportController {
             
             for (String month : allMonths) {
                 HightChartSeries innerSeries = new HightChartSeries();
-                innerSeries.setName(month);
+                innerSeries.setName(month.endsWith("01") ? month.substring(0, 2) + "年1月" : month.substring(2, 4) + "月");
                 BigDecimal y = userTotal.get(user.getUserOid() + "-" + month);
                 innerSeries.setY(null == y ? BigDecimal.ZERO : y);
                 series.getData().add(innerSeries);
@@ -241,7 +253,7 @@ public class ReportController {
             
             for (String month : allMonths) {
                 HightChartSeries innerSeries = new HightChartSeries();
-                innerSeries.setName(month);
+                innerSeries.setName(month.endsWith("01") ? month.substring(0, 2) + "年1月" : month.substring(2, 4) + "月");
                 BigDecimal y = typeTotal.get(entry.getValue() + "-" + month);
                 innerSeries.setY(null == y ? BigDecimal.ZERO : y);
                 series.getData().add(innerSeries);

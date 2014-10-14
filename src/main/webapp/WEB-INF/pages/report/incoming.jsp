@@ -14,7 +14,33 @@
         
         <div class="contentWrapper">
             <div class="mainArea">
-                                
+                <div class="newline-wrapper ui-widget-content" id="dateArea">
+                    <div class="label">查询范围</div>
+                
+                    <div class="input" >
+                        <div style="float: left; margin-top: 10px; margin-right: 5px;">起始</div>
+                        <div style="float:left; margin-right: 100px;">
+                        <select id="start" name="start" style="width: 70px;" class="selectbox" >
+                            <c:forEach var="year" items="${ years }" varStatus="status">
+                                <option value ="${year}">${year}年</option>
+                            </c:forEach>
+                        </select>
+                        </div>
+                        
+                        <div style="float: left; margin-top: 10px; margin-right: 5px;">结束</div>
+                        <div style="float:left;">
+                        <select id="end" name="end" style="width: 70px;" class="selectbox" >
+                            <c:forEach var="year" items="${ years }" varStatus="status">
+                                <option value ="${year}">${year}年</option>
+                            </c:forEach>
+                        </select>
+                        </div>
+                        
+                        <div id="btn-query" style="float: left; margin-left: 120px; margin-top: 5px;">查询</div>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
             </div>
         
             <div class="content-title ui-widget-header">
@@ -45,6 +71,9 @@
         
         <script>
             $( document ).ready(function() {
+            	$ ("#btn-query").button();
+            	$( ".selectbox" ).selectmenu();
+            	
             	var options = {
                         chart: {
                             type: "spline"
@@ -56,7 +85,7 @@
                             type:'category'
                         },
                         tooltip: {
-                            "pointFormat": "{series.name}: <b>{point.y:,.2f}</b>"
+                            "pointFormat": "{series.name}: <b>¥{point.y:,.2f}</b>"
                         },
                         yAxis: {
                             title: {
@@ -74,7 +103,7 @@
                         },
                         dataLabels: {
                             "enabled": true,
-                            "format": "<b>{point.name}</b>: {point.y:,.2f}"
+                            "format": "<b>{point.name}</b>:¥{point.y:,.2f}"
                         },
                         series: []
                     };
@@ -90,7 +119,7 @@
                             type:'category'
                         },
                         tooltip: {
-                            "pointFormat": "{series.name}: <b>{point.y:,.2f}</b>"
+                            "pointFormat": "{series.name}: <b>¥{point.y:,.2f}</b>"
                         },
                         yAxis: {
                             title: {
@@ -108,16 +137,18 @@
                         },
                         dataLabels: {
                             "enabled": true,
-                            "format": "<b>{point.name}</b>: {point.y:,.2f}"
+                            "format": "<b>{point.name}</b>:¥{point.y:,.2f}"
                         },
                         series: []
                     };
             	
             	var refresh = function(data) {
                     options.series = data.incomingOfUser.series;
+                    options.title.text = data.incomingOfUser.title;
                     $('#container').highcharts(options);
                     
                     options2.series = data.incomingOfType.series;
+                    options2.title.text = data.incomingOfType.title;
                     $('#container2').highcharts(options2);
                 };
                 
@@ -129,6 +160,28 @@
                     success: function(data) {
                         refresh(data);
                     }
+                });
+                
+                doQuery = function() {
+                    
+                    var start = $ ("#start").val();
+                    var end   = $ ("#end").val();
+                    
+                    var queryStr = "?start=" + start + "&end=" + end;
+                    
+                    $.ajax({
+                        cache: false,
+                        url: '<c:url value="/report/incomingDataSource" />' + queryStr,
+                        type: "POST",
+                        async: true,
+                        success: function(data) {
+                            refresh(data);
+                        }
+                    });
+                };
+                
+                $ ("#btn-query").click(function(){
+                	doQuery();
                 });
             });
         </script>

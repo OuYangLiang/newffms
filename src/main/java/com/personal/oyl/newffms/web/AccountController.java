@@ -1,22 +1,94 @@
 package com.personal.oyl.newffms.web;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.pojo.Account;
+import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.service.AccountService;
 
 @Controller
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController extends BaseController{
+    
+    private static final String SESSION_KEY_SEARCH_PARAM_ACCOUNT = "SESSION_KEY_SEARCH_PARAM_ACCOUNT";
     
     @Autowired
     private AccountService accountService;
+    
+    @RequestMapping("summary")
+    public String summary(HttpServletRequest request, Model model, HttpSession session) throws SQLException {
+        this.clearSearchParameter(request, session, SESSION_KEY_SEARCH_PARAM_ACCOUNT);
+        
+        //初始化查询条件。
+        
+        model.addAttribute("users", userProfileService.selectAllUsers());
+        
+        //设置默认查询条件值，并放入session中
+        
+        Account searchParam = (Account) session.getAttribute(SESSION_KEY_SEARCH_PARAM_ACCOUNT);
+        
+        if (null == searchParam) {
+            searchParam = new Account();
+            
+            searchParam.setRequestPage(1);
+            searchParam.setSizePerPage(10);
+            searchParam.setSortField("OWNER_OID");
+            searchParam.setSortDir("asc");
+            
+            session.setAttribute(SESSION_KEY_SEARCH_PARAM_ACCOUNT, searchParam);
+        }
+
+        return "account/summary";
+    }
+    
+    @RequestMapping("search")
+    @ResponseBody
+    public String search(@RequestParam("ownerOid") BigDecimal ownerOid, HttpSession session) {
+        //从页面接受查询参数，并放入session中。
+        Account searchParam = new Account();
+        searchParam.setOwnerOid(ownerOid);
+        
+        session.setAttribute(SESSION_KEY_SEARCH_PARAM_ACCOUNT, searchParam);
+        
+        return "OK";
+    }
+    
+    @RequestMapping("/listOfSummary")
+    @ResponseBody
+    public JqGridJsonRlt<Account> listOfSummary(@RequestParam(value = "requestPage", required = true) int requestPage,
+            @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
+            @RequestParam(value = "sortField", required = true) String sortField,
+            @RequestParam(value = "sortDir", required = true) String sortDir, HttpSession session) throws SQLException {
+        
+        //从session中取出查询对象并查询
+
+        Account searchParam = (Account) session.getAttribute(SESSION_KEY_SEARCH_PARAM_ACCOUNT);
+        
+        searchParam.setStart( (requestPage - 1) * sizePerPage );
+        searchParam.setSizePerPage(sizePerPage);
+        searchParam.setRequestPage(requestPage);
+        
+        if (sortField != null && !sortField.trim().isEmpty()) {
+            searchParam.setSortField(sortField);
+            searchParam.setSortDir(sortDir);
+        }
+        
+        session.setAttribute(SESSION_KEY_SEARCH_PARAM_ACCOUNT, searchParam);
+        
+        return this.initPaging(accountService, searchParam);
+    }
     
     @RequestMapping("/ajaxGetAllAccounts")
     @ResponseBody

@@ -89,6 +89,27 @@ public class MyUserDetailService implements UserDetailsService {
         AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/confirmEdit"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/saveEdit"));
         
+        
+        
+        
+        
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/summary"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/search"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/listOfSummary"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/initAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/confirmAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/saveAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/view"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/viewDetails"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/delete"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/initEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/confirmEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/saveEdit"));
+        
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/initTransfer"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/confirmTransfer"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/account/saveTransfer"));
+        
         return new User(username, user.getLoginPwd(), AUTHORITIES);
     }
 

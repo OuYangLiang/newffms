@@ -60,4 +60,12 @@ public class AccountServiceImpl implements AccountService {
         return dao.queryAccountsByIncoming(incomingOid);
     }
 
+    public int getCountOfSummary(Account param) throws SQLException {
+        return dao.getCountOfSummary(param);
+    }
+
+    public List<Account> getListOfSummary(Account param) throws SQLException {
+        return dao.getListOfSummary(param);
+    }
+
 }

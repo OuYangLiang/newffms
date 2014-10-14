@@ -29,7 +29,7 @@
                     <li><a href="<c:url value='/report/consumption' />">消费情况</a></li>
                     <li><a href="<c:url value='/incoming/summary' />">收入</a></li>
                     <li><a href="<c:url value='/report/incoming' />">收入情况</a></li>
-                    <li><a href="account-summary.html">账户</a></li>
+                    <li><a href="<c:url value='/account/summary' />">账户</a></li>
                     <li><a href="#">成员</a></li>
                     <li><a href="#">个人</a></li>
                     <li><a href="#">Tutorials</a>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.AccountDao">
+	<resultMap id="GridResultMap" type="com.personal.oyl.newffms.pojo.Account">
+		<id column="ACNT_OID" property="acntOid" jdbcType="DECIMAL" />
+        <result column="ACNT_DESC" property="acntDesc" jdbcType="NVARCHAR" />
+        <result column="ACNT_TYPE" property="acntType" jdbcType="VARCHAR" />
+        <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+        <result column="QUOTA" property="quota" jdbcType="DECIMAL" />
+        <result column="DEBT" property="debt" jdbcType="DECIMAL" />
+        <result column="OWNER" property="ownerUserName" jdbcType="NVARCHAR" />
+	</resultMap>
+
+
+	<sql id="Grid_Column_List">
+        ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, U.USER_NAME AS OWNER
+	</sql>
+
+    <select id="getCountOfSummary" parameterType="com.personal.oyl.newffms.pojo.Account" resultType="int">
+        SELECT COUNT(*)
+            FROM ACCOUNT
+        <where>
+            <if test="ownerOid != null">
+                OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="acntType != null">
+                AND ACNT_TYPE = #{acntType,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <select id="getListOfSummary" parameterType="com.personal.oyl.newffms.pojo.Account" resultMap="GridResultMap">
+        SELECT <include refid="Grid_Column_List" />
+            FROM ACCOUNT A, USER_PROFILE U
+            WHERE A.OWNER_OID = U.USER_OID
+            <if test="ownerOid != null">
+                AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="acntType != null">
+                AND ACNT_TYPE = #{acntType,jdbcType=VARCHAR}
+            </if>
+        <if test="sortField == null" >
+            ORDER BY OWNER_OID ASC
+        </if>
+        <if test="sortField != null" >
+            ORDER BY ${sortField} ${sortDir}
+        </if>
+        LIMIT #{start}, #{sizePerPage}
+    </select>
+
+</mapper>

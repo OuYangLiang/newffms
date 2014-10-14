@@ -19,7 +19,7 @@
                 
                     <div class="input" >
                         <div style="float: left; margin-top: 10px; margin-right: 5px;">起始</div>
-                        <div style="float:left; margin-right: 100px;">
+                        <div style="float:left; margin-right: 50px;">
                         <select id="start" name="start" style="width: 70px;" class="selectbox" >
                             <c:forEach var="year" items="${ years }" varStatus="status">
                                 <option value ="${year}" <c:if test='${year == curYear }' >selected="selected"</c:if> >${year}年</option>

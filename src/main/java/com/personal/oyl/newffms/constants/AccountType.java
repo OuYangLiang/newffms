@@ -1,5 +1,8 @@
 package com.personal.oyl.newffms.constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum AccountType {
     Cash("现金"),
     Bankcard("银行卡"),
@@ -20,5 +23,16 @@ public enum AccountType {
     public String getDesc()
     {
         return desc;
+    }
+    
+    public static Map<String, String> toMapValue()
+    {
+        Map<String,String> rlt = new HashMap<String,String>();
+        for (AccountType ms : AccountType.values())
+        {
+            rlt.put(ms.name(), ms.getDesc());
+        }
+        
+        return rlt;
     }
 }

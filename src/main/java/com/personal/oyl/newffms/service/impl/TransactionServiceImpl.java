@@ -275,4 +275,8 @@ public class TransactionServiceImpl implements TransactionService {
         accountService.updateByPrimaryKeySelective(oldAcnt);
     }
 
+    public void createAccount(Account form) throws SQLException {
+        accountService.insert(form);
+    }
+
 }

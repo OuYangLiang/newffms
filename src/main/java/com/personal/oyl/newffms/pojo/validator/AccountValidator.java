@@ -1,21 +1,15 @@
 package com.personal.oyl.newffms.pojo.validator;
 
-import java.sql.SQLException;
+import java.math.BigDecimal;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.personal.oyl.newffms.constants.AccountType;
 import com.personal.oyl.newffms.pojo.Account;
-import com.personal.oyl.newffms.service.AccountService;
 
 public class AccountValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(AccountValidator.class);
     
-    @Autowired
-    private AccountService accountService;
 
     public boolean supports(Class<?> clazz) {
         return Account.class.equals(clazz);
@@ -24,17 +18,28 @@ public class AccountValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Account acnt = (Account) target;
         
-        try {
-            Account dbAcnt = accountService.selectByKey(acnt.getAcntOid());
-            
-            if (acnt.getPayment() != null) {
-                if (dbAcnt.getBalance().compareTo(acnt.getPayment()) < 0) {
-                    errors.rejectValue("payment", null, "账户[ " + dbAcnt.getAcntHumanDesc() + " ]余额不足啊，亲。");
-                }
-            }
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+        if (null == acnt.getOwnerOid()) {
+            errors.reject(null, "账户所有人是谁啊，亲。");
         }
+        
+        if (null == acnt.getAcntType()) {
+            errors.reject(null, "账户类型是什么，亲。");
+        }
+        
+        if (AccountType.Creditcard.equals(acnt.getAcntType())) {
+            if (null == acnt.getQuota()) {
+                errors.reject(null, "信用卡限定额度是多少，亲。");
+            } else if (acnt.getQuota().compareTo(BigDecimal.ZERO) <= 0) {
+                errors.reject(null, "信用卡限定额度没问题？你确定吗，亲。");
+            }
+            
+            if (null == acnt.getDebt()) {
+                errors.reject(null, "信用卡欠款额度是多少，亲。");
+            } else if (acnt.getDebt().compareTo(BigDecimal.ZERO) < 0) {
+                errors.reject(null, "信用卡欠款额度是负数，你确定吗，亲。");
+            }
+        }
+        
     }
 
 }

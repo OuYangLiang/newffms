@@ -1,8 +1,6 @@
 package com.personal.oyl.newffms.pojo.validator;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,7 +9,6 @@ import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.service.AccountService;
 
 public class IncomingValidator implements Validator{
-    private static final Logger log = LoggerFactory.getLogger(IncomingValidator.class);
     
     @Autowired
     private AccountService accountService;

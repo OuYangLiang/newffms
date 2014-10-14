@@ -130,7 +130,7 @@ public class ReportController {
             years[i] = Integer.toString(2010 + i);
         
         model.addAttribute("years", years);
-        model.addAttribute("curYear", "2014");
+        model.addAttribute("curYear", DateUtil.getInstance().getYear(new Date()));
         
         return "/report/incoming";
     }

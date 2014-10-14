@@ -103,6 +103,13 @@ public class DateUtil {
         return c.getTime();
     }
     
+    public String getYear(Date param) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(param);
+        
+        return Integer.toString(c.get(Calendar.YEAR));
+    }
+    
     public static void main(String[] args) {
         System.out.println(DateUtil.getInstance().getFirstTimeOfCurrentMonth());
         System.out.println(DateUtil.getInstance().getFirstTimeOfLastMonth());

@@ -26,7 +26,7 @@
                         <select name="ownerOid" class="selectbox" >
                             <option value ="">全部</option>
                             <c:forEach var="user" items="${ users }" varStatus="status">
-                                <option value ="${user.userOid}">${user.userName}</option>
+							    <option value ="${user.userOid}" <c:if test='${user.userOid == SESSION_KEY_SEARCH_PARAM_INCOMING.ownerOid }' >selected="selected"</c:if>>${user.userName}</option>
                             </c:forEach>
                         </select>
                         

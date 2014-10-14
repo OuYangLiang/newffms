@@ -22,7 +22,7 @@
                         <div style="float:left; margin-right: 100px;">
                         <select id="start" name="start" style="width: 70px;" class="selectbox" >
                             <c:forEach var="year" items="${ years }" varStatus="status">
-                                <option value ="${year}">${year}年</option>
+                                <option value ="${year}" <c:if test='${year == curYear }' >selected="selected"</c:if> >${year}年</option>
                             </c:forEach>
                         </select>
                         </div>
@@ -31,7 +31,7 @@
                         <div style="float:left;">
                         <select id="end" name="end" style="width: 70px;" class="selectbox" >
                             <c:forEach var="year" items="${ years }" varStatus="status">
-                                <option value ="${year}">${year}年</option>
+                                <option value ="${year}" <c:if test='${year == curYear }' >selected="selected"</c:if> >${year}年</option>
                             </c:forEach>
                         </select>
                         </div>
@@ -152,16 +152,6 @@
                     $('#container2').highcharts(options2);
                 };
                 
-                $.ajax({
-                    cache: false,
-                    url: '<c:url value="/report/incomingDataSource?start=2014&end=2014" />',
-                    type: "POST",
-                    async: true,
-                    success: function(data) {
-                        refresh(data);
-                    }
-                });
-                
                 doQuery = function() {
                     
                     var start = $ ("#start").val();
@@ -183,6 +173,8 @@
                 $ ("#btn-query").click(function(){
                 	doQuery();
                 });
+                
+                doQuery();
             });
         </script>
     </body>

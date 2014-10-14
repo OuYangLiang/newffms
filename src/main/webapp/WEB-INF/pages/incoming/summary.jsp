@@ -18,21 +18,24 @@
         
         <div class="contentWrapper">
             <div class="mainArea">
-                <%-- <div class="newline-wrapper ui-widget-content" >
-                    <div class="input" style="width:100%">
-                        <form id="form" method="post" >
-                        <span style="margin-left:200px;">起始日期</span>
-                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_INCOMING.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
+                <form id="form" method="post" >
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">收入人</div>
+                    
+                    <div class="input">
+                        <select name="ownerOid" class="selectbox" >
+                            <option value ="">全部</option>
+                            <c:forEach var="user" items="${ users }" varStatus="status">
+                                <option value ="${user.userOid}">${user.userName}</option>
+                            </c:forEach>
+                        </select>
                         
-                        <span style="margin-left:50px;">结束日期</span>
-                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_INCOMING.cpnTimeTo }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeTo" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
-                        
-                        <span id="btn-query" style="margin-left:20px; margin-top:-5px;">查询</span>
-                        </form>
+                        <span id="btn-query" style="margin-left:150px; margin-top:-20px;">查询</span>
                     </div>
                     
                     <div style="clear:both;" ></div>
-                </div> --%>
+                </div>
+                </form>
             </div>
             
             <div class="content-title ui-widget-header">
@@ -59,6 +62,7 @@
         <script>
             $( document ).ready(function() {
             	$ (".button-area button").button();
+            	$( ".selectbox" ).selectmenu();
             	
                 $ ("#btn-add").click(function(){
                 	window.location.href = "<c:url value='/incoming/initAdd' />";

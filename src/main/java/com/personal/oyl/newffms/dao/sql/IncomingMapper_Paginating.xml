@@ -25,7 +25,7 @@
                 OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
             </if>
             <if test="incomingType != null">
-                INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
+                AND INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
@@ -34,14 +34,12 @@
         SELECT <include refid="Grid_Column_List" />
             FROM INCOMING I, USER_PROFILE U
             WHERE I.OWNER_OID = U.USER_OID
-        <where>
             <if test="ownerOid != null">
-                OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+                AND OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
             </if>
             <if test="incomingType != null">
-                INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
+                AND INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
             </if>
-        </where>
         <if test="sortField == null" >
             ORDER BY INCOMING_DATE DESC
         </if>

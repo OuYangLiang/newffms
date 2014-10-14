@@ -41,10 +41,12 @@ public class IncomingController extends BaseController{
     }
     
     @RequestMapping("summary")
-    public String summary(HttpServletRequest request, HttpSession session) throws SQLException {
+    public String summary(HttpServletRequest request, Model model, HttpSession session) throws SQLException {
         this.clearSearchParameter(request, session, SESSION_KEY_SEARCH_PARAM_INCOMING);
         
         //初始化查询条件。
+        
+        model.addAttribute("users", userProfileService.selectAllUsers());
         
         //设置默认查询条件值，并放入session中
         
@@ -66,9 +68,11 @@ public class IncomingController extends BaseController{
     
     @RequestMapping("search")
     @ResponseBody
-    public String search(HttpSession session) {
+    public String search(@RequestParam("ownerOid") BigDecimal ownerOid, HttpSession session) {
         //从页面接受查询参数，并放入session中。
         Incoming searchParam = new Incoming();
+        
+        searchParam.setOwnerOid(ownerOid);
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_INCOMING, searchParam);
         

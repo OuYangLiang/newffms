@@ -84,7 +84,7 @@
                         {sortable: false, name: "acntDesc", width: 200, align: "left"},
                         {sortable: false, name: "balance", width: 100, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
                         { sortable: false, align: "center", formatter:function (cellvalue, options, rowObject){
-                            var url = '<c:url value='/incoming/view' />' + '?incomingOid=' + rowObject.incomingOid;
+                            var url = '<c:url value='/account/view' />' + '?acntOid=' + rowObject.acntOid;
                             
                             var href = 'javascript:window.location.href="' + url + '"';
                             

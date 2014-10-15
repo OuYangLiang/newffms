@@ -159,6 +159,17 @@ public class AccountController extends BaseController{
         return "account/summary";
     }
     
+    @RequestMapping("/view")
+    public String view(@RequestParam("acntOid") BigDecimal acntOid, Model model) throws SQLException {
+        Account form = accountService.selectByKey(acntOid);
+        
+        form.setOwnerUserName(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        
+        model.addAttribute("acntForm", form);
+        
+        return "account/view";
+    }
+    
     @RequestMapping("/ajaxGetAllAccounts")
     @ResponseBody
     public List<Account> alaxGetAllAccounts() {

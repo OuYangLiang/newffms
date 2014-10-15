@@ -38,6 +38,11 @@ public class AccountValidator implements Validator {
             } else if (acnt.getDebt().compareTo(BigDecimal.ZERO) < 0) {
                 errors.reject(null, "信用卡欠款额度是负数，你确定吗，亲。");
             }
+            
+            if (null != acnt.getQuota() && null != acnt.getDebt()
+                    && (acnt.getBalance().add(acnt.getDebt()).subtract(acnt.getQuota()).compareTo(BigDecimal.ZERO) != 0)) {
+                errors.reject(null, "信用卡限定额度不等于欠款额度与可用额度之和，亲。");
+            }
         }
         
     }

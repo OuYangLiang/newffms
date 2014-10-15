@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.constants.AccountAuditType;
+import com.personal.oyl.newffms.constants.AccountType;
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.AccountAudit;
 import com.personal.oyl.newffms.pojo.AccountConsumption;
@@ -277,6 +278,49 @@ public class TransactionServiceImpl implements TransactionService {
 
     public void createAccount(Account form) throws SQLException {
         accountService.insert(form);
+    }
+
+    public void updateAccount(Account form) throws SQLException {
+        Account oldObj = accountService.selectByKey(form.getAcntOid());
+        accountService.updateByPrimaryKeySelective(form);
+        
+        boolean balanceChanged = oldObj.getBalance().compareTo(form.getBalance()) != 0;
+        boolean quotaChanged   = false;
+        boolean debtChanged    = false;
+        
+        if (oldObj.getAcntType().equals(AccountType.Creditcard)) {
+            quotaChanged = oldObj.getQuota().compareTo(form.getQuota()) != 0;
+            debtChanged  = oldObj.getDebt().compareTo(form.getDebt()) != 0;
+        }
+        
+        if (balanceChanged || quotaChanged || debtChanged) {
+            AccountAudit audit = new AccountAudit();
+            audit.setBaseObject(new BaseObject());
+            audit.getBaseObject().setCreateBy(form.getBaseObject().getUpdateBy());
+            audit.getBaseObject().setCreateTime(new Date());
+            
+            String desc = null;
+            
+            if (oldObj.getAcntType().equals(AccountType.Creditcard)) {
+                desc = "余额：[" + oldObj.getBalance() + "]->[" + form.getBalance() + "], 限额：[" + oldObj.getQuota()
+                        + "]->[" + form.getQuota() + "]，欠款：[" + oldObj.getDebt() + "]->[" + form.getDebt() + "]。";
+            } else {
+                desc = "余额：[" + oldObj.getBalance() + "]->[" + form.getBalance() + "]";
+            }
+            
+            audit.setAdtDesc(desc);
+            audit.setAdtType(AccountAuditType.Change);
+            audit.setAmount(form.getBalance().subtract(oldObj.getBalance()));
+            audit.setConfirmed(true);
+            audit.setAcntOid(oldObj.getAcntOid());
+            
+            accountAuditService.insert(audit);
+        }
+    }
+
+    public void deleteAccount(BigDecimal acntOid) throws SQLException {
+        // TODO Auto-generated method stub
+        
     }
 
 }

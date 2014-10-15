@@ -170,6 +170,59 @@ public class AccountController extends BaseController{
         return "account/view";
     }
     
+    @RequestMapping("/initEdit")
+    public String initEdit(@RequestParam(value="acntOid", required=false) BigDecimal acntOid, Model model, HttpSession session) throws SQLException {
+        
+        Account form = null;
+        
+        if (null != session.getAttribute("acntForm")) {
+            form = (Account) session.getAttribute("acntForm");
+        }
+        else {
+            form = accountService.selectByKey(acntOid);
+        }
+        
+        model.addAttribute("acntForm", form);
+        model.addAttribute("acntTypes", AccountType.toMapValue());
+        model.addAttribute("users", userProfileService.selectAllUsers());
+        
+        return "account/edit";
+    }
+    
+    @RequestMapping("/confirmEdit")
+    public String confirmEdit(@Valid @ModelAttribute("acntForm") Account form, BindingResult result, Model model, HttpSession session) throws SQLException {
+        if (result.hasErrors()) {
+            model.addAttribute("acntTypes", AccountType.toMapValue());
+            model.addAttribute("users", userProfileService.selectAllUsers());
+            model.addAttribute("validation", false);
+            
+            return "account/edit";
+        }
+        
+        form.setOwnerUserName(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        
+        session.setAttribute("acntForm", form);
+        
+        return "account/confirmEdit";
+    }
+    
+    @RequestMapping("/saveEdit")
+    public String saveEdit(Model model, HttpSession session) throws SQLException {
+        Account form = (Account) session.getAttribute("acntForm");
+        
+        Account oldObj = accountService.selectByKey(form.getAcntOid());
+        form.setBaseObject(new BaseObject());
+        form.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        form.getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());
+        form.getBaseObject().setUpdateTime(new Date());
+        
+        transactionService.updateAccount(form);
+        
+        session.removeAttribute("acntForm");
+        
+        return "account/summary";
+    }
+    
     @RequestMapping("/ajaxGetAllAccounts")
     @ResponseBody
     public List<Account> alaxGetAllAccounts() {

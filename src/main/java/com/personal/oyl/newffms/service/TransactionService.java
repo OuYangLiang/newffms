@@ -31,4 +31,8 @@ public interface TransactionService {
     
     
     public void createAccount(Account form) throws SQLException;
+    
+    public void updateAccount(Account form) throws SQLException;
+    
+    public void deleteAccount(BigDecimal acntOid) throws SQLException;
 }

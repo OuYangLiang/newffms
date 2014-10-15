@@ -180,6 +180,7 @@ public class AccountController extends BaseController{
         }
         else {
             form = accountService.selectByKey(acntOid);
+            form.setOwnerUserName(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
         }
         
         model.addAttribute("acntForm", form);

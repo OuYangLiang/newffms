@@ -109,7 +109,7 @@
     </delete>
     
     
-    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Account">
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Account" useGeneratedKeys="true" keyProperty="acntOid">
         INSERT INTO ACCOUNT(ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, CREATE_TIME, CREATE_BY)
         VALUES (#{acntDesc,jdbcType=NVARCHAR}, #{acntType,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL}, #{quota,jdbcType=DECIMAL},
         #{debt,jdbcType=DECIMAL}, #{ownerOid,jdbcType=DECIMAL},

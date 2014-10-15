@@ -11,4 +11,6 @@ public interface AccountAuditService extends BaseService<AccountAudit>, DbAction
     public void deleteByConsumption(BigDecimal cpnOid) throws SQLException;
     
     public void deleteByIncoming(BigDecimal incomingOid) throws SQLException;
+    
+    public void deleteByAcnt(BigDecimal acntOid) throws SQLException;
 }

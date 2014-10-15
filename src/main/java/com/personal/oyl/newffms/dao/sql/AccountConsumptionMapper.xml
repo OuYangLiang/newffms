@@ -42,4 +42,11 @@
         VALUES (#{acntOid,jdbcType=DECIMAL}, #{cpnOid,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL})
     </insert>
     
+    <select id="selectOneByAccount" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+        SELECT <include refid="Base_Column_List" />
+        FROM ACCOUNT_CONSUMPTION
+        WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+        LIMIT 1
+    </select>
+    
 </mapper>

@@ -166,6 +166,7 @@ public class AccountController extends BaseController{
         form.setOwnerUserName(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
         
         model.addAttribute("acntForm", form);
+        model.addAttribute("isAccountSafeToRemove", accountService.isAccountSafeToRemove(acntOid));
         
         return "account/view";
     }
@@ -222,6 +223,13 @@ public class AccountController extends BaseController{
         session.removeAttribute("acntForm");
         
         return "account/summary";
+    }
+    
+    @RequestMapping("/delete")
+    public String delete(@RequestParam("acntOid") BigDecimal acntOid, Model model) throws SQLException {
+        transactionService.deleteAccount(acntOid);
+        
+        return "redirect:/account/summary?keepSp=Y";
     }
     
     @RequestMapping("/ajaxGetAllAccounts")

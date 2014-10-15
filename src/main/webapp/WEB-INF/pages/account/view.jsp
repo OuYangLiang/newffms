@@ -6,7 +6,10 @@
         <div class="button-area">
             <button id="btn-back">返回</button>
             <button id="btn-edit">修改</button>
-            <button id="btn-delete">删除</button>
+            
+            <c:if test="${isAccountSafeToRemove }" >
+                <button id="btn-delete">删除</button>
+            </c:if>
         </div>
         
         <div class="content-header ui-widget-header">
@@ -98,30 +101,32 @@
                     window.location.href = "<c:url value='/account/initEdit' />?acntOid=<c:out value='${acntForm.acntOid}' />";
                 });
                 
-                $ ("#btn-delete").click(function(){
-                    $ ( "#delete-confirm-dialog" ).dialog( "open" );
-                });
-                
-                $( "#delete-confirm-dialog" ).dialog( {
-                    autoOpen: false,
-                    modal: true,
-                    show: {
-                        effect: "blind",
-                        duration: 300
-                    },
-                    hide: {
-                        effect: "explode",
-                        duration: 1000
-                    },
-                    buttons: {
-                        "No": function(){
-                            $( this ).dialog( "close" );
-                        },
-                        "Yes": function(){
-                            window.location.href = "<c:url value='/account/delete' />?acntOid=<c:out value='${acntForm.acntOid}' />";
-                        }
-                    }
-                });
+                <c:if test="${isAccountSafeToRemove }" >
+	                $ ("#btn-delete").click(function(){
+	                    $ ( "#delete-confirm-dialog" ).dialog( "open" );
+	                });
+	                
+	                $( "#delete-confirm-dialog" ).dialog( {
+	                    autoOpen: false,
+	                    modal: true,
+	                    show: {
+	                        effect: "blind",
+	                        duration: 300
+	                    },
+	                    hide: {
+	                        effect: "explode",
+	                        duration: 1000
+	                    },
+	                    buttons: {
+	                        "No": function(){
+	                            $( this ).dialog( "close" );
+	                        },
+	                        "Yes": function(){
+	                            window.location.href = "<c:url value='/account/delete' />?acntOid=<c:out value='${acntForm.acntOid}' />";
+	                        }
+	                    }
+	                });
+                </c:if>
             });
         </script>
     </body>

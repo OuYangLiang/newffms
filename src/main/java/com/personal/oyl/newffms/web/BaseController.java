@@ -13,6 +13,7 @@ import com.personal.oyl.newffms.base.service.PaginatingService;
 import com.personal.oyl.newffms.constants.Constants;
 import com.personal.oyl.newffms.pojo.BasePojo;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
+import com.personal.oyl.newffms.service.AccountAuditService;
 import com.personal.oyl.newffms.service.AccountIncomingService;
 import com.personal.oyl.newffms.service.AccountService;
 import com.personal.oyl.newffms.service.CategoryService;
@@ -39,6 +40,8 @@ public class BaseController {
     protected IncomingService incomingService;
     @Autowired
     protected AccountIncomingService accountIncomingService;
+    @Autowired
+    protected AccountAuditService accountAuditService;
     
     protected boolean isKeepSearchParameter(HttpServletRequest request)
     {

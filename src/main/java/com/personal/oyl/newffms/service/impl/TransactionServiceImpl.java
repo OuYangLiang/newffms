@@ -278,6 +278,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     public void createAccount(Account form) throws SQLException {
         accountService.insert(form);
+        
+        AccountAudit audit = new AccountAudit();
+        audit.setBaseObject(form.getBaseObject());
+        
+        audit.setAdtDesc("初始化");
+        audit.setAdtType(AccountAuditType.Add);
+        audit.setAmount(form.getBalance());
+        audit.setConfirmed(true);
+        audit.setAcntOid(form.getAcntOid());
+        
+        accountAuditService.insert(audit);
     }
 
     public void updateAccount(Account form) throws SQLException {
@@ -319,8 +330,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public void deleteAccount(BigDecimal acntOid) throws SQLException {
-        // TODO Auto-generated method stub
-        
+        accountAuditService.deleteByAcnt(acntOid);
+        accountService.deleteByKey(acntOid);
     }
 
 }

@@ -11,6 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.ser.CustomSerializerFactory;
 
+import com.personal.oyl.newffms.constants.AccountAuditType;
 import com.personal.oyl.newffms.constants.AccountType;
 import com.personal.oyl.newffms.constants.ConsumptionType;
 import com.personal.oyl.newffms.constants.IncomingType;
@@ -52,6 +53,16 @@ public class CustomObjectMapper extends ObjectMapper {
 
             @Override
             public void serialize(AccountType value, JsonGenerator jsonGenerator, SerializerProvider provider)
+                    throws IOException, JsonProcessingException {
+                jsonGenerator.writeString(value.getDesc());
+            }
+            
+        });
+        
+        factory.addGenericMapping(AccountAuditType.class, new JsonSerializer<AccountAuditType>() {
+
+            @Override
+            public void serialize(AccountAuditType value, JsonGenerator jsonGenerator, SerializerProvider provider)
                     throws IOException, JsonProcessingException {
                 jsonGenerator.writeString(value.getDesc());
             }

@@ -1,5 +1,8 @@
 package com.personal.oyl.newffms.constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum AccountAuditType {
     Add("增加"),
     Subtract("扣减"),
@@ -15,5 +18,16 @@ public enum AccountAuditType {
     public String getDesc()
     {
         return desc;
+    }
+    
+    public static Map<String, String> toMapValue()
+    {
+        Map<String,String> rlt = new HashMap<String,String>();
+        for (AccountAuditType ms : AccountAuditType.values())
+        {
+            rlt.put(ms.name(), ms.getDesc());
+        }
+        
+        return rlt;
     }
 }

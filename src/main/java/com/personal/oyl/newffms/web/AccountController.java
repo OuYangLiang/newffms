@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.AccountType;
 import com.personal.oyl.newffms.pojo.Account;
+import com.personal.oyl.newffms.pojo.AccountAudit;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.validator.AccountValidator;
@@ -279,6 +280,31 @@ public class AccountController extends BaseController{
         transactionService.deleteAccount(acntOid);
         
         return "redirect:/account/summary?keepSp=Y";
+    }
+    
+    @RequestMapping("/listOfItemSummary")
+    @ResponseBody
+    public JqGridJsonRlt<AccountAudit> listOfItemSummary(
+            @RequestParam(value = "acntOid", required = true) BigDecimal acntOid,
+            @RequestParam(value = "requestPage", required = true) int requestPage,
+            @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
+            @RequestParam(value = "sortField", required = true) String sortField,
+            @RequestParam(value = "sortDir", required = true) String sortDir, HttpSession session) throws SQLException {
+        
+        //从session中取出查询对象并查询
+
+        AccountAudit searchParam = new AccountAudit();
+        searchParam.setAcntOid(acntOid);
+        searchParam.setStart( (requestPage - 1) * sizePerPage );
+        searchParam.setSizePerPage(sizePerPage);
+        searchParam.setRequestPage(requestPage);
+        
+        if (sortField != null && !sortField.trim().isEmpty()) {
+            searchParam.setSortField(sortField);
+            searchParam.setSortDir(sortDir);
+        }
+        
+        return this.initPaging(accountAuditService, searchParam);
     }
     
     @RequestMapping("/ajaxGetAllAccounts")

@@ -55,4 +55,12 @@ public class AccountAuditServiceImpl implements AccountAuditService {
         this.delete(param);
     }
 
+    public int getCountOfSummary(AccountAudit param) throws SQLException {
+        return dao.getCountOfSummary(param);
+    }
+
+    public List<AccountAudit> getListOfSummary(AccountAudit param) throws SQLException {
+        return dao.getListOfSummary(param);
+    }
+
 }

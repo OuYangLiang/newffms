@@ -103,11 +103,13 @@
             	
             	$( "#start" ).datepicker({
                     dateFormat: "yy-mm-dd",
+                    changeYear: true,
                     showAnim: "slide"
                 });
             	
             	$( "#end" ).datepicker({
                     dateFormat: "yy-mm-dd",
+                    changeYear: true,
                     showAnim: "slide"
                 });
             	

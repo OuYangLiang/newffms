@@ -144,8 +144,7 @@
             	
             	$( "#theDate" ).datepicker({
                     dateFormat: "yy-mm-dd",
-                    minDate: -7,
-                    maxDate: 1,
+                    changeYear: true,
                     showAnim: "slide"
                 });
                 

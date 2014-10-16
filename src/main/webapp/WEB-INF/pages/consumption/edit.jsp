@@ -231,8 +231,7 @@
             	
                 $( "#cpnTime" ).datepicker({
                     dateFormat: "yy-mm-dd",
-                    minDate: -30,
-                    maxDate: 30,
+                    changeYear: true,
                     showAnim: "slide",
                     onSelect: function(dateText, inst) {
                     	$("#cpnTime").val(dateText);

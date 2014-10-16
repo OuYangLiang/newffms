@@ -115,12 +115,14 @@
             	
             	$( "#start" ).datepicker({
                     dateFormat: "yy-mm-dd",
-                    showAnim: "slide"
+                    showAnim: "slide",
+                    changeYear: true
                 });
                 
                 $( "#end" ).datepicker({
                     dateFormat: "yy-mm-dd",
-                    showAnim: "slide"
+                    showAnim: "slide",
+                    changeYear: true
                 });
             	
                 $ ("#btn-query").click(function(){

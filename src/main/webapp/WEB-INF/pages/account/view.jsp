@@ -6,7 +6,10 @@
         <div class="button-area">
             <button id="btn-back">返回</button>
             <button id="btn-edit">修改</button>
-            <button id="btn-transfer">转账</button>
+            
+            <c:if test="${acntForm.balance > 0 }" >
+                <button id="btn-transfer">转账</button>
+            </c:if>
             
             <c:if test="${isAccountSafeToRemove }" >
                 <button id="btn-delete">删除</button>
@@ -102,9 +105,11 @@
                     window.location.href = "<c:url value='/account/initEdit' />?acntOid=<c:out value='${acntForm.acntOid}' />";
                 });
                 
-                $ ("#btn-transfer").click(function(){
-                    window.location.href = "<c:url value='/account/initTransfer' />?acntOid=<c:out value='${acntForm.acntOid}' />";
-                });
+                <c:if test="${acntForm.balance > 0 }" >
+	                $ ("#btn-transfer").click(function(){
+	                    window.location.href = "<c:url value='/account/initTransfer' />?acntOid=<c:out value='${acntForm.acntOid}' />";
+	                });
+                </c:if>
                 
                 <c:if test="${isAccountSafeToRemove }" >
 	                $ ("#btn-delete").click(function(){

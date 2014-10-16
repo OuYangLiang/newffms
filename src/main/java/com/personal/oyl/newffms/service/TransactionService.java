@@ -35,4 +35,6 @@ public interface TransactionService {
     public void updateAccount(Account form) throws SQLException;
     
     public void deleteAccount(BigDecimal acntOid) throws SQLException;
+    
+    public void doAccountTransfer(BigDecimal srcAcntOid, BigDecimal targetAcntOid, BigDecimal payment, String operator) throws SQLException;
 }

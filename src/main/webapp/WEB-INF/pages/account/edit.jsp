@@ -118,8 +118,6 @@
                 
                 
                 $ ("#btn-cancel").click(function(){
-                    window.location.href = "<c:url value='/account/summary?keepSp=Y' />";
-
                     window.location.href = "<c:url value='/account/view' />?acntOid=<c:out value='${acntForm.acntOid}' />";
                 });
                 

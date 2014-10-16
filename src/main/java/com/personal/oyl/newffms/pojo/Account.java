@@ -18,6 +18,8 @@ public class Account extends BasePojo {
     private String ownerUserName;
     private String acntHumanDesc;
     private BigDecimal payment;
+    private Account target;
+    
 
     public BigDecimal getAcntOid() {
         return acntOid;
@@ -155,6 +157,14 @@ public class Account extends BasePojo {
         if (AccountType.Creditcard.equals(acntType)) {
             this.setDebt(debt.subtract(value));
         }
+    }
+
+    public Account getTarget() {
+        return target;
+    }
+
+    public void setTarget(Account target) {
+        this.target = target;
     }
 
 }

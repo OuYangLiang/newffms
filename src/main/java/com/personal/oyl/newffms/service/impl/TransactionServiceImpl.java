@@ -334,4 +334,66 @@ public class TransactionServiceImpl implements TransactionService {
         accountService.deleteByKey(acntOid);
     }
 
+    public void doAccountTransfer(BigDecimal srcAcntOid, BigDecimal targetAcntOid, BigDecimal payment, String operator)
+            throws SQLException {
+        Date now = new Date();
+        
+        Account srcObj = accountService.selectByKey(srcAcntOid);
+        Account targetObj = accountService.selectByKey(targetAcntOid);
+        
+        srcObj.subtract(payment);
+        targetObj.add(payment);
+        
+        Account obj = new Account();
+        obj.setAcntOid(srcObj.getAcntOid());
+        obj.setBalance(srcObj.getBalance());
+        obj.setDebt(srcObj.getDebt());
+        obj.setBaseObject(srcObj.getBaseObject());
+        obj.getBaseObject().setCreateBy(null);
+        obj.getBaseObject().setCreateTime(null);
+        obj.getBaseObject().setUpdateTime(now);
+        obj.getBaseObject().setUpdateBy(operator);
+        
+        accountService.updateByPrimaryKeySelective(obj);
+        
+        obj = new Account();
+        obj.setAcntOid(targetObj.getAcntOid());
+        obj.setBalance(targetObj.getBalance());
+        obj.setDebt(targetObj.getDebt());
+        obj.setBaseObject(targetObj.getBaseObject());
+        obj.getBaseObject().setCreateBy(null);
+        obj.getBaseObject().setCreateTime(null);
+        obj.getBaseObject().setUpdateTime(now);
+        obj.getBaseObject().setUpdateBy(operator);
+        
+        accountService.updateByPrimaryKeySelective(obj);
+        
+        
+        AccountAudit audit = new AccountAudit();
+        audit.setBaseObject(new BaseObject());
+        audit.getBaseObject().setCreateBy(operator);
+        audit.getBaseObject().setCreateTime(now);
+        audit.setAdtDesc("转账至：" + targetObj.getAcntHumanDesc());
+        audit.setAdtType(AccountAuditType.Subtract);
+        audit.setAmount(payment);
+        audit.setConfirmed(true);
+        audit.setAcntOid(srcAcntOid);
+        audit.setRefAcntOid(targetAcntOid);
+        
+        accountAuditService.insert(audit);
+        
+        audit = new AccountAudit();
+        audit.setBaseObject(new BaseObject());
+        audit.getBaseObject().setCreateBy(operator);
+        audit.getBaseObject().setCreateTime(now);
+        audit.setAdtDesc("进账自：" + srcObj.getAcntHumanDesc());
+        audit.setAdtType(AccountAuditType.Add);
+        audit.setAmount(payment);
+        audit.setConfirmed(true);
+        audit.setAcntOid(targetAcntOid);
+        audit.setRefAcntOid(srcAcntOid);
+        
+        accountAuditService.insert(audit);
+    }
+
 }

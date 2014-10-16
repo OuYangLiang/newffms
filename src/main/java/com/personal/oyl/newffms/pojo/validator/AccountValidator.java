@@ -26,6 +26,14 @@ public class AccountValidator implements Validator {
             errors.reject(null, "账户类型是什么，亲。");
         }
         
+        if (null != acnt.getTarget() && acnt.getAcntOid().equals(acnt.getTarget().getAcntOid())) {
+            errors.reject(null, "目标账户与源账户相同，亲。");
+        }
+        
+        if (null != acnt.getPayment() && acnt.getBalance().compareTo(acnt.getPayment()) < 0) {
+            errors.reject(null, "余额不足啊，亲。");
+        }
+        
         if (AccountType.Creditcard.equals(acnt.getAcntType())) {
             if (null == acnt.getQuota()) {
                 errors.reject(null, "信用卡限定额度是多少，亲。");

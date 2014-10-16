@@ -225,6 +225,55 @@ public class AccountController extends BaseController{
         return "account/summary";
     }
     
+    @RequestMapping("/initTransfer")
+    public String initTransfer(@RequestParam(value="acntOid", required=false) BigDecimal acntOid, Model model, HttpSession session) throws SQLException {
+        
+        Account form = null;
+        
+        if (null != session.getAttribute("acntForm")) {
+            form = (Account) session.getAttribute("acntForm");
+        }
+        else {
+            form = accountService.selectByKey(acntOid);
+            form.setOwnerUserName(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        }
+        
+        model.addAttribute("acntForm", form);
+        
+        return "account/transfer";
+    }
+    
+    @RequestMapping("/confirmTransfer")
+    public String confirmTransfer(@Valid @ModelAttribute("acntForm") Account form, BindingResult result, Model model, HttpSession session) throws SQLException {
+        if (result.hasErrors()) {
+            form.setOwnerUserName(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+            model.addAttribute("validation", false);
+            
+            return "account/transfer";
+        }
+        
+        form.setOwnerUserName(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        
+        form.setTarget(accountService.selectByKey(form.getTarget().getAcntOid()));
+        form.getTarget().setOwnerUserName(userProfileService.selectByKey(form.getTarget().getOwnerOid()).getUserName());
+        
+        session.setAttribute("acntForm", form);
+        
+        return "account/confirmTransfer";
+    }
+    
+    @RequestMapping("/saveTransfer")
+    public String saveTransfer(Model model, HttpSession session) throws SQLException {
+        Account form = (Account) session.getAttribute("acntForm");
+        
+        transactionService.doAccountTransfer(form.getAcntOid(), form.getTarget().getAcntOid(), form.getPayment(),
+                SessionUtil.getInstance().getLoginUser(session).getUserName());
+
+        session.removeAttribute("acntForm");
+        
+        return "account/summary";
+    }
+    
     @RequestMapping("/delete")
     public String delete(@RequestParam("acntOid") BigDecimal acntOid, Model model) throws SQLException {
         transactionService.deleteAccount(acntOid);

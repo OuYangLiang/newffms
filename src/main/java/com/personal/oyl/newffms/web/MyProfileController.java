@@ -14,6 +14,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.personal.oyl.newffms.constants.Constants;
 import com.personal.oyl.newffms.constants.Gender;
@@ -38,12 +39,12 @@ public class MyProfileController extends BaseController {
     }
 	
 	@RequestMapping("/initEdit")
-    public String initEdit(Model model, HttpSession session) throws SQLException {
+    public String initEdit(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {
 		
 		
 		UserProfile form = null;
         
-        if (null != session.getAttribute("userForm")) {
+        if (null != back && back && null != session.getAttribute("userForm")) {
             form = (UserProfile) session.getAttribute("userForm");
         }
         else {

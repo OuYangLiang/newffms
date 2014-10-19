@@ -73,7 +73,7 @@
         <script>
             $( document ).ready(function() {
             	$ ("#btn-cancel").click(function(){
-                    window.location.href = "<c:url value='/profile/initEdit' />";
+                    window.location.href = "<c:url value='/profile/initEdit?back=true' />";
                 });
                 
                 $ ("#btn-save").click(function(){

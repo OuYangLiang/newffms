@@ -18,7 +18,7 @@
         
         <div class="contentWrapper">
             <div class="mainArea">
-                <form id="form" method="post" >
+                <form id="form" method="post" autocomplete="off" >
                 <div class="newline-wrapper ui-widget-content">
                     <div class="label">收入人</div>
                     

@@ -17,7 +17,7 @@
         <spring:errors path="errors" />
         
         <c:url value='/consumption/confirmAdd' var='url' />
-        <spring:form id="form" method="post" action="${url}" modelAttribute="cpnForm" >
+        <spring:form id="form" method="post" action="${url}" modelAttribute="cpnForm" autocomplete="off" >
         
         <div id="errorArea" class="ui-widget" style="margin-bottom:5px;display:none">
             <div class="ui-state-error ui-corner-all" style="margin-right: 400px; padding: 5px 30px;" >

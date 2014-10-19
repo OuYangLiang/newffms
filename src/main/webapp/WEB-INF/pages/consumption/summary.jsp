@@ -20,7 +20,7 @@
             <div class="mainArea">
                 <div class="newline-wrapper ui-widget-content" >
                     <div class="input" style="width:100%">
-                        <form id="form" method="post" >
+                        <form id="form" method="post" autocomplete="off" >
                         <span style="margin-left:200px;">起始日期</span>
                         <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         

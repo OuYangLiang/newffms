@@ -17,7 +17,7 @@
         <spring:errors path="errors" />
         
         <c:url value='/account/confirmEdit' var='url' />
-        <spring:form id="form" method="post" action="${url}" modelAttribute="acntForm" >
+        <spring:form id="form" method="post" action="${url}" modelAttribute="acntForm" autocomplete="off" >
         <input type="hidden" name="acntOid" value="${acntForm.acntOid}" />
         <input type="hidden" name="ownerOid" value="${acntForm.ownerOid}" />
         <input type="hidden" name="acntType" value="${acntForm.acntType}" />

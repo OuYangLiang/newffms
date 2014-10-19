@@ -32,7 +32,7 @@
                     <div class="label">日期范围</div>
                 
                     <div class="input" >
-                        <form id="form" method="post">
+                        <form id="form" method="post" autocomplete="off" >
                         <span >起始日期</span>
                         <input style="width: 100px;" type="text" name="start" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         

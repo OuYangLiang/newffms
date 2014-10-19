@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.Incoming;
+import com.personal.oyl.newffms.pojo.UserProfile;
 
 public interface TransactionService {
     public void createConsumption(ConsumptionForm form) throws SQLException;
@@ -37,4 +38,7 @@ public interface TransactionService {
     public void deleteAccount(BigDecimal acntOid) throws SQLException;
     
     public void doAccountTransfer(BigDecimal srcAcntOid, BigDecimal targetAcntOid, BigDecimal payment, String operator) throws SQLException;
+    
+    
+    public void updateMyProfile(UserProfile form) throws SQLException;
 }

@@ -128,6 +128,7 @@
     <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
         UPDATE USER_PROFILE
         <set>
+            SEQ_NO = SEQ_NO + 1,
             <if test="userName != null">
                 USER_NAME = #{userName,jdbcType=NVARCHAR},
             </if>
@@ -164,17 +165,15 @@
             <if test="baseObject != null and baseObject.updateBy != null">
                 UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
             </if>
-            <if test="baseObject != null and baseObject.seqNo != null">
-                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
-            </if>
         </set>
-        WHERE USER_OID = #{userOid,jdbcType=DECIMAL}
+        WHERE USER_OID = #{userOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
     
     <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.UserProfile">
         UPDATE USER_PROFILE
         SET
+            SEQ_NO = SEQ_NO + 1,
             USER_NAME = #{userName,jdbcType=NVARCHAR},
             USER_ALIAS = #{userAlias,jdbcType=NVARCHAR},
             GENDER = #{gender,jdbcType=VARCHAR},
@@ -186,9 +185,8 @@
             CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
             CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
-            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
-            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
-        WHERE USER_OID = #{userOid,jdbcType=DECIMAL}
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+        WHERE USER_OID = #{userOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
 </mapper>

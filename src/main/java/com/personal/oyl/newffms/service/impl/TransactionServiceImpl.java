@@ -18,6 +18,7 @@ import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.pojo.Incoming;
+import com.personal.oyl.newffms.pojo.UserProfile;
 import com.personal.oyl.newffms.service.AccountAuditService;
 import com.personal.oyl.newffms.service.AccountConsumptionService;
 import com.personal.oyl.newffms.service.AccountIncomingService;
@@ -26,6 +27,7 @@ import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
 import com.personal.oyl.newffms.service.IncomingService;
 import com.personal.oyl.newffms.service.TransactionService;
+import com.personal.oyl.newffms.service.UserProfileService;
 
 public class TransactionServiceImpl implements TransactionService {
     @Autowired
@@ -42,6 +44,8 @@ public class TransactionServiceImpl implements TransactionService {
     private IncomingService incomingService;
     @Autowired
     private AccountIncomingService accountIncomingService;
+    @Autowired
+    private UserProfileService userProfileService;
 
     public void createConsumption(ConsumptionForm form) throws SQLException {
         consumptionService.insert(form.getConsumption());
@@ -395,5 +399,9 @@ public class TransactionServiceImpl implements TransactionService {
         
         accountAuditService.insert(audit);
     }
+
+	public void updateMyProfile(UserProfile form) throws SQLException {
+		userProfileService.updateByPrimaryKeySelective(form);
+	}
 
 }

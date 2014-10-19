@@ -31,7 +31,7 @@
                     <li><a href="<c:url value='/report/incoming' />">收入情况</a></li>
                     <li><a href="<c:url value='/account/summary' />">账户</a></li>
                     <li><a href="#">成员</a></li>
-                    <li><a href="#">个人</a></li>
+                    <li><a href="<c:url value='/profile/initEdit' />">个人</a></li>
                     <li><a href="#">Tutorials</a>
                         <ul>
                             <li><a href="#">Photoshop</a>

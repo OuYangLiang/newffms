@@ -49,4 +49,21 @@ public class UserProfileServiceImpl implements UserProfileService {
         return this.select(null);
     }
 
+	public void insert(UserProfile param) throws SQLException {
+		dao.insert(param);
+	}
+
+	public void updateByPrimaryKeySelective(UserProfile param)
+			throws SQLException {
+		dao.updateByKeySelectively(param);
+	}
+
+	public void updateByPrimaryKey(UserProfile param) throws SQLException {
+		dao.updateByKey(param);
+	}
+
+	public void delete(UserProfile param) throws SQLException {
+		dao.delete(param);
+	}
+
 }

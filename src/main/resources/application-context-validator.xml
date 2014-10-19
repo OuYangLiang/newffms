@@ -23,4 +23,7 @@
     <bean id="incomingValidator"
         class="com.personal.oyl.newffms.pojo.validator.IncomingValidator" />
         
+    <bean id="profileValidator"
+        class="com.personal.oyl.newffms.pojo.validator.ProfileValidator" />
+        
 </beans>

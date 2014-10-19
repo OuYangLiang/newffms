@@ -110,6 +110,10 @@ public class MyUserDetailService implements UserDetailsService {
         AUTHORITIES.add(new SimpleGrantedAuthority("/account/confirmTransfer"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/account/saveTransfer"));
         
+        AUTHORITIES.add(new SimpleGrantedAuthority("/profile/initEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/profile/confirmEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/profile/saveEdit"));
+        
         return new User(username, user.getLoginPwd(), AUTHORITIES);
     }
 

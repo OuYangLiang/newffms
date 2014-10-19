@@ -106,4 +106,20 @@ public class CategoryServiceImpl implements CategoryService {
         return allCategories;
     }
 
+	public void insert(Category param) throws SQLException {
+		dao.insert(param);
+	}
+
+	public void updateByPrimaryKeySelective(Category param) throws SQLException {
+		dao.updateByKeySelectively(param);
+	}
+
+	public void updateByPrimaryKey(Category param) throws SQLException {
+		dao.updateByKey(param);
+	}
+
+	public void delete(Category param) throws SQLException {
+		dao.delete(param);
+	}
+
 }

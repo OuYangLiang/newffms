@@ -102,16 +102,17 @@
     </delete>
     
     
-    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Category">
-        INSERT INTO CATEGORY(<include refid="Base_Column_List" />)
-        VALUES (#{categoryOid,jdbcType=DECIMAL}, #{categoryDesc,jdbcType=NVARCHAR}, #{monthlyBudget,jdbcType=DECIMAL}, #{categoryLevel,jdbcType=DECIMAL}, #{isLeaf,jdbcType=BIT}, #{parentOid,jdbcType=DECIMAL},
-        #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
+    <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.Category" useGeneratedKeys="true" keyProperty="categoryOid">
+        INSERT INTO CATEGORY(CATEGORY_DESC, MONTHLY_BUDGET, CATEGORY_LEVEL, IS_LEAF, PARENT_OID, CREATE_TIME, CREATE_BY)
+        VALUES (#{categoryDesc,jdbcType=NVARCHAR}, #{monthlyBudget,jdbcType=DECIMAL}, #{categoryLevel,jdbcType=DECIMAL}, #{isLeaf,jdbcType=BIT}, #{parentOid,jdbcType=DECIMAL},
+        #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR})
     </insert>
     
     
     <update id="updateByKeySelectively" parameterType="com.personal.oyl.newffms.pojo.Category">
         UPDATE CATEGORY
         <set>
+            SEQ_NO = SEQ_NO + 1,
             <if test="categoryDesc != null">
                 CATEGORY_DESC = #{categoryDesc,jdbcType=NVARCHAR},
             </if>
@@ -145,17 +146,15 @@
             <if test="baseObject != null and baseObject.updateBy != null">
                 UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
             </if>
-            <if test="baseObject != null and baseObject.seqNo != null">
-                SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL},
-            </if>
         </set>
-        WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
+        WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
     
     <update id="updateByKey" parameterType="com.personal.oyl.newffms.pojo.Category">
         UPDATE CATEGORY
         SET
+            SEQ_NO = SEQ_NO + 1,
             CATEGORY_DESC = #{categoryDesc,jdbcType=NVARCHAR},
             MONTHLY_BUDGET = #{monthlyBudget,jdbcType=DECIMAL},
             CATEGORY_LEVEL = #{categoryLevel,jdbcType=DECIMAL},
@@ -166,9 +165,8 @@
             CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
             CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
-            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR},
-            SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
-        WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
+            UPDATE_BY = #{baseObject.updateBy,jdbcType=NVARCHAR}
+        WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
 </mapper>

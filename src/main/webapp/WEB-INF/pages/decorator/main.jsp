@@ -32,6 +32,7 @@
                     <li><a href="<c:url value='/account/summary' />">账户</a></li>
                     <li><a href="#">成员</a></li>
                     <li><a href="<c:url value='/profile/initEdit' />">个人</a></li>
+                    <li><a href="<c:url value='/category/summary' />">类别</a></li>
                     <li><a href="#">Tutorials</a>
                         <ul>
                             <li><a href="#">Photoshop</a>

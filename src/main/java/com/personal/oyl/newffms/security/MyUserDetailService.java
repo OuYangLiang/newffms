@@ -69,7 +69,7 @@ public class MyUserDetailService implements UserDetailsService {
         AUTHORITIES.add(new SimpleGrantedAuthority("/report/incomingDataSource"));
         
         AUTHORITIES.add(new SimpleGrantedAuthority("/account/ajaxGetAllAccounts"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/ajaxGetAllCategories"));
+        
         
         
         
@@ -113,6 +113,21 @@ public class MyUserDetailService implements UserDetailsService {
         AUTHORITIES.add(new SimpleGrantedAuthority("/profile/initEdit"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/profile/confirmEdit"));
         AUTHORITIES.add(new SimpleGrantedAuthority("/profile/saveEdit"));
+        
+        
+        
+        
+        
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/summary"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/ajaxGetAllCategories"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/initAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/confirmAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/saveAdd"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/view"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/delete"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/initEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/confirmEdit"));
+        AUTHORITIES.add(new SimpleGrantedAuthority("/category/saveEdit"));
         
         return new User(username, user.getLoginPwd(), AUTHORITIES);
     }

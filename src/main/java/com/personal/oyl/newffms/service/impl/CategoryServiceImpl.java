@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +61,49 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public List<Category> selectAllCategories() throws SQLException {
-        return this.select(null);
+    	List<Category> list =  this.select(null);
+        
+        Map<BigDecimal, List<Category>> catMap = new HashMap<BigDecimal, List<Category>>();
+        
+        BigDecimal key = null;
+        for (Category cat : list) {
+        	if (null == cat.getParentOid()) {
+        		key = BigDecimal.valueOf(-1);
+        	} else {
+        		key = cat.getParentOid();
+        	}
+        	
+        	if (catMap.containsKey(key)) {
+    			List<Category> cList = catMap.get(key);
+    			cList.add(cat);
+    		} else {
+    			List<Category> cList = new ArrayList<Category>();
+    			cList.add(cat);
+    			
+    			catMap.put(key, cList);
+    		}
+        }
+        
+        List<Category> rlt = new ArrayList<Category>();
+        for (Category item : catMap.get(BigDecimal.valueOf(-1))) {
+        	this.addItem(item, rlt, catMap);
+        }
+        
+        return rlt;
+    }
+    
+    private void addItem(Category item, List<Category> rlt, Map<BigDecimal, List<Category>> catMap) {
+    	rlt.add(item);
+    	
+    	if (!item.getIsLeaf()) {
+    		List<Category> list = catMap.get(item.getCategoryOid());
+    		
+    		for (Category cat : list) {
+    			rlt.add(cat);
+    			
+    			addItem(cat, rlt, catMap);
+    		}
+    	}
     }
 
     public List<Category> selectAllCategoriesWithExclusion(Set<BigDecimal> excludingRootCategoryOids)
@@ -120,6 +163,11 @@ public class CategoryServiceImpl implements CategoryService {
 
 	public void delete(Category param) throws SQLException {
 		dao.delete(param);
+	}
+
+	public BigDecimal selectTotalBudgetByParent(BigDecimal parentOid)
+			throws SQLException {
+		return dao.selectTotalBudgetByParent(parentOid);
 	}
 
 }

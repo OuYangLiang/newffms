@@ -128,12 +128,6 @@
             <if test="parentOid != null">
                 PARENT_OID = #{parentOid,jdbcType=DECIMAL},
             </if>
-            <if test="createTime != null">
-                CREATE_TIME = #{createTime,jdbcType=DECIMAL},
-            </if>
-            <if test="creatorOid != null">
-                CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
-            </if>
             <if test="baseObject != null and baseObject.createTime != null">
                 CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             </if>
@@ -160,8 +154,6 @@
             CATEGORY_LEVEL = #{categoryLevel,jdbcType=DECIMAL},
             IS_LEAF = #{isLeaf,jdbcType=DECIMAL},
             PARENT_OID = #{parentOid,jdbcType=DECIMAL},
-            CREATE_TIME = #{createTime,jdbcType=DECIMAL},
-            CREATOR_OID = #{creatorOid,jdbcType=DECIMAL},
             CREATE_TIME = #{baseObject.createTime,jdbcType=TIMESTAMP},
             UPDATE_TIME = #{baseObject.updateTime,jdbcType=TIMESTAMP},
             CREATE_BY = #{baseObject.createBy,jdbcType=NVARCHAR},
@@ -169,4 +161,7 @@
         WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL} AND SEQ_NO = #{baseObject.seqNo,jdbcType=DECIMAL}
     </update>
     
+    <select id="selectTotalBudgetByParent" resultType="java.math.BigDecimal" parameterType="java.math.BigDecimal">
+        SELECT SUM(MONTHLY_BUDGET) AS TOTAL FROM CATEGORY WHERE PARENT_OID = #{parentOid,jdbcType=DECIMAL}
+    </select>
 </mapper>

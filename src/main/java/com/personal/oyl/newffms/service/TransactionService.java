@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import com.personal.oyl.newffms.pojo.Account;
+import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.UserProfile;
@@ -41,4 +42,7 @@ public interface TransactionService {
     
     
     public void updateMyProfile(UserProfile form) throws SQLException;
+    
+    
+    public void createCategory(Category form) throws SQLException;
 }

@@ -14,6 +14,7 @@ import com.personal.oyl.newffms.pojo.AccountAudit;
 import com.personal.oyl.newffms.pojo.AccountConsumption;
 import com.personal.oyl.newffms.pojo.AccountIncoming;
 import com.personal.oyl.newffms.pojo.BaseObject;
+import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
@@ -23,6 +24,7 @@ import com.personal.oyl.newffms.service.AccountAuditService;
 import com.personal.oyl.newffms.service.AccountConsumptionService;
 import com.personal.oyl.newffms.service.AccountIncomingService;
 import com.personal.oyl.newffms.service.AccountService;
+import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.service.ConsumptionItemService;
 import com.personal.oyl.newffms.service.ConsumptionService;
 import com.personal.oyl.newffms.service.IncomingService;
@@ -46,6 +48,8 @@ public class TransactionServiceImpl implements TransactionService {
     private AccountIncomingService accountIncomingService;
     @Autowired
     private UserProfileService userProfileService;
+    @Autowired
+    private CategoryService categoryService;
 
     public void createConsumption(ConsumptionForm form) throws SQLException {
         consumptionService.insert(form.getConsumption());
@@ -402,6 +406,45 @@ public class TransactionServiceImpl implements TransactionService {
 
 	public void updateMyProfile(UserProfile form) throws SQLException {
 		userProfileService.updateByPrimaryKeySelective(form);
+	}
+
+	public void createCategory(Category form) throws SQLException {
+		
+		Category parent = null;
+		
+		if (null == form.getParentOid()) {
+			form.setCategoryLevel(Integer.valueOf(0));
+		} else {
+			parent = categoryService.selectByKey(form.getParentOid());
+			form.setCategoryLevel(parent.getCategoryLevel() + 1);
+		}
+		
+		form.setIsLeaf(true);
+		
+		categoryService.insert(form);
+		
+		while (null != parent) {
+			Category newObj = new Category();
+			newObj.setBaseObject(new BaseObject());
+			newObj.getBaseObject().setSeqNo(parent.getBaseObject().getSeqNo());
+			newObj.getBaseObject().setUpdateBy(form.getBaseObject().getCreateBy());
+			newObj.getBaseObject().setUpdateTime(form.getBaseObject().getCreateTime());
+			
+			newObj.setCategoryOid(parent.getCategoryOid());
+			newObj.setMonthlyBudget(categoryService.selectTotalBudgetByParent(parent.getCategoryOid()));
+			
+			if (parent.getIsLeaf()) {
+				newObj.setIsLeaf(false);
+			}
+			
+			categoryService.updateByPrimaryKeySelective(newObj);
+			
+			if (null == parent.getParentOid()) {
+				parent = null;
+			} else {
+				parent = categoryService.selectByKey(parent.getParentOid());
+			}
+		}
 	}
 
 }

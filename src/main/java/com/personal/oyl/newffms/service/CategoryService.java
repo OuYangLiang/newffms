@@ -16,7 +16,7 @@ public interface CategoryService extends BaseService<Category>,
 
 	public List<Category> selectByLevel(Integer categoryLevel)
 			throws SQLException;
-
+	
 	public String selectFullDescByKey(BigDecimal categoryOid)
 			throws SQLException;
 
@@ -24,4 +24,6 @@ public interface CategoryService extends BaseService<Category>,
 
 	public List<Category> selectAllCategoriesWithExclusion(
 			Set<BigDecimal> excludingRootCategoryOids) throws SQLException;
+	
+	public BigDecimal selectTotalBudgetByParent(BigDecimal parentOid) throws SQLException;
 }

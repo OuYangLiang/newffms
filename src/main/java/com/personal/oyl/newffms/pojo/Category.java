@@ -10,6 +10,10 @@ public class Category extends BasePojo {
     private Boolean isLeaf;
     private BigDecimal parentOid;
     private BaseObject baseObject;
+    
+    //extended field
+    private String parentCategoryDesc;
+    private String parentCategoryFullDesc;
 
     public BigDecimal getCategoryOid() {
         return categoryOid;
@@ -67,7 +71,23 @@ public class Category extends BasePojo {
         this.baseObject = baseObject;
     }
 
-    @Override
+    public String getParentCategoryDesc() {
+		return parentCategoryDesc;
+	}
+
+	public void setParentCategoryDesc(String parentCategoryDesc) {
+		this.parentCategoryDesc = parentCategoryDesc;
+	}
+
+	public String getParentCategoryFullDesc() {
+		return parentCategoryFullDesc;
+	}
+
+	public void setParentCategoryFullDesc(String parentCategoryFullDesc) {
+		this.parentCategoryFullDesc = parentCategoryFullDesc;
+	}
+
+	@Override
     public void setAllEmptyStringToNull() throws Exception {
         if (null != baseObject) {
             baseObject.setAllEmptyStringToNull();

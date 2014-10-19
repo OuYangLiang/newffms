@@ -20,12 +20,15 @@ import com.personal.oyl.newffms.constants.Gender;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.UserProfile;
 import com.personal.oyl.newffms.pojo.validator.ProfileValidator;
+import com.personal.oyl.newffms.security.PwdEncoder;
 import com.personal.oyl.newffms.util.SessionUtil;
 
 @Controller
 @RequestMapping("/profile")
 public class MyProfileController extends BaseController {
 	
+	@Autowired
+	private PwdEncoder pwdEncoder;
 	@Autowired
 	private ProfileValidator profileValidator;
 	
@@ -70,12 +73,7 @@ public class MyProfileController extends BaseController {
     @RequestMapping("/saveEdit")
     public String saveEdit(Model model, HttpSession session) throws SQLException {
     	UserProfile form = (UserProfile) session.getAttribute("userForm");
-        
     	UserProfile oldObj = (UserProfile) session.getAttribute(Constants.SESSION_USER_KEY);
-        form.setBaseObject(new BaseObject());
-        form.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
-        form.getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());
-        form.getBaseObject().setUpdateTime(new Date());
         
         UserProfile newObj = new UserProfile();
         newObj.setBaseObject(new BaseObject());
@@ -89,6 +87,10 @@ public class MyProfileController extends BaseController {
         newObj.setPhone(form.getPhone());
         newObj.setEmail(form.getEmail());
         newObj.setLoginId(form.getLoginId());
+        
+        if (null != form.getChangePwd() && form.getChangePwd()) {
+        	newObj.setLoginPwd(pwdEncoder.encode(form.getLoginPwdNew()));
+        }
         
         transactionService.updateMyProfile(newObj);
         

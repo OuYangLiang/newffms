@@ -11,7 +11,7 @@
     </header>
     
     <body>
-        <form id="login" method="post" action="<c:url value='/j_spring_security_check' />">
+        <form id="login" method="post" autocomplete="off" action="<c:url value='/j_spring_security_check' />">
             <h1 id="ff-proof" class="ribbon">家庭管理系统&nbsp;&nbsp;</h1>
             <div class="apple">
                 <div class="top"><span></span></div>

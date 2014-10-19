@@ -2,25 +2,25 @@ package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.personal.oyl.newffms.constants.Gender;
 
 public class UserProfile extends BasePojo {
     private BigDecimal userOid;
-    @NotEmpty(message = "User Name cannot be null.")
     private String userName;
     private String userAlias;
     private Gender gender;
     private String phone;
-    @NotEmpty(message = "Email cannot be null.")
-    @Email(message = "Email is not valid input.")
     private String email;
     private String loginId;
     private String loginPwd;
     private BigDecimal userTypeOid;
     private BaseObject baseObject;
+    
+    //extended field
+    private Boolean changePwd;
+    private String loginPwdOrigin;
+    private String loginPwdNew;
+    private String loginPwdConfirm;
 
     public BigDecimal getUserOid() {
         return userOid;
@@ -102,7 +102,39 @@ public class UserProfile extends BasePojo {
         this.baseObject = baseObject;
     }
 
-    @Override
+    public Boolean getChangePwd() {
+		return changePwd;
+	}
+
+	public void setChangePwd(Boolean changePwd) {
+		this.changePwd = changePwd;
+	}
+
+	public String getLoginPwdOrigin() {
+		return loginPwdOrigin;
+	}
+
+	public void setLoginPwdOrigin(String loginPwdOrigin) {
+		this.loginPwdOrigin = loginPwdOrigin;
+	}
+
+	public String getLoginPwdNew() {
+		return loginPwdNew;
+	}
+
+	public void setLoginPwdNew(String loginPwdNew) {
+		this.loginPwdNew = loginPwdNew;
+	}
+
+	public String getLoginPwdConfirm() {
+		return loginPwdConfirm;
+	}
+
+	public void setLoginPwdConfirm(String loginPwdConfirm) {
+		this.loginPwdConfirm = loginPwdConfirm;
+	}
+
+	@Override
     public void setAllEmptyStringToNull() throws Exception {
         if (null != baseObject) {
             baseObject.setAllEmptyStringToNull();

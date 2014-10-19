@@ -16,7 +16,7 @@
         <spring:errors path="errors" />
         
         <c:url value='/profile/confirmEdit' var='url' />
-        <spring:form id="form" method="post" action="${url}" modelAttribute="userForm" >
+        <spring:form id="form" method="post" action="${url}" modelAttribute="userForm" autocomplete="off">
         <input type="hidden" name="userOid" value="${userForm.userOid }" />
         
         <div id="errorArea" class="ui-widget" style="margin-bottom:5px;display:none">
@@ -85,6 +85,50 @@
                     
                     <div style="clear:both;" ></div>
                 </div>
+                
+                <div class="newline-wrapper ui-widget-content" >
+                    <div class="label">修改密码</div>
+                
+                    <div class="input" >
+                        <div style="float: left;width: 100px;"><input type="checkbox" name="changePwd" value="true" id="changePwd" class="checkbox" <c:if test="${userForm.changePwd }" >checked="checked"</c:if> /></div>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
+                
+                
+                
+                <div id="pwdArea" <c:if test="${!userForm.changePwd }" >style="display:none;"</c:if>>
+	                <div class="newline-wrapper ui-widget-content">
+	                    <div class="label">原密码</div>
+	                    
+	                    <div class="input">
+	                        <input type="password" name="loginPwdOrigin" class="inputbox" value="" />
+	                    </div>
+	                    
+	                    <div style="clear:both;" ></div>
+	                </div>
+	                
+	                <div class="newline-wrapper ui-widget-content">
+	                    <div class="label">新密码</div>
+	                    
+	                    <div class="input">
+	                        <input type="password" name="loginPwdNew" class="inputbox" value="" />
+	                    </div>
+	                    
+	                    <div style="clear:both;" ></div>
+	                </div>
+	                
+	                <div class="newline-wrapper ui-widget-content">
+	                    <div class="label">密码确认</div>
+	                    
+	                    <div class="input">
+	                        <input type="password" name="loginPwdConfirm" class="inputbox" value="" />
+	                    </div>
+	                    
+	                    <div style="clear:both;" ></div>
+	                </div>
+                </div>
             
             </div>
             
@@ -113,6 +157,14 @@
                     $("#form").validationEngine();
                     if ($ ("#form").validationEngine('validate')) {
                         $ ("#form").submit();
+                    }
+                });
+                
+                $("#changePwd").click(function(){
+                    if ($("#changePwd").prop("checked")) {
+                        $ ("#pwdArea").attr("style", "display:''");
+                    } else {
+                        $ ("#pwdArea").attr("style", "display:none;");
                     }
                 });
             });

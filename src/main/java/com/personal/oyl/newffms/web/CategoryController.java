@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.personal.oyl.newffms.constants.AccountType;
+import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
@@ -109,6 +111,64 @@ public class CategoryController extends BaseController{
         model.addAttribute("removable", !categoryService.isCategoryUsedByIncoming(categoryOid));
         
         return "category/view";
+    }
+    
+    @RequestMapping("/initEdit")
+    public String initEdit(@RequestParam(value="categoryOid", required=false) BigDecimal categoryOid, Model model, HttpSession session) throws SQLException {
+        
+    	Category form = null;
+        
+        if (null != session.getAttribute("catForm")) {
+            form = (Category) session.getAttribute("catForm");
+        }
+        else {
+            form = categoryService.selectByKey(categoryOid);
+            if (null != form.getParentOid()) {
+            	form.setParentCategoryFullDesc(categoryService.selectFullDescByKey(form.getParentOid()));
+            }
+        }
+        
+        model.addAttribute("catForm", form);
+        return "category/edit";
+    }
+    
+    @RequestMapping("/confirmEdit")
+    public String confirmEdit(@Valid @ModelAttribute("catForm") Category form, BindingResult result, Model model, HttpSession session) throws SQLException {
+        if (result.hasErrors()) {
+            model.addAttribute("validation", false);
+            return "category/edit";
+        }
+        
+        if (null != form.getParentOid()) {
+        	form.setParentCategoryFullDesc(categoryService.selectFullDescByKey(form.getParentOid()));
+        }
+        
+        session.setAttribute("catForm", form);
+        
+        return "category/confirmEdit";
+    }
+    
+    @RequestMapping("/saveEdit")
+    public String saveEdit(Model model, HttpSession session) throws SQLException {
+    	Category form = (Category) session.getAttribute("catForm");
+        
+    	Category oldObj = categoryService.selectByKey(form.getCategoryOid());
+        form.setBaseObject(new BaseObject());
+        form.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
+        form.getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());
+        form.getBaseObject().setUpdateTime(new Date());
+        
+        if (!oldObj.getIsLeaf()) {
+        	form.setMonthlyBudget(null);
+        }
+        form.setCategoryLevel(null);
+        form.setIsLeaf(null);
+        
+        transactionService.updateCategory(form);
+        
+        session.removeAttribute("catForm");
+        
+        return "category/summary";
     }
     
     @RequestMapping("/ajaxGetAllCategories")

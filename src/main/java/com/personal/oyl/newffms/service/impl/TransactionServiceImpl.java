@@ -447,4 +447,31 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 	}
 
+	public void updateCategory(Category form) throws SQLException {
+		categoryService.updateByPrimaryKeySelective(form);
+		
+		if (null != form.getMonthlyBudget()) {
+			Category parent = categoryService.selectByKey(form.getParentOid());
+			
+			while (null != parent) {
+				Category newObj = new Category();
+				newObj.setBaseObject(new BaseObject());
+				newObj.getBaseObject().setSeqNo(parent.getBaseObject().getSeqNo());
+				newObj.getBaseObject().setUpdateBy(form.getBaseObject().getUpdateBy());
+				newObj.getBaseObject().setUpdateTime(form.getBaseObject().getUpdateTime());
+				
+				newObj.setCategoryOid(parent.getCategoryOid());
+				newObj.setMonthlyBudget(categoryService.selectTotalBudgetByParent(parent.getCategoryOid()));
+				
+				categoryService.updateByPrimaryKeySelective(newObj);
+				
+				if (null == parent.getParentOid()) {
+					parent = null;
+				} else {
+					parent = categoryService.selectByKey(parent.getParentOid());
+				}
+			}
+		}
+	}
+
 }

@@ -164,4 +164,16 @@
     <select id="selectTotalBudgetByParent" resultType="java.math.BigDecimal" parameterType="java.math.BigDecimal">
         SELECT SUM(MONTHLY_BUDGET) AS TOTAL FROM CATEGORY WHERE PARENT_OID = #{parentOid,jdbcType=DECIMAL}
     </select>
+    
+    <select id="selectByParentAndDesc" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT <include refid="Base_Column_List" />
+        FROM CATEGORY
+        WHERE CATEGORY_DESC = #{categoryDesc,jdbcType=NVARCHAR}
+	        <if test="parentOid == null">
+	            AND PARENT_OID IS NULL
+	        </if>
+	        <if test="parentOid != null">
+                AND PARENT_OID = #{parentOid,jdbcType=DECIMAL}
+            </if>
+    </select>
 </mapper>

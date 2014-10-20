@@ -12,6 +12,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.CategoryDao;
+import com.personal.oyl.newffms.dao.ConsumptionItemDao;
 import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.service.CategoryService;
 
@@ -19,6 +20,8 @@ public class CategoryServiceImpl implements CategoryService {
     
     @Autowired
     private CategoryDao dao;
+    @Autowired
+    private ConsumptionItemDao consumptionItemDao;
 
     public List<Category> select(Category param) throws SQLException {
         return dao.select(param);
@@ -47,7 +50,6 @@ public class CategoryServiceImpl implements CategoryService {
         while (param.getParentOid() != null) {
             param = this.selectByKey(param.getParentOid());
             rlt.insert(0, "-->").insert(0, param.getCategoryDesc());
-            param = this.selectByKey(param.getParentOid());
         }
         
         return rlt.toString();
@@ -168,6 +170,27 @@ public class CategoryServiceImpl implements CategoryService {
 	public BigDecimal selectTotalBudgetByParent(BigDecimal parentOid)
 			throws SQLException {
 		return dao.selectTotalBudgetByParent(parentOid);
+	}
+
+	public boolean isCategoryUsedByIncoming(BigDecimal categoryOid)
+			throws SQLException {
+		Object obj = consumptionItemDao.selectOneByCategory(categoryOid);
+		
+		return null != obj;
+	}
+
+	public boolean isCategoryExist(BigDecimal parentOid, String categoryDesc)
+			throws SQLException {
+		return null != this.selectByParentAndDesc(parentOid, categoryDesc);
+	}
+
+	public Category selectByParentAndDesc(BigDecimal parentOid,
+			String categoryDesc) throws SQLException {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("parentOid", parentOid);
+		param.put("categoryDesc", categoryDesc);
+		
+		return dao.selectByParentAndDesc(param);
 	}
 
 }

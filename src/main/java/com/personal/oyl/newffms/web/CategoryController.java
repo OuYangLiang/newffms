@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,14 +22,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
+import com.personal.oyl.newffms.pojo.validator.CategoryValidator;
 import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.util.SessionUtil;
 
 @Controller
 @RequestMapping("/category")
 public class CategoryController extends BaseController{
-    @Autowired
+    
+	@Autowired
     private CategoryService categoryService;
+    
+    @Autowired 
+    private CategoryValidator categoryValidator;
+    
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(categoryValidator);
+    }
     
     @RequestMapping("summary")
     public String summary() throws SQLException {
@@ -57,7 +69,7 @@ public class CategoryController extends BaseController{
         if (result.hasErrors()) {
             model.addAttribute("validation", false);
             
-            return "account/add";
+            return "category/add";
         }
         
         if (null != form.getParentOid()) {
@@ -89,9 +101,12 @@ public class CategoryController extends BaseController{
     
     @RequestMapping("/view")
     public String view(@RequestParam("categoryOid") BigDecimal categoryOid, Model model) throws SQLException {
+    	
     	Category form = categoryService.selectByKey(categoryOid);
+    	form.setCategoryDesc(categoryService.selectFullDescByKey(categoryOid));
         
         model.addAttribute("catForm", form);
+        model.addAttribute("removable", !categoryService.isCategoryUsedByIncoming(categoryOid));
         
         return "category/view";
     }

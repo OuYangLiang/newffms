@@ -126,4 +126,11 @@
             AND I.CATEGORY_OID = C.CATEGORY_OID
     </select>
     
+    <select id="selectOneByCategory" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+        SELECT <include refid="Base_Column_List" />
+        FROM CONSUMPTION_ITEM
+        WHERE CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
+        LIMIT 1
+    </select>
+    
 </mapper>

@@ -2,11 +2,6 @@
 <%@ include file="/WEB-INF/pages/taglibs-include.jsp"%>
 <!doctype html>
 <html>
-    <head>
-        <title>This is the title.</title>
-        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
-    </head>
-    
     <body>
         <div class="button-area">
             <button id="btn-add">新建</button>
@@ -29,8 +24,6 @@
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
@@ -48,15 +41,15 @@
                     jsonReader: {id: "categoryOidDesc"},
                     colNames: ["描述", "级别", "月度预算", "页子类别", ""],
                     colModel: [
-                        {sortable: false, name: "categoryDesc", width: 60, align: "center"},
-                        {sortable: false, name: "categoryLevel", width: 60, align: "center", formatter:function (cellvalue, options, rowObject){
+                        {sortable: false, name: "categoryDesc", width: 100, align: "center"},
+                        {sortable: false, name: "categoryLevel", width: 100, align: "center", formatter:function (cellvalue, options, rowObject){
                         	return (cellvalue+1) + "级";
                         }},
                         {sortable: false, name: "monthlyBudget", width: 100, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
-                        {sortable: false, name: "isLeaf", width: 200, align: "center", formatter:function (cellvalue, options, rowObject){
+                        {sortable: false, name: "isLeaf", width: 100, align: "center", formatter:function (cellvalue, options, rowObject){
                         	return cellvalue ? "是" : "否";
                         }},
-                        { sortable: false, align: "center", formatter:function (cellvalue, options, rowObject){
+                        { sortable: false, align: "center", width: 100, formatter:function (cellvalue, options, rowObject){
                             var url = '<c:url value='/category/view' />' + '?categoryOid=' + rowObject.categoryOid;
                             
                             var href = 'javascript:window.location.href="' + url + '"';

@@ -26,4 +26,7 @@
     <bean id="profileValidator"
         class="com.personal.oyl.newffms.pojo.validator.ProfileValidator" />
         
+    <bean id="categoryValidator"
+        class="com.personal.oyl.newffms.pojo.validator.CategoryValidator" />
+        
 </beans>

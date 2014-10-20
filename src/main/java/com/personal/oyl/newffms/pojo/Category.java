@@ -105,6 +105,9 @@ public class Category extends BasePojo {
     }
     
     public String getCategoryOidDesc() {
+    	if (null == categoryOid)
+    		return null;
+    	
         return this.categoryOid.toString();
     }
     

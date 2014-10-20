@@ -101,8 +101,6 @@ public class CategoryServiceImpl implements CategoryService {
     		List<Category> list = catMap.get(item.getCategoryOid());
     		
     		for (Category cat : list) {
-    			rlt.add(cat);
-    			
     			addItem(cat, rlt, catMap);
     		}
     	}

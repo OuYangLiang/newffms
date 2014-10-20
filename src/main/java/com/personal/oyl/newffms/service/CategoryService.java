@@ -31,5 +31,9 @@ public interface CategoryService extends BaseService<Category>,
 	
 	public Category selectByParentAndDesc(BigDecimal parentOid, String categoryDesc) throws SQLException;
 	
+	public List<Category> selectByParent(BigDecimal parentOid) throws SQLException;
+	
 	public boolean isCategoryExist(BigDecimal parentOid, String categoryDesc) throws SQLException;
+	
+	public void deleteByKey(BigDecimal categoryOid) throws SQLException;
 }

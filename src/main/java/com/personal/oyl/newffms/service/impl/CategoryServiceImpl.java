@@ -193,4 +193,19 @@ public class CategoryServiceImpl implements CategoryService {
 		return dao.selectByParentAndDesc(param);
 	}
 
+	public void deleteByKey(BigDecimal categoryOid) throws SQLException {
+		Category param = new Category();
+		param.setCategoryOid(categoryOid);
+		
+		dao.delete(param);
+	}
+
+	public List<Category> selectByParent(BigDecimal parentOid)
+			throws SQLException {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("parentOid", parentOid);
+		
+		return dao.selectByParent(param);
+	}
+
 }

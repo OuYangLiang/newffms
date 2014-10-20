@@ -176,4 +176,16 @@
                 AND PARENT_OID = #{parentOid,jdbcType=DECIMAL}
             </if>
     </select>
+    
+    <select id="selectByParent" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+        SELECT <include refid="Base_Column_List" />
+        FROM CATEGORY
+        WHERE
+            <if test="parentOid == null">
+                PARENT_OID IS NULL
+            </if>
+            <if test="parentOid != null">
+                PARENT_OID = #{parentOid,jdbcType=DECIMAL}
+            </if>
+    </select>
 </mapper>

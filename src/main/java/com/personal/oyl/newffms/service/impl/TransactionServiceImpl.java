@@ -451,7 +451,12 @@ public class TransactionServiceImpl implements TransactionService {
 		categoryService.updateByPrimaryKeySelective(form);
 		
 		if (null != form.getMonthlyBudget()) {
-			Category parent = categoryService.selectByKey(form.getParentOid());
+			
+			Category parent = null;
+			
+			if (null != form.getParentOid()) {
+				parent = categoryService.selectByKey(form.getParentOid());
+			}
 			
 			while (null != parent) {
 				Category newObj = new Category();
@@ -472,6 +477,46 @@ public class TransactionServiceImpl implements TransactionService {
 				}
 			}
 		}
+	}
+
+	public void deleteCategory(BigDecimal categoryOid, String operator) throws SQLException {
+		Category oldObj = categoryService.selectByKey(categoryOid);
+		categoryService.deleteByKey(categoryOid);
+		
+		Category parent = null;
+		
+		if (null != oldObj.getParentOid()) {
+			parent = categoryService.selectByKey(oldObj.getParentOid());
+		}
+		
+		while (null != parent) {
+			Category newObj = new Category();
+			newObj.setBaseObject(new BaseObject());
+			newObj.getBaseObject().setSeqNo(parent.getBaseObject().getSeqNo());
+			newObj.getBaseObject().setUpdateBy(operator);
+			newObj.getBaseObject().setUpdateTime(new Date());
+			
+			newObj.setCategoryOid(parent.getCategoryOid());
+			newObj.setMonthlyBudget(categoryService.selectTotalBudgetByParent(parent.getCategoryOid()));
+			
+			if (null == newObj.getMonthlyBudget() || BigDecimal.ZERO.compareTo(newObj.getMonthlyBudget()) == 0) {
+				List<Category> subList = categoryService.selectByParent(newObj.getCategoryOid());
+				
+				if (null == subList || subList.isEmpty()) {
+					newObj.setIsLeaf(true);
+					newObj.setMonthlyBudget(BigDecimal.ZERO);
+				}
+			}
+			
+			categoryService.updateByPrimaryKeySelective(newObj);
+			
+			if (null == parent.getParentOid()) {
+				parent = null;
+			} else {
+				parent = categoryService.selectByKey(parent.getParentOid());
+			}
+		}
+		
 	}
 
 }

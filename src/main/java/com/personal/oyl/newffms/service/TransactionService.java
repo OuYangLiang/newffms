@@ -47,4 +47,6 @@ public interface TransactionService {
     public void createCategory(Category form) throws SQLException;
     
     public void updateCategory(Category form) throws SQLException;
+    
+    public void deleteCategory(BigDecimal categoryOid, String operator) throws SQLException;
 }

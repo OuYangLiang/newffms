@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.personal.oyl.newffms.constants.AccountType;
-import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
@@ -169,6 +167,13 @@ public class CategoryController extends BaseController{
         session.removeAttribute("catForm");
         
         return "category/summary";
+    }
+    
+    @RequestMapping("/delete")
+    public String delete(@RequestParam("categoryOid") BigDecimal categoryOid, Model model, HttpSession session) throws SQLException {
+        transactionService.deleteCategory(categoryOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
+        
+        return "redirect:/category/summary";
     }
     
     @RequestMapping("/ajaxGetAllCategories")

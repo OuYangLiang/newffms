@@ -129,11 +129,11 @@ public class ConsumptionController extends BaseController{
     }
     
     @RequestMapping("/initAdd")
-    public String initAdd(Model model, HttpSession session) throws SQLException {
+    public String initAdd(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {
         
         ConsumptionForm form = null;
         
-        if (null != session.getAttribute("cpnForm")) {
+        if (null != back && back && null != session.getAttribute("cpnForm")) {
             form = (ConsumptionForm) session.getAttribute("cpnForm");
         }
         else {
@@ -215,11 +215,13 @@ public class ConsumptionController extends BaseController{
     }
     
     @RequestMapping("/initEdit")
-    public String initEdit(@RequestParam(value="cpnOid", required=false) BigDecimal cpnOid, Model model, HttpSession session) throws SQLException {
-        
+	public String initEdit(@RequestParam(value = "back", required = false) Boolean back,
+			@RequestParam(value = "cpnOid", required = false) BigDecimal cpnOid,
+			Model model, HttpSession session) throws SQLException {
+  
         ConsumptionForm form = null;
         
-        if (null != session.getAttribute("cpnForm")) {
+        if (null != back && back && null != session.getAttribute("cpnForm")) {
             form = (ConsumptionForm) session.getAttribute("cpnForm");
         }
         else {

@@ -106,11 +106,11 @@ public class AccountController extends BaseController{
     }
     
     @RequestMapping("/initAdd")
-    public String initAdd(Model model, HttpSession session) throws SQLException {
+    public String initAdd(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {
         
         Account form = null;
         
-        if (null != session.getAttribute("acntForm")) {
+        if (null != back && back && null != session.getAttribute("acntForm")) {
             form = (Account) session.getAttribute("acntForm");
         }
         else {
@@ -173,11 +173,13 @@ public class AccountController extends BaseController{
     }
     
     @RequestMapping("/initEdit")
-    public String initEdit(@RequestParam(value="acntOid", required=false) BigDecimal acntOid, Model model, HttpSession session) throws SQLException {
-        
+	public String initEdit(@RequestParam(value = "back", required = false) Boolean back,
+			@RequestParam(value = "acntOid", required = false) BigDecimal acntOid,
+			Model model, HttpSession session) throws SQLException {
+
         Account form = null;
         
-        if (null != session.getAttribute("acntForm")) {
+        if (null != back && back && null != session.getAttribute("acntForm")) {
             form = (Account) session.getAttribute("acntForm");
         }
         else {

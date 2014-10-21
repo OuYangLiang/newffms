@@ -53,7 +53,7 @@
         <script>
             $( document ).ready(function() {
             	$ ("#btn-cancel").click(function(){
-                    window.location.href = "<c:url value='/category/initEdit' />";
+                    window.location.href = "<c:url value='/category/initEdit?back=true' />";
                 });
                 
                 $ ("#btn-save").click(function(){

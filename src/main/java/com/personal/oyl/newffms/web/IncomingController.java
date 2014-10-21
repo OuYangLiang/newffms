@@ -105,11 +105,11 @@ public class IncomingController extends BaseController{
     }
     
     @RequestMapping("/initAdd")
-    public String initAdd(Model model, HttpSession session) throws SQLException {
+    public String initAdd(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {
         
         Incoming form = null;
         
-        if (null != session.getAttribute("incomingForm")) {
+        if (null != back && back && null != session.getAttribute("incomingForm")) {
             form = (Incoming) session.getAttribute("incomingForm");
         }
         else {
@@ -175,11 +175,13 @@ public class IncomingController extends BaseController{
     }
     
     @RequestMapping("/initEdit")
-    public String initEdit(@RequestParam(value="incomingOid", required=false) BigDecimal incomingOid, Model model, HttpSession session) throws SQLException {
-        
+	public String initEdit(@RequestParam(value = "back", required = false) Boolean back,
+			@RequestParam(value = "incomingOid", required = false) BigDecimal incomingOid,
+			Model model, HttpSession session) throws SQLException {
+
         Incoming form = null;
         
-        if (null != session.getAttribute("incomingForm")) {
+        if (null != back && back && null != session.getAttribute("incomingForm")) {
             form = (Incoming) session.getAttribute("incomingForm");
         }
         else {

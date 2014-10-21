@@ -83,7 +83,7 @@
         <script>
             $( document ).ready(function() {
             	$ ("#btn-cancel").click(function(){
-                    window.location.href = "<c:url value='/incoming/initAdd' />";
+                    window.location.href = "<c:url value='/incoming/initAdd?back=true' />";
                 });
                 
                 $ ("#btn-save").click(function(){

@@ -119,7 +119,7 @@
         <script>
             $( document ).ready(function() {
                 $ ("#btn-back").click(function(){
-                	window.location.href = "<c:url value='/consumption/initEdit' />";
+                	window.location.href = "<c:url value='/consumption/initEdit?back=true' />";
                 });
                 
                 $ ("#btn-save").click(function(){

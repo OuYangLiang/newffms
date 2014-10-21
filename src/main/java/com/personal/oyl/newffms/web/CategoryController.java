@@ -47,11 +47,11 @@ public class CategoryController extends BaseController{
     }
     
     @RequestMapping("/initAdd")
-    public String initAdd(Model model, HttpSession session) throws SQLException {
+    public String initAdd(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {
         
         Category form = null;
         
-        if (null != session.getAttribute("catForm")) {
+        if (null != back && back && null != session.getAttribute("catForm")) {
             form = (Category) session.getAttribute("catForm");
         }
         else {
@@ -112,11 +112,13 @@ public class CategoryController extends BaseController{
     }
     
     @RequestMapping("/initEdit")
-    public String initEdit(@RequestParam(value="categoryOid", required=false) BigDecimal categoryOid, Model model, HttpSession session) throws SQLException {
-        
+	public String initEdit(@RequestParam(value = "back", required = false) Boolean back,
+			@RequestParam(value = "categoryOid", required = false) BigDecimal categoryOid,
+			Model model, HttpSession session) throws SQLException {
+
     	Category form = null;
         
-        if (null != session.getAttribute("catForm")) {
+        if (null != back && back && null != session.getAttribute("catForm")) {
             form = (Category) session.getAttribute("catForm");
         }
         else {

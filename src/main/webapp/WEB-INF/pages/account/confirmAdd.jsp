@@ -85,7 +85,7 @@
         <script>
             $( document ).ready(function() {
             	$ ("#btn-cancel").click(function(){
-                    window.location.href = "<c:url value='/account/initAdd' />";
+                    window.location.href = "<c:url value='/account/initAdd?back=true' />";
                 });
                 
                 $ ("#btn-save").click(function(){

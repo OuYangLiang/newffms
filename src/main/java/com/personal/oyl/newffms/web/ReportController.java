@@ -174,6 +174,9 @@ public class ReportController {
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
         for (Incoming incoming : incomings) {
+        	if (!incoming.getConfirmed())
+        		continue;//过滤掉未确认的收入记录。
+        	
             String date = sdf.format(incoming.getIncomingDate());
             
             String key = date;

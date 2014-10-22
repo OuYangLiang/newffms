@@ -22,7 +22,7 @@
                 <div class="newline-wrapper ui-widget-content">
                     <div class="label">收入人</div>
                     
-                    <div class="input">
+                    <div class="input" style="width: 35%;">
                         <select name="ownerOid" class="selectbox" >
                             <option value ="">全部</option>
                             <c:forEach var="user" items="${ users }" varStatus="status">
@@ -30,8 +30,9 @@
                             </c:forEach>
                         </select>
                         
-                        <span id="btn-query" style="margin-left:150px; margin-top:-20px;">查询</span>
                     </div>
+                    
+                    <div id="btn-query" style="float:left; margin-top: 5px;">查询</div>
                     
                     <div style="clear:both;" ></div>
                 </div>

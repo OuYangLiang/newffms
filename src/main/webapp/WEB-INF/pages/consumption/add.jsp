@@ -612,7 +612,8 @@
                                 { name: "acntHumanDesc", width: 300, align: "center", sortable: false, formatter:accountFormatter },
                                 { name: "balance", width: 180, align: "center", sortable: false}
                             ],
-                            autowidth: true
+                            autowidth: true,
+                            rowNum: 1000
                         });
                     }
                 	

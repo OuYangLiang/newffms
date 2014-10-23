@@ -3,11 +3,11 @@
 <!doctype html>
 <html>
     <head>
-        <meta name="description" content="Family System - 2nd version">
+        <meta name="description" content="家庭管理系统 - Ver 2">
         <meta name="author" content="欧阳亮">
         <meta charset="UTF-8">
         
-        <title><decorator:title /></title>
+        <title>家庭管理系统 - Ver 2</title>
         <link rel="stylesheet" href="<c:url value='/css/smoothness/jquery-ui.css' />" />
         <link rel="stylesheet" href="<c:url value='/css/ui.jqgrid.css' />" />
         <link rel="stylesheet" href="<c:url value='/css/framework.css' />" />
@@ -30,10 +30,9 @@
                     <li><a href="<c:url value='/incoming/summary' />">收入</a></li>
                     <li><a href="<c:url value='/report/incoming' />">收入情况</a></li>
                     <li><a href="<c:url value='/account/summary' />">账户</a></li>
-                    <li><a href="#">成员</a></li>
                     <li><a href="<c:url value='/profile/initEdit' />">个人</a></li>
                     <li><a href="<c:url value='/category/summary' />">类别</a></li>
-                    <li><a href="#">Tutorials</a>
+                    <!-- <li><a href="#">Tutorials</a>
                         <ul>
                             <li><a href="#">Photoshop</a>
                                 <ul>
@@ -48,7 +47,7 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li><a href="<c:url value='/j_spring_security_logout' />">退出</a></li>
                 </ul>
             </nav>

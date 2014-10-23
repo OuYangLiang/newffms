@@ -3,9 +3,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>This is the title.</title>
         <link rel="stylesheet" href="<c:url value='/css/consumption.css' />" />
-        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
     
     <body>
@@ -109,12 +107,6 @@
         
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {

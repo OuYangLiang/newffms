@@ -3,8 +3,6 @@
 <!doctype html>
 <html>
     <head>
-        <title>This is the title.</title>
-        <link rel="stylesheet" href="<c:url value='/css/consumption.css' />" />
         <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
 

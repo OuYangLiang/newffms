@@ -3,10 +3,11 @@
 <!doctype html>
 <html>
     <header>
-        <meta name="description" content="Family System - 2nd version">
+        <meta name="description" content="家庭管理系统 - Ver 2">
         <meta name="author" content="欧阳亮">
         <meta charset="UTF-8">
         
+        <title>家庭管理系统 - Ver 2</title>
         <link rel="stylesheet" href="<c:url value='/css/login.css' />" type="text/css" />
     </header>
     

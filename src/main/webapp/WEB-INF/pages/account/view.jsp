@@ -109,10 +109,7 @@
         <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {

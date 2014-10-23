@@ -3,7 +3,6 @@
 <!doctype html>
 <html>
     <head>
-        <title>This is the title.</title>
         <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
     
@@ -13,7 +12,7 @@
         </div>
         
         <div class="content-header ui-widget-header">
-            消费
+            收入
         </div>
         
         <div class="contentWrapper">
@@ -71,7 +70,6 @@
         <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {

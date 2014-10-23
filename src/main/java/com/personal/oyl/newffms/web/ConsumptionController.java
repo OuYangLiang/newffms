@@ -73,11 +73,14 @@ public class ConsumptionController extends BaseController{
     
     @RequestMapping("search")
     @ResponseBody
-    public String search(@RequestParam("cpnTimeFrom") Date cpnTimeFrom, @RequestParam("cpnTimeTo") Date cpnTimeTo, HttpSession session) {
-        //从页面接受查询参数，并放入session中。
+	public String search(@RequestParam("cpnTimeFrom") Date cpnTimeFrom,
+			@RequestParam("cpnTimeTo") Date cpnTimeTo,
+			@RequestParam("confirmed") Boolean confirmed, HttpSession session) {
+  //从页面接受查询参数，并放入session中。
         Consumption searchParam = new Consumption();
         searchParam.setCpnTimeFrom(DateUtil.getInstance().getBeginTime(cpnTimeFrom));
         searchParam.setCpnTimeTo(DateUtil.getInstance().getEndTime(cpnTimeTo));
+        searchParam.setConfirmed(confirmed);
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTION, searchParam);
         

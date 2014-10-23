@@ -27,6 +27,9 @@
             <if test="incomingType != null">
                 AND INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
             </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
         </where>
     </select>
     
@@ -39,6 +42,9 @@
             </if>
             <if test="incomingType != null">
                 AND INCOMING_TYPE = #{incomingType,jdbcType=VARCHAR}
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
             </if>
         <if test="sortField == null" >
             ORDER BY INCOMING_DATE DESC

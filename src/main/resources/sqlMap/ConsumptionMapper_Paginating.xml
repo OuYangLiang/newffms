@@ -26,6 +26,9 @@
             <if test="cpnTimeTo != null">
                 <![CDATA[ AND CPN_TIME <= #{cpnTimeTo,jdbcType=TIMESTAMP} ]]>
             </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
         </where>
     </select>
     
@@ -38,6 +41,9 @@
             </if>
             <if test="cpnTimeTo != null">
                 <![CDATA[ AND CPN_TIME <= #{cpnTimeTo,jdbcType=TIMESTAMP} ]]>
+            </if>
+            <if test="confirmed != null">
+                AND CONFIRMED = #{confirmed,jdbcType=BIT}
             </if>
         </where>
         <if test="sortField == null" >

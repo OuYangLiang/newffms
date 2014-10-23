@@ -29,10 +29,23 @@
 							    <option value ="${user.userOid}" <c:if test='${user.userOid == SESSION_KEY_SEARCH_PARAM_INCOMING.ownerOid }' >selected="selected"</c:if>>${user.userName}</option>
                             </c:forEach>
                         </select>
-                        
                     </div>
                     
                     <div id="btn-query" style="float:left; margin-top: 5px;">查询</div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
+                
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">状态</div>
+                    
+                    <div class="input" >
+						<select name="confirmed" class="selectbox" >
+						    <option value ="">全部</option>
+						    <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>确认</option>
+						    <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && !SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>初始</option>
+						</select>
+                    </div>
                     
                     <div style="clear:both;" ></div>
                 </div>

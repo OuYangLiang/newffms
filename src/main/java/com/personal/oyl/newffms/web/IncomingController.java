@@ -68,11 +68,12 @@ public class IncomingController extends BaseController{
     
     @RequestMapping("search")
     @ResponseBody
-    public String search(@RequestParam("ownerOid") BigDecimal ownerOid, HttpSession session) {
+    public String search(@RequestParam("ownerOid") BigDecimal ownerOid, @RequestParam("confirmed") Boolean confirmed, HttpSession session) {
         //从页面接受查询参数，并放入session中。
         Incoming searchParam = new Incoming();
         
         searchParam.setOwnerOid(ownerOid);
+        searchParam.setConfirmed(confirmed);
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_INCOMING, searchParam);
         

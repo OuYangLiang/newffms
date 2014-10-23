@@ -18,21 +18,39 @@
         
         <div class="contentWrapper">
             <div class="mainArea">
+                <form id="form" method="post" autocomplete="off" >
                 <div class="newline-wrapper ui-widget-content" >
-                    <div class="input" style="width:100%">
-                        <form id="form" method="post" autocomplete="off" >
-                        <span style="margin-left:200px;">起始日期</span>
+                    <div class="label">时间</div>
+                
+                    <div class="input" >
+                        <span>起始日期</span>
                         <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         
                         <span style="margin-left:50px;">结束日期</span>
                         <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.cpnTimeTo }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeTo" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         
                         <span id="btn-query" style="margin-left:20px; margin-top:-5px;">查询</span>
-                        </form>
+                        
+                        <div style="clear:both;" ></div>
                     </div>
                     
                     <div style="clear:both;" ></div>
                 </div>
+                
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">状态</div>
+                    
+                    <div class="input" >
+                        <select name="confirmed" class="selectbox" >
+                            <option value ="">全部</option>
+                            <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed && SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed }' >selected="selected"</c:if>>确认</option>
+                            <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed && !SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed }' >selected="selected"</c:if>>初始</option>
+                        </select>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
+                </form>
             </div>
             
             <div class="content-title ui-widget-header">
@@ -59,6 +77,7 @@
         <script>
             $( document ).ready(function() {
             	$ (".button-area button").button();
+            	$( ".selectbox" ).selectmenu();
             	
                 $ ("#btn-add").click(function(){
                 	window.location.href = "<c:url value='/consumption/initAdd' />";

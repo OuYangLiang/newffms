@@ -48,6 +48,21 @@
                     
                     <div style="clear:both;" ></div>
                 </div>
+                
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">类别</div>
+                    
+                    <div class="input" >
+                        <select name="incomingType" class="selectbox" >
+                            <option value ="">全部</option>
+                            <c:forEach var="item" items="${ incomingTypes }" varStatus="status">
+                                <option value="${item.key }" <c:if test='${item.key == SESSION_KEY_SEARCH_PARAM_INCOMING.incomingType }' >selected="selected"</c:if>>${item.value }</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
                 </form>
             </div>
             

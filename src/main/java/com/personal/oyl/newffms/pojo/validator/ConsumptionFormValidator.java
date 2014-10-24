@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.pojo.validator;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
@@ -50,8 +51,14 @@ public class ConsumptionFormValidator implements Validator {
             return;
         }
         
+        BigDecimal totalItemAmount = BigDecimal.ZERO;
+        BigDecimal totalPayment = BigDecimal.ZERO;
+        
         int idx = 0;
         for ( ConsumptionItem item : form.getCpnItems() ) {
+        	
+        	totalItemAmount = totalItemAmount.add(item.getAmount());
+        	
             try {
                 errors.pushNestedPath("cpnItems[" + idx + "]");
                 ValidationUtils.invokeValidator(itemValidator, item, errors);
@@ -64,6 +71,7 @@ public class ConsumptionFormValidator implements Validator {
         
         idx = 0;
         for ( Account acnt : form.getAccounts() ) {
+        	totalPayment = totalPayment.add(acnt.getPayment());
             
             try {
                 Account dbAcnt = accountService.selectByKey(acnt.getAcntOid());
@@ -77,6 +85,10 @@ public class ConsumptionFormValidator implements Validator {
                 log.error(e.getMessage(), e);
             }
             
+        }
+        
+        if (totalPayment.compareTo(totalItemAmount) != 0) {
+        	errors.reject(null, "消费总金额与支付总金额不匹配，亲。");
         }
     }
 

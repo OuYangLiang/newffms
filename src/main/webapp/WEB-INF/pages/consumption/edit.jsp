@@ -202,25 +202,6 @@
                 	//提交表单时，使用使用jquery validation engine进行前端基本验证。
                 	$("#form").validationEngine();
                 	if ($ ("#form").validationEngine('validate')) {
-                		//前端基本验证通过的话，继续进行业务前端业务验证
-                        var totalPayment = 0;
-                        var totalAmount  = 0;
-                        
-                        for (var i = 0; i < itemCnt; i ++) {
-                            totalAmount += parseFloat($("#itemAmount" + i).val());
-                        }
-                        for (var i = 0; i < accountCnt; i ++) {
-                            totalPayment += parseFloat($("#payment" + i).val());
-                        }
-                        
-                        if (totalAmount != totalPayment) {
-                        	//前端业务验证不通过，显示错误信息，不提交表单。
-                            $("#errorMsg").html("消费总金额与支付总金额不匹配，亲。");
-                            $("#errorArea").css("display", "");
-                            
-                            return;
-                        }
-                        
                         $ ("#form").submit();
                 	}
                 });

@@ -47,6 +47,7 @@ public class IncomingController extends BaseController{
         //初始化查询条件。
         
         model.addAttribute("users", userProfileService.selectAllUsers());
+        model.addAttribute("incomingTypes", IncomingType.toMapValue());
         
         //设置默认查询条件值，并放入session中
         
@@ -68,12 +69,16 @@ public class IncomingController extends BaseController{
     
     @RequestMapping("search")
     @ResponseBody
-    public String search(@RequestParam("ownerOid") BigDecimal ownerOid, @RequestParam("confirmed") Boolean confirmed, HttpSession session) {
-        //从页面接受查询参数，并放入session中。
+	public String search(@RequestParam("ownerOid") BigDecimal ownerOid,
+			@RequestParam("confirmed") Boolean confirmed,
+			@RequestParam("incomingType") IncomingType incomingType,
+			HttpSession session) {
+  //从页面接受查询参数，并放入session中。
         Incoming searchParam = new Incoming();
         
         searchParam.setOwnerOid(ownerOid);
         searchParam.setConfirmed(confirmed);
+        searchParam.setIncomingType(incomingType);
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_INCOMING, searchParam);
         

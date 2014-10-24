@@ -23,10 +23,10 @@ public class CustomAccessDecisionVoter implements AccessDecisionVoter<FilterInvo
     }
 
     public int vote(Authentication authentication, FilterInvocation object, Collection<ConfigAttribute> attributes) {
-        String url = object.getRequestUrl().toString();  
-        log.info(url);
+        String url = object.getRequestUrl().toString();
+        
         Iterator<? extends GrantedAuthority> it = authentication.getAuthorities().iterator();  
-          
+        
         while (it.hasNext())  
         {  
             GrantedAuthority authority = it.next();  
@@ -34,7 +34,9 @@ public class CustomAccessDecisionVoter implements AccessDecisionVoter<FilterInvo
             if (url.contains(authority.getAuthority()))  
                 return ACCESS_GRANTED;  
         }  
-          
+        
+        log.warn("Url [" + url + "] is not permitted.");
+        
         return ACCESS_DENIED;  
     }
 

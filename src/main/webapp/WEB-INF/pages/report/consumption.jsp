@@ -61,17 +61,17 @@
                     <div style="clear:both;" ></div>
                 </div>
             </div>
-        
+            
             <div class="content-title ui-widget-header">
-                消费情况柱状图
+                消费金额
             </div>
         
             <div class="mainArea">
-                <div id="container" style="padding: 0 20px" ></div>
+                <div id="container4" style="padding: 0 20px" ></div>
             </div>
             
             <div class="content-title ui-widget-header">
-                消费情况比例图
+                消费情况
             </div>
         
             <div class="mainArea" style="width: 50%; float: left; padding: 0 0 0 0;">
@@ -85,6 +85,14 @@
                 </div>
             </div>
             <div style="clear:both;" ></div>
+        
+            <div class="content-title ui-widget-header">
+                消费明细
+            </div>
+        
+            <div class="mainArea">
+                <div id="container" style="padding: 0 20px" ></div>
+            </div>
             
         </div>
         
@@ -190,6 +198,41 @@
                         drilldown: {series:[]}
                     };
             	
+            	var options4 = {
+                        chart: {
+                            type: "column"
+                        },
+                        title: {
+                            text: 'Title'
+                        },
+                        xAxis: {
+                            type:'category'
+                        },
+                        tooltip: {
+                            "pointFormat": "{series.name}: <b>{point.y:,.2f}</b>"
+                        },
+                        yAxis: {
+                            title: {
+                                text: ""
+                            }
+                        },
+                        plotOptions: {
+                            series: {
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: false,
+                                    "format": "{point.y:,.2f}"
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            "enabled": true,
+                            "format": "<b>{point.name}</b>: {point.y:,.2f}"
+                        },
+                        series: [],
+                        drilldown: {series:[]}
+                    };
+            	
             	var refresh = function(data) {
             		options.series = data.colRlt.series;
                     options.drilldown = {};
@@ -206,6 +249,10 @@
                     options3.series = data.pieRltOfUser.series;
                     options3.title.text = data.pieRltOfUser.title;
                     $('#container3').highcharts(options3);
+                    
+                    options4.series = data.colRltOfAmount.series;
+                    options4.title.text = data.colRltOfAmount.title;
+                    $('#container4').highcharts(options4);
             	};
             	
             	$.ajax({

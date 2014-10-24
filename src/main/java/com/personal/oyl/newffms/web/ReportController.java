@@ -109,14 +109,18 @@ public class ReportController {
         HighChartGraphResult colRlt = this.columnResult(categoryConsumptions, allCategories, allUsers);
         HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories);
         HighChartGraphResult pieRltOfUser = this.pieResultOfUser(categoryConsumptions);
+        HighChartGraphResult colRltOfAmount = this.columnResultOfAmount(categoryConsumptions);
+        
         
         colRlt.setTitle(title);
         pieRltOfAll.setTitle(title);
         pieRltOfUser.setTitle(title);
+        colRltOfAmount.setTitle(title);
         
         rlt.setColRlt(colRlt);
         rlt.setPieRltOfAll(pieRltOfAll);
         rlt.setPieRltOfUser(pieRltOfUser);
+        rlt.setColRltOfAmount(colRltOfAmount);
         
         return rlt;
     }
@@ -313,6 +317,56 @@ public class ReportController {
             innerSeries.setName(entry.getKey());
             innerSeries.setType("pie");
             innerSeries.setY(userTotal.divide(total, 4, RoundingMode.HALF_UP));
+            
+            series.getData().add(innerSeries);
+        }
+        
+        return rlt;
+    }
+    
+    
+    private HighChartGraphResult columnResultOfAmount(List<CategoryConsumption> categoryConsumptions) {
+        BigDecimal total = BigDecimal.ZERO;
+        Map<String, BigDecimal> userSumMap = new HashMap<String, BigDecimal>();
+        
+        for (CategoryConsumption item : categoryConsumptions) {
+            if (item.getCategoryLevel() == 0 && !BigDecimal.valueOf(-1).equals(item.getUserOid())) {
+                total = total.add(item.getTotal());
+                
+                if (userSumMap.containsKey(item.getUserName())) {
+                    BigDecimal oldValue = userSumMap.get(item.getUserName());
+                    userSumMap.put(item.getUserName(), oldValue.add(item.getTotal()));
+                } else {
+                    userSumMap.put(item.getUserName(), item.getTotal());
+                }
+            }
+        }
+        
+        //初始化返回对象
+        HighChartGraphResult rlt = new HighChartGraphResult();
+        List<HightChartSeries> seriesList = new ArrayList<HightChartSeries>();
+        rlt.setSeries(seriesList);
+        
+        if (total.compareTo(BigDecimal.ZERO) == 0) {
+            //总消费为0的话，值图无意义。
+            return rlt;
+        }
+        
+        HightChartSeries series = new HightChartSeries();
+        series.setName("消费金额");
+        series.setType("column");
+        series.setData(new ArrayList<HightChartSeries>());
+        seriesList.add(series);
+        
+        HightChartSeries innerSeries = new HightChartSeries();
+        innerSeries.setName("全部");
+        innerSeries.setY(total);
+        series.getData().add(innerSeries);
+        
+        for (Map.Entry<String, BigDecimal> entry : userSumMap.entrySet() ) {
+            innerSeries = new HightChartSeries();
+            innerSeries.setName(entry.getKey());
+            innerSeries.setY(entry.getValue());
             
             series.getData().add(innerSeries);
         }

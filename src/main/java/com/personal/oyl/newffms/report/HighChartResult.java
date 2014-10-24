@@ -4,6 +4,7 @@ public class HighChartResult {
     private HighChartGraphResult colRlt;
     private HighChartGraphResult pieRltOfAll;
     private HighChartGraphResult pieRltOfUser;
+    private HighChartGraphResult colRltOfAmount;
     
     private HighChartGraphResult incomingOfUser;
     private HighChartGraphResult incomingOfType;
@@ -47,5 +48,13 @@ public class HighChartResult {
     public void setIncomingOfType(HighChartGraphResult incomingOfType) {
         this.incomingOfType = incomingOfType;
     }
+
+	public HighChartGraphResult getColRltOfAmount() {
+		return colRltOfAmount;
+	}
+
+	public void setColRltOfAmount(HighChartGraphResult colRltOfAmount) {
+		this.colRltOfAmount = colRltOfAmount;
+	}
 
 }

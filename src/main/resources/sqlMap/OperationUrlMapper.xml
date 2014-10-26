@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.OperationUrlDao">
+	<resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.OperationUrl">
+		<id column="OPN_OID" property="opnOid" jdbcType="DECIMAL" />
+		<id column="OPN_URL" property="opnUrl" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+    <select id="selectUrlsByUser" resultType="java.lang.String" parameterType="java.math.BigDecimal">
+        SELECT OPN_URL 
+        FROM OPERATION_URL URL, OPERATION OPN, ROLE_OPERATION RO, USER_ROLE UR
+        WHERE UR.USER_OID = #{userOid,jdbcType=DECIMAL}
+        AND UR.ROLE_OID = RO.ROLE_OID
+        AND RO.OPN_OID = OPN.OPN_OID
+        AND OPN.OPN_OID = URL.OPN_OID
+    </select>
+</mapper>

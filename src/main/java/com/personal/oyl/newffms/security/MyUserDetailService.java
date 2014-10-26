@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.personal.oyl.newffms.pojo.UserProfile;
+import com.personal.oyl.newffms.service.OperationUrlService;
 import com.personal.oyl.newffms.service.UserProfileService;
 
 public class MyUserDetailService implements UserDetailsService {
@@ -23,113 +24,37 @@ public class MyUserDetailService implements UserDetailsService {
     
     @Autowired
     private UserProfileService userProfileService;
+    @Autowired
+    private OperationUrlService operationUrlService;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserProfile user = null;
         
         try {
             user = userProfileService.selectByLoginId(username.trim());
+            
+            if (null == user) {
+                throw new UsernameNotFoundException(username);
+            }
+            
+            List<GrantedAuthority> AUTHORITIES = new ArrayList<GrantedAuthority>();
+            AUTHORITIES.add(new SimpleGrantedAuthority("/accessDenied"));
+            
+            
+            List<String> grantUrls = operationUrlService.selectUrlsByUser(user.getUserOid());
+            
+            for (String url : grantUrls) {
+            	AUTHORITIES.add(new SimpleGrantedAuthority(url));
+            }
+            
+            return new User(username, user.getLoginPwd(), AUTHORITIES);
+            
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
             
             throw new UsernameNotFoundException(username, e);
         }
         
-        if (null == user) {
-            throw new UsernameNotFoundException(username);
-        }
-        
-        List<GrantedAuthority> AUTHORITIES = new ArrayList<GrantedAuthority>();
-        AUTHORITIES.add(new SimpleGrantedAuthority("/welcome"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/accessDenied"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/test/visit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/test/viewUser"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/user/add"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/user/saveAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/summary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/search"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/listOfSummary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/listOfItemSummary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/initAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/confirmAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/saveAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/view"));
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/delete"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/confirm"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/rollback"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/initEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/confirmEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/consumption/saveEdit"));
-        
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/report/consumption"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/report/incoming"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/report/consumptionDataSource"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/report/incomingDataSource"));
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/ajaxGetAllAccounts"));
-        
-        
-        
-        
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/summary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/search"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/listOfSummary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/initAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/confirmAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/saveAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/view"));
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/delete"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/confirm"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/rollback"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/initEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/confirmEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/incoming/saveEdit"));
-        
-        
-        
-        
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/summary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/search"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/listOfSummary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/listOfItemSummary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/initAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/confirmAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/saveAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/view"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/delete"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/initEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/confirmEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/saveEdit"));
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/initTransfer"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/confirmTransfer"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/account/saveTransfer"));
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/profile/initEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/profile/confirmEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/profile/saveEdit"));
-        
-        
-        
-        
-        
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/summary"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/ajaxGetAllCategories"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/initAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/confirmAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/saveAdd"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/view"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/delete"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/initEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/confirmEdit"));
-        AUTHORITIES.add(new SimpleGrantedAuthority("/category/saveEdit"));
-        
-        return new User(username, user.getLoginPwd(), AUTHORITIES);
     }
 
 }

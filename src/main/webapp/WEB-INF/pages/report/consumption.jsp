@@ -71,7 +71,7 @@
             </div>
             
             <div class="content-title ui-widget-header">
-                消费情况
+                消费比例
             </div>
         
             <div class="mainArea" style="width: 50%; float: left; padding: 0 0 0 0;">

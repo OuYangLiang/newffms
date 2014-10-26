@@ -40,5 +40,8 @@
         
     <bean id="reportService"
         class="com.personal.oyl.newffms.service.impl.ReportServiceImpl" />
+        
+    <bean id="operationUrlService"
+        class="com.personal.oyl.newffms.service.impl.OperationUrlServiceImpl" />
     
 </beans>

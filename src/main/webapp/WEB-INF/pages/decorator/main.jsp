@@ -24,14 +24,9 @@
         <div class="pageMenu">
             <nav>
                 <ul>
-                    <li><a href="<c:url value='/welcome' />">首页</a></li>
-                    <li><a href="<c:url value='/consumption/summary' />">消费</a></li>
-                    <li><a href="<c:url value='/report/consumption' />">消费情况</a></li>
-                    <li><a href="<c:url value='/incoming/summary' />">收入</a></li>
-                    <li><a href="<c:url value='/report/incoming' />">收入情况</a></li>
-                    <li><a href="<c:url value='/account/summary' />">账户</a></li>
-                    <li><a href="<c:url value='/profile/initEdit' />">个人</a></li>
-                    <li><a href="<c:url value='/category/summary' />">类别</a></li>
+                    <c:forEach var="item" items="${ SESSION_MENU_KEY }" varStatus="status" >
+                        <li><a href="<c:url value='${item.moduleLink }' />">${item.moduleDesc }</a></li>
+                    </c:forEach>
                     <!-- <li><a href="#">Tutorials</a>
                         <ul>
                             <li><a href="#">Photoshop</a>

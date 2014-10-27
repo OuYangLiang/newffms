@@ -43,5 +43,8 @@
         
     <bean id="operationUrlService"
         class="com.personal.oyl.newffms.service.impl.OperationUrlServiceImpl" />
+        
+    <bean id="moduleService"
+        class="com.personal.oyl.newffms.service.impl.ModuleServiceImpl" />
     
 </beans>

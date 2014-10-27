@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.personal.oyl.newffms.dao.ModuleDao">
+	<resultMap id="BaseResultMap" type="com.personal.oyl.newffms.pojo.Module">
+		<id column="MODULE_OID" property="moduleOid" jdbcType="DECIMAL" />
+		<result column="MODULE_DESC" property="moduleDesc" jdbcType="NVARCHAR" />
+        <result column="MODULE_LEVEL" property="moduleLevel" jdbcType="DECIMAL" />
+        <result column="SHOW_ORDER" property="showOrder" jdbcType="DECIMAL" />
+        <result column="MODULE_LINK" property="moduleLink" jdbcType="VARCHAR" />
+        <result column="PARENT_OID" property="parentOid" jdbcType="DECIMAL" />
+	</resultMap>
+	
+    <select id="selectMenusByUser" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+        SELECT MODULE_OID, MODULE_DESC, MODULE_LEVEL, SHOW_ORDER, MODULE_LINK, PARENT_OID
+        FROM MODULE
+        WHERE MODULE_OID IN (
+            SELECT MODULE_OID
+                FROM OPERATION OPN, ROLE_OPERATION RO, USER_ROLE UR
+		        WHERE UR.USER_OID = #{userOid,jdbcType=DECIMAL}
+		        AND UR.ROLE_OID = RO.ROLE_OID
+		        AND RO.OPN_OID = OPN.OPN_OID
+        )
+        ORDER BY SHOW_ORDER
+    </select>
+</mapper>

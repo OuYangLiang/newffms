@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.security;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,9 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.personal.oyl.newffms.constants.Constants;
+import com.personal.oyl.newffms.pojo.Module;
 import com.personal.oyl.newffms.pojo.UserProfile;
+import com.personal.oyl.newffms.service.ModuleService;
 import com.personal.oyl.newffms.service.UserProfileService;
 
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
@@ -24,13 +27,19 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     
     @Autowired
     private UserProfileService userProfileService;
+    @Autowired
+    private ModuleService moduleService;
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
         try {
             UserProfile user = userProfileService.selectByLoginId(authentication.getName());
             
+            //如果以后涉及子菜单，这里就需要修改一下。
+            List<Module> menus = moduleService.selectMenusByUser(user.getUserOid());
+            
             request.getSession().setAttribute(Constants.SESSION_USER_KEY, user);
+            request.getSession().setAttribute(Constants.SESSION_MENU_KEY, menus);
             
             RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
             redirectStrategy.sendRedirect(request, response, "/welcome");

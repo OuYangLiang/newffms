@@ -23,10 +23,10 @@
                 
                     <div class="input" >
                         <span>起始日期</span>
-                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
+                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         
                         <span style="margin-left:50px;">结束日期</span>
-                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.cpnTimeTo }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeTo" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
+                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.cpnTimeTo }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeTo" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
                         
                         <span id="btn-query" style="margin-left:20px; margin-top:-5px;">查询</span>
                         
@@ -42,8 +42,8 @@
                     <div class="input" >
                         <select name="confirmed" class="selectbox" >
                             <option value ="">全部</option>
-                            <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed && SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed }' >selected="selected"</c:if>>确认</option>
-                            <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed && !SESSION_KEY_SEARCH_PARAM_CONSUMPTION.confirmed }' >selected="selected"</c:if>>初始</option>
+                            <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed && SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed }' >selected="selected"</c:if>>确认</option>
+                            <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed && !SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed }' >selected="selected"</c:if>>初始</option>
                         </select>
                     </div>
                     
@@ -82,7 +82,7 @@
                 	window.location.href = "<c:url value='/consumption/initAdd' />";
                 });
             	
-            	$("#gridList").jqGrid({
+            	/* $("#gridList").jqGrid({
                     url: "<c:url value='/consumption/listOfSummary' />",
                     
                     page: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTION.requestPage}' />",
@@ -127,6 +127,36 @@
                         });
                         
                     }
+                }); */
+                
+                $("#gridList").jqGrid({
+                    url: "<c:url value='/consumption/listOfSummary' />",
+                    
+                    page: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.requestPage}' />",
+                    sortname: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.sortField}' />",
+                    sortorder: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.sortDir}' />",
+                    rowNum: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.sizePerPage}' />",
+                    
+                    jsonReader: {id: "itemOid"},
+                    colNames: ["描述", "类别", "消费人", "消费方式", "行金额", "总金额", "时间", "登记人", "状态", ""],
+                    colModel: [
+                        { sortable: false, name: "itemDesc", width: 100, align: "left" },
+                        { sortable: false, name: "categoryFullDesc", width: 100, align: "left" },
+                        { sortable: false, name: "userName", width: 60, align: "center" },
+                        { sortable: false, name: "consumption.cpnType", width: 50, align: "center" },
+                        { sortable: false, name: "amount", width: 70, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
+                        { sortable: false, name: "consumption.amount", width: 70, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
+                        { sortable: true , name: "consumption.cpnTime", index:"CPN_TIME", width: 130, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i'}},
+                        { sortable: false, name: "consumption.baseObject.createBy", width: 50, align: "center" },
+                        { sortable: false, name: "consumption.confirmed", width: 50, align: "center", formatter:function(cellvalue){return cellvalue?"确认":"初始";}},
+                        { sortable: false, align: "center", width: 50, formatter:function (cellvalue, options, rowObject){
+                            var url = '<c:url value='/consumption/view' />' + '?cpnOid=' + rowObject.cpnOid;
+                            
+                            var href = 'javascript:window.location.href="' + url + '"';
+                            
+                            return "<a href='" + href + "'>查看</a>";
+                        }},
+                    ]
                 });
             	
             	$ ("#btn-query").button();

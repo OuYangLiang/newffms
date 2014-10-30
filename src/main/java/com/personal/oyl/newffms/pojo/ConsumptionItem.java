@@ -14,6 +14,7 @@ public class ConsumptionItem extends BasePojo {
     private String categoryDesc;
     private String categoryFullDesc;
     private String userName;
+    private Consumption consumption;
 
     public BigDecimal getItemOid() {
         return itemOid;
@@ -86,5 +87,13 @@ public class ConsumptionItem extends BasePojo {
     public void setCategoryFullDesc(String categoryFullDesc) {
         this.categoryFullDesc = categoryFullDesc;
     }
+
+	public Consumption getConsumption() {
+		return consumption;
+	}
+
+	public void setConsumption(Consumption consumption) {
+		this.consumption = consumption;
+	}
 
 }

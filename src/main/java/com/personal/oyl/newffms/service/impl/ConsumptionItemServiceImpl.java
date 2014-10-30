@@ -45,4 +45,13 @@ public class ConsumptionItemServiceImpl implements ConsumptionItemService {
         this.delete(param);
     }
 
+	public int getCountOfSummary(ConsumptionItem param) throws SQLException {
+		return dao.getCountOfSummary(param);
+	}
+
+	public List<ConsumptionItem> getListOfSummary(ConsumptionItem param)
+			throws SQLException {
+		return dao.getListOfSummary(param);
+	}
+
 }

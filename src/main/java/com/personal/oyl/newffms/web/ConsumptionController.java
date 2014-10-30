@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.ConsumptionType;
 import com.personal.oyl.newffms.pojo.Account;
@@ -26,16 +24,14 @@ import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
-import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.validator.ConsumptionFormValidator;
-import com.personal.oyl.newffms.util.DateUtil;
 import com.personal.oyl.newffms.util.SessionUtil;
 
 @Controller
 @RequestMapping("/consumption")
 public class ConsumptionController extends BaseController{
     
-    private static final String SESSION_KEY_SEARCH_PARAM_CONSUMPTION = "SESSION_KEY_SEARCH_PARAM_CONSUMPTION";
+    //private static final String SESSION_KEY_SEARCH_PARAM_CONSUMPTION = "SESSION_KEY_SEARCH_PARAM_CONSUMPTION";
     
     @Autowired
     private ConsumptionFormValidator consumptionFormValidator;
@@ -45,7 +41,7 @@ public class ConsumptionController extends BaseController{
         binder.setValidator(consumptionFormValidator);
     }
     
-    @RequestMapping("summary")
+    /*@RequestMapping("summary")
     public String summary(HttpServletRequest request, HttpSession session) throws SQLException {
         this.clearSearchParameter(request, session, SESSION_KEY_SEARCH_PARAM_CONSUMPTION);
         
@@ -76,7 +72,7 @@ public class ConsumptionController extends BaseController{
 	public String search(@RequestParam("cpnTimeFrom") Date cpnTimeFrom,
 			@RequestParam("cpnTimeTo") Date cpnTimeTo,
 			@RequestParam("confirmed") Boolean confirmed, HttpSession session) {
-  //从页面接受查询参数，并放入session中。
+    	//从页面接受查询参数，并放入session中。
         Consumption searchParam = new Consumption();
         searchParam.setCpnTimeFrom(DateUtil.getInstance().getBeginTime(cpnTimeFrom));
         searchParam.setCpnTimeTo(DateUtil.getInstance().getEndTime(cpnTimeTo));
@@ -129,7 +125,7 @@ public class ConsumptionController extends BaseController{
         rlt.setTotal(1);
         
         return rlt;
-    }
+    }*/
     
     @RequestMapping("/initAdd")
     public String initAdd(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {

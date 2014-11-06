@@ -52,13 +52,18 @@ public class ConsumptionItemController extends BaseController {
     @ResponseBody
 	public String search(@RequestParam("cpnTimeFrom") Date cpnTimeFrom,
 			@RequestParam("cpnTimeTo") Date cpnTimeTo,
-			@RequestParam("confirmed") Boolean confirmed, HttpSession session) {
+			@RequestParam("confirmed") Boolean confirmed, 
+			@RequestParam("itemDesc") String itemDesc, HttpSession session) throws Exception {
     	//从页面接受查询参数，并放入session中。
         ConsumptionItem searchParam = new ConsumptionItem();
         searchParam.setConsumption(new Consumption());
         searchParam.getConsumption().setCpnTimeFrom(DateUtil.getInstance().getBeginTime(cpnTimeFrom));
         searchParam.getConsumption().setCpnTimeTo(DateUtil.getInstance().getEndTime(cpnTimeTo));
         searchParam.getConsumption().setConfirmed(confirmed);
+        searchParam.setItemDesc(itemDesc);
+        
+        searchParam.trimAllString();
+        searchParam.setAllEmptyStringToNull();
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM, searchParam);
         

@@ -49,6 +49,16 @@
                     
                     <div style="clear:both;" ></div>
                 </div>
+                
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">描述</div>
+                        
+                    <div class="input" >
+                        <input value="<c:out value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.itemDesc }' />" type="text" name="itemDesc" class="inputbox" />
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
                 </form>
             </div>
             

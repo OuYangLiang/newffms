@@ -34,6 +34,9 @@
             <if test="consumption != null and consumption.confirmed != null">
                 AND C.CONFIRMED = #{consumption.confirmed,jdbcType=BIT}
             </if>
+            <if test="itemDesc != null">
+                AND I.ITEM_DESC LIKE CONCAT('%',#{itemDesc,jdbcType=NVARCHAR},'%')
+            </if>
     </select>
     
     <select id="getListOfSummary" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem" resultMap="GridResultMap">
@@ -49,6 +52,9 @@
             </if>
             <if test="consumption != null and consumption.confirmed != null">
                 AND C.CONFIRMED = #{consumption.confirmed,jdbcType=BIT}
+            </if>
+            <if test="itemDesc != null">
+                AND I.ITEM_DESC LIKE CONCAT('%',#{itemDesc,jdbcType=NVARCHAR},'%')
             </if>
             <if test="sortField == null" >
                 ORDER BY C.CPN_TIME DESC

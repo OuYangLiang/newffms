@@ -6,6 +6,7 @@ import java.util.Date;
 import com.personal.oyl.newffms.constants.AccountAuditType;
 
 public class AccountAudit extends BasePojo {
+	private static final long serialVersionUID = 1L;
     private BigDecimal adtOid;
     private String adtDesc;
     private AccountAuditType adtType;

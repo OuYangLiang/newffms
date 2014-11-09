@@ -3,6 +3,7 @@ package com.personal.oyl.newffms.pojo;
 import java.util.Date;
 
 public class BaseObject extends BasePojo{
+	private static final long serialVersionUID = 1L;
     private Date createTime;
     private Date updateTime;
     private String createBy;

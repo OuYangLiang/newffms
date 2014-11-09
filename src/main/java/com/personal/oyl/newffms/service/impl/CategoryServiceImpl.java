@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import com.personal.oyl.newffms.dao.CategoryDao;
 import com.personal.oyl.newffms.dao.ConsumptionItemDao;
@@ -17,6 +18,9 @@ import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.service.CategoryService;
 
 public class CategoryServiceImpl implements CategoryService {
+	
+	@Autowired
+	private ApplicationContext context;
     
     @Autowired
     private CategoryDao dao;
@@ -44,11 +48,11 @@ public class CategoryServiceImpl implements CategoryService {
     public String selectFullDescByKey(BigDecimal categoryOid) throws SQLException {
         StringBuffer rlt = new StringBuffer();
         
-        Category param = this.selectByKey(categoryOid);
+        Category param = this.getMeBean().selectByKey(categoryOid);
         rlt.append(param.getCategoryDesc());
         
         while (param.getParentOid() != null) {
-            param = this.selectByKey(param.getParentOid());
+            param = this.getMeBean().selectByKey(param.getParentOid());
             rlt.insert(0, "-->").insert(0, param.getCategoryDesc());
         }
         
@@ -204,6 +208,11 @@ public class CategoryServiceImpl implements CategoryService {
 		param.put("parentOid", parentOid);
 		
 		return dao.selectByParent(param);
+	}
+	
+
+	public CategoryService getMeBean() {
+		return context.getBean("categoryService", CategoryService.class);
 	}
 
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <cache:advice id="categoryCacheAdvice" cache-manager="cacheManager">
+		<cache:caching cache="categoryCache">
+            <cache:cacheable method="selectByKey" key="#categoryOid" />
+            
+            <cache:cache-evict method="deleteByKey" key="#categoryOid" />
+            <cache:cache-evict method="delete" key="#param.categoryOid" />
+            <cache:cache-evict method="updateByPrimaryKeySelective" key="#param.categoryOid" />
+            <cache:cache-evict method="updateByPrimaryKey" key="#param.categoryOid" />
+		</cache:caching>
+	</cache:advice>
+	
+	<aop:config>
+        <aop:advisor advice-ref="categoryCacheAdvice" pointcut="execution(* com.personal.oyl.newffms.service.CategoryService.*(..))"/>
+	</aop:config>
+	
+	
+	<bean id="cacheManager"
+      class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/>
+
+	<bean id="ehcache"
+	      class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="classpath:ehcache.xml"/>
+</beans>

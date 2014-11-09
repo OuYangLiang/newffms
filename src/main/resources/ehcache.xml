@@ -1,0 +1,12 @@
+<ehcache>
+	<cache name="categoryCache"
+	    overflowToDisk="false"
+	    eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="120"
+        copyOnRead="true"
+        copyOnWrite="true"
+        maxEntriesLocalHeap="500"
+        memoryStoreEvictionPolicy="LRU">
+	</cache>
+</ehcache>

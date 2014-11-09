@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.personal.oyl.newffms.constants.Gender;
 
 public class UserProfile extends BasePojo {
+	private static final long serialVersionUID = 1L;
     private BigDecimal userOid;
     private String userName;
     private String userAlias;

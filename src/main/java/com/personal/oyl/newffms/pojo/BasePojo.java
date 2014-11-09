@@ -1,10 +1,12 @@
 package com.personal.oyl.newffms.pojo;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
-public abstract class BasePojo {
-    
-    private int start;
+public abstract class BasePojo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	private int start;
     private int sizePerPage;
     private int requestPage;
     private String sortField;

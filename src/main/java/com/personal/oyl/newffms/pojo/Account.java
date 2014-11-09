@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.personal.oyl.newffms.constants.AccountType;
 
 public class Account extends BasePojo {
+	private static final long serialVersionUID = 1L;
     private BigDecimal acntOid;
     private String acntDesc;
     private AccountType acntType;

@@ -18,4 +18,5 @@
 	<import resource="classpath:application-context-service.xml"/>
 	<import resource="classpath:application-context-aop.xml"/>
 	<import resource="classpath:application-context-validator.xml"/>
+    <import resource="classpath:application-context-cache.xml"/>
 </beans>

@@ -7,6 +7,7 @@ import java.util.Date;
 import com.personal.oyl.newffms.constants.ConsumptionType;
 
 public class Consumption extends BasePojo {
+	private static final long serialVersionUID = 1L;
     private BigDecimal cpnOid;
     private ConsumptionType cpnType;
     private BigDecimal amount;

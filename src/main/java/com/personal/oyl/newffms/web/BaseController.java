@@ -23,7 +23,7 @@ import com.personal.oyl.newffms.service.IncomingService;
 import com.personal.oyl.newffms.service.TransactionService;
 import com.personal.oyl.newffms.service.UserProfileService;
 
-public class BaseController {
+public abstract class BaseController {
     @Autowired
     protected TransactionService transactionService;
     @Autowired

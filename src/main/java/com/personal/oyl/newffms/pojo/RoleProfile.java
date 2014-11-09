@@ -3,6 +3,7 @@ package com.personal.oyl.newffms.pojo;
 import java.math.BigDecimal;
 
 public class RoleProfile extends BasePojo {
+	private static final long serialVersionUID = 1L;
     private BigDecimal roleOid;
     private String roleDesc;
     private BigDecimal userTypeOid;

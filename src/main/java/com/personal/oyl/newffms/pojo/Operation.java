@@ -3,6 +3,7 @@ package com.personal.oyl.newffms.pojo;
 import java.math.BigDecimal;
 
 public class Operation extends BasePojo {
+	private static final long serialVersionUID = 1L;
     private BigDecimal opnOid;
     private String opnDesc;
     private BigDecimal moduleOid;

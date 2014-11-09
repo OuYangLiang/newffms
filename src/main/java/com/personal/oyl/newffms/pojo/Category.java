@@ -3,7 +3,8 @@ package com.personal.oyl.newffms.pojo;
 import java.math.BigDecimal;
 
 public class Category extends BasePojo {
-    private BigDecimal categoryOid;
+	private static final long serialVersionUID = 1L;
+	private BigDecimal categoryOid;
     private String categoryDesc;
     private BigDecimal monthlyBudget;
     private Integer categoryLevel;

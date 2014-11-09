@@ -6,6 +6,7 @@ import java.util.Date;
 import com.personal.oyl.newffms.constants.IncomingType;
 
 public class Incoming extends BasePojo {
+	private static final long serialVersionUID = 1L;
     private BigDecimal incomingOid;
     private String incomingDesc;
     private BigDecimal amount;

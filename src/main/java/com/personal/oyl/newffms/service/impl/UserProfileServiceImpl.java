@@ -62,8 +62,4 @@ public class UserProfileServiceImpl implements UserProfileService {
 		dao.updateByKey(param);
 	}
 
-	public void delete(UserProfile param) throws SQLException {
-		dao.delete(param);
-	}
-
 }

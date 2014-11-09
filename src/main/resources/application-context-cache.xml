@@ -19,7 +19,6 @@
             <cache:cacheable method="selectByKey" key="#categoryOid" />
             
             <cache:cache-evict method="deleteByKey" key="#categoryOid" />
-            <cache:cache-evict method="delete" key="#param.categoryOid" />
             <cache:cache-evict method="updateByPrimaryKeySelective" key="#param.categoryOid" />
             <cache:cache-evict method="updateByPrimaryKey" key="#param.categoryOid" />
 		</cache:caching>

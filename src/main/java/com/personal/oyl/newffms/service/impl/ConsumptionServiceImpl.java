@@ -35,10 +35,6 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         dao.updateByKey(param);
     }
 
-    public void delete(Consumption param) throws SQLException {
-        dao.delete(param);
-    }
-
     public int getCountOfSummary(Consumption param) throws SQLException {
         return dao.getCountOfSummary(param);
     }
@@ -64,7 +60,7 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         Consumption param = new Consumption();
         param.setCpnOid(cpnOid);
         
-        this.delete(param);
+        dao.delete(param);
     }
 
     public List<PersonalConsumption> queryPersonalConsumption(Date start, Date end) throws SQLException {

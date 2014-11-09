@@ -31,10 +31,6 @@ public class IncomingServiceImpl implements IncomingService {
         dao.updateByKey(param);
     }
 
-    public void delete(Incoming param) throws SQLException {
-        dao.delete(param);
-    }
-
     public int getCountOfSummary(Incoming param) throws SQLException {
         return dao.getCountOfSummary(param);
     }
@@ -60,7 +56,7 @@ public class IncomingServiceImpl implements IncomingService {
         Incoming param = new Incoming();
         param.setIncomingOid(incomingOid);
         
-        this.delete(param);
+        dao.delete(param);
     }
 
     public List<Incoming> selectByIncomingDateRange(Date incomingDateFrom, Date incomingDateTo) throws SQLException {

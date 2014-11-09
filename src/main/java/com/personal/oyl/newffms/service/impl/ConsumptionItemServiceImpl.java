@@ -30,10 +30,6 @@ public class ConsumptionItemServiceImpl implements ConsumptionItemService {
         dao.updateByKey(param);
     }
 
-    public void delete(ConsumptionItem param) throws SQLException {
-        dao.delete(param);
-    }
-
     public List<ConsumptionItem> queryConsumptionItemByCpn(BigDecimal cpnOid) throws SQLException {
         return dao.queryConsumptionItemByCpn(cpnOid);
     }
@@ -42,7 +38,7 @@ public class ConsumptionItemServiceImpl implements ConsumptionItemService {
         ConsumptionItem param = new ConsumptionItem();
         param.setCpnOid(cpnOid);
         
-        this.delete(param);
+        dao.delete(param);
     }
 
 	public int getCountOfSummary(ConsumptionItem param) throws SQLException {

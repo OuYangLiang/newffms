@@ -165,10 +165,6 @@ public class CategoryServiceImpl implements CategoryService {
 		dao.updateByKey(param);
 	}
 
-	public void delete(Category param) throws SQLException {
-		dao.delete(param);
-	}
-
 	public BigDecimal selectTotalBudgetByParent(BigDecimal parentOid)
 			throws SQLException {
 		return dao.selectTotalBudgetByParent(parentOid);

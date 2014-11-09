@@ -11,5 +11,5 @@ public interface DbActionService<T extends BasePojo> {
     
     public void updateByPrimaryKey(T param) throws SQLException;
     
-    public void delete(T param) throws SQLException;
+//    public void delete(T param) throws SQLException;
 }

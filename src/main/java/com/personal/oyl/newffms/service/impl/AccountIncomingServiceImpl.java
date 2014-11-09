@@ -30,10 +30,6 @@ public class AccountIncomingServiceImpl implements AccountIncomingService {
         //N/A
     }
 
-    public void delete(AccountIncoming param) throws SQLException {
-        dao.delete(param);
-    }
-
     public AccountIncoming selectByIncoming(BigDecimal incomingOid) throws SQLException {
         AccountIncoming param = new AccountIncoming();
         param.setIncomingOid(incomingOid);

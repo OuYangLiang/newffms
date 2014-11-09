@@ -30,29 +30,25 @@ public class AccountAuditServiceImpl implements AccountAuditService {
         dao.updateByKey(param);
     }
 
-    public void delete(AccountAudit param) throws SQLException {
-        dao.delete(param);
-    }
-
     public void deleteByConsumption(BigDecimal cpnOid) throws SQLException {
         AccountAudit param = new AccountAudit();
         param.setCpnOid(cpnOid);
         
-        this.delete(param);
+        dao.delete(param);
     }
 
     public void deleteByIncoming(BigDecimal incomingOid) throws SQLException {
         AccountAudit param = new AccountAudit();
         param.setIncomingOid(incomingOid);
         
-        this.delete(param);
+        dao.delete(param);
     }
 
     public void deleteByAcnt(BigDecimal acntOid) throws SQLException {
         AccountAudit param = new AccountAudit();
         param.setAcntOid(acntOid);
         
-        this.delete(param);
+        dao.delete(param);
     }
 
     public int getCountOfSummary(AccountAudit param) throws SQLException {

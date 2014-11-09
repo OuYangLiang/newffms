@@ -41,10 +41,6 @@ public class AccountServiceImpl implements AccountService {
         dao.updateByKey(param);
     }
 
-    public void delete(Account param) throws SQLException {
-        dao.delete(param);
-    }
-
     public Account selectByKey(BigDecimal acntOid) throws SQLException {
         Account param = new Account();
         param.setAcntOid(acntOid);

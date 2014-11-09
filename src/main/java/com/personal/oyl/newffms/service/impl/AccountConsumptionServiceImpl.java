@@ -26,15 +26,11 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
         // not available
     }
 
-    public void delete(AccountConsumption param) throws SQLException {
-        dao.delete(param);
-    }
-
     public void deleteByConsumption(BigDecimal cpnOid) throws SQLException {
         AccountConsumption param = new AccountConsumption();
         param.setCpnOid(cpnOid);
         
-        this.delete(param);
+        dao.delete(param);
     }
 
     public List<AccountConsumption> select(AccountConsumption param) throws SQLException {

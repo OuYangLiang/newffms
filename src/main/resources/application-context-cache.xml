@@ -24,8 +24,31 @@
 		</cache:caching>
 	</cache:advice>
 	
+	<cache:advice id="userCacheAdvice" cache-manager="cacheManager">
+        <cache:caching cache="userCache">
+            <cache:cacheable method="selectByKey" key="#userOid" />
+            
+            <cache:cache-evict method="updateByPrimaryKeySelective" key="#param.userOid" />
+            <cache:cache-evict method="updateByPrimaryKey" key="#param.userOid" />
+        </cache:caching>
+    </cache:advice>
+    
+    <cache:advice id="accountCacheAdvice" cache-manager="cacheManager">
+        <cache:caching cache="accountCache">
+            <cache:cacheable method="selectByKey" key="#acntOid" />
+            
+            <cache:cache-evict method="deleteByKey" key="#acntOid" />
+            <cache:cache-evict method="updateByPrimaryKeySelective" key="#param.acntOid" />
+            <cache:cache-evict method="updateByPrimaryKey" key="#param.acntOid" />
+        </cache:caching>
+    </cache:advice>
+	
 	<aop:config>
         <aop:advisor advice-ref="categoryCacheAdvice" pointcut="execution(* com.personal.oyl.newffms.service.CategoryService.*(..))"/>
+        
+        <aop:advisor advice-ref="userCacheAdvice" pointcut="execution(* com.personal.oyl.newffms.service.UserProfileService.*(..))"/>
+        
+        <aop:advisor advice-ref="accountCacheAdvice" pointcut="execution(* com.personal.oyl.newffms.service.AccountService.*(..))"/>
 	</aop:config>
 	
 	

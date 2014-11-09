@@ -2,11 +2,27 @@
 	<cache name="categoryCache"
 	    overflowToDisk="false"
 	    eternal="false"
-        timeToIdleSeconds="120"
-        timeToLiveSeconds="120"
         copyOnRead="true"
         copyOnWrite="true"
-        maxEntriesLocalHeap="500"
+        maxEntriesLocalHeap="200"
         memoryStoreEvictionPolicy="LRU">
 	</cache>
+	
+    <cache name="userCache"
+        overflowToDisk="false"
+        eternal="false"
+        copyOnRead="true"
+        copyOnWrite="true"
+        maxEntriesLocalHeap="30"
+        memoryStoreEvictionPolicy="LRU">
+    </cache>
+    
+    <cache name="accountCache"
+        overflowToDisk="false"
+        eternal="false"
+        copyOnRead="true"
+        copyOnWrite="true"
+        maxEntriesLocalHeap="200"
+        memoryStoreEvictionPolicy="LRU">
+    </cache>
 </ehcache>

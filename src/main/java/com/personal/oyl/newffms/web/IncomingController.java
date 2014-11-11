@@ -24,6 +24,8 @@ import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
+import com.personal.oyl.newffms.pojo.key.IncomingKey;
+import com.personal.oyl.newffms.pojo.key.UserProfileKey;
 import com.personal.oyl.newffms.pojo.validator.IncomingValidator;
 import com.personal.oyl.newffms.util.SessionUtil;
 
@@ -140,7 +142,7 @@ public class IncomingController extends BaseController{
             return "incoming/add";
         }
         
-        form.setOwner(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
         
         session.setAttribute("incomingForm", form);
         
@@ -168,10 +170,10 @@ public class IncomingController extends BaseController{
     
     @RequestMapping("/view")
     public String view(@RequestParam("incomingOid") BigDecimal incomingOid, Model model) throws SQLException {
-        Incoming form = incomingService.selectByKey(incomingOid);
+        Incoming form = incomingService.selectByKey(new IncomingKey(incomingOid));
         Account acnt = accountService.queryAccountsByIncoming(incomingOid);
         
-        form.setOwner(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
         form.setAcntOid(acnt.getAcntOid());
         form.setAcntHumanDesc(acnt.getAcntHumanDesc());
         
@@ -191,7 +193,7 @@ public class IncomingController extends BaseController{
             form = (Incoming) session.getAttribute("incomingForm");
         }
         else {
-            form = incomingService.selectByKey(incomingOid);
+            form = incomingService.selectByKey(new IncomingKey(incomingOid));
             Account acnt = accountService.queryAccountsByIncoming(incomingOid);
             
             form.setAcntOid(acnt.getAcntOid());
@@ -215,7 +217,7 @@ public class IncomingController extends BaseController{
             return "incoming/edit";
         }
         
-        form.setOwner(userProfileService.selectByKey(form.getOwnerOid()).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
         
         session.setAttribute("incomingForm", form);
         
@@ -226,7 +228,7 @@ public class IncomingController extends BaseController{
     public String saveEdit(Model model, HttpSession session) throws SQLException {
         Incoming form = (Incoming) session.getAttribute("incomingForm");
         
-        Incoming oldObj = incomingService.selectByKey(form.getIncomingOid());
+        Incoming oldObj = incomingService.selectByKey(new IncomingKey(form.getIncomingOid()));
         form.setBaseObject(new BaseObject());
         form.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
         form.getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());

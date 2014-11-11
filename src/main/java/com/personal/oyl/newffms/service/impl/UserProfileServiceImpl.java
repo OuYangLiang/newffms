@@ -1,6 +1,5 @@
 package com.personal.oyl.newffms.service.impl;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.UserProfileDao;
 import com.personal.oyl.newffms.pojo.UserProfile;
+import com.personal.oyl.newffms.pojo.key.UserProfileKey;
 import com.personal.oyl.newffms.service.UserProfileService;
 
 public class UserProfileServiceImpl implements UserProfileService {
@@ -28,9 +28,9 @@ public class UserProfileServiceImpl implements UserProfileService {
         return null;
     }
 
-    public UserProfile selectByKey(BigDecimal userOid) throws SQLException {
+    public UserProfile selectByKey(UserProfileKey key) throws SQLException {
         UserProfile param = new UserProfile();
-        param.setUserOid(userOid);
+        param.setUserOid(key.getUserOid());
         
         List<UserProfile> list = dao.select(param);
         
@@ -56,6 +56,13 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 	public void updateByPrimaryKey(UserProfile param) throws SQLException {
 		dao.updateByKey(param);
+	}
+
+	public void deleteByKey(UserProfileKey key) throws SQLException {
+		UserProfile param = new UserProfile();
+        param.setUserOid(key.getUserOid());
+        
+        dao.delete(param);
 	}
 
 }

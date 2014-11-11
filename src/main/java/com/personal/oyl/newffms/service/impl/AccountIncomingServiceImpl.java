@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.AccountIncomingDao;
 import com.personal.oyl.newffms.pojo.AccountIncoming;
+import com.personal.oyl.newffms.pojo.key.AccountIncomingKey;
 import com.personal.oyl.newffms.service.AccountIncomingService;
 
 public class AccountIncomingServiceImpl implements AccountIncomingService {
@@ -45,5 +46,28 @@ public class AccountIncomingServiceImpl implements AccountIncomingService {
         
         dao.delete(param);
     }
+
+	public AccountIncoming selectByKey(AccountIncomingKey key)
+			throws SQLException {
+		AccountIncoming param = new AccountIncoming();
+		param.setAcntOid(key.getAcntOid());
+		param.setIncomingOid(key.getIncomingOid());
+		
+		List<AccountIncoming> list = dao.select(param);
+		
+		if (list != null && !list.isEmpty()) {
+			return list.get(0);
+		}
+		
+		return null;
+	}
+
+	public void deleteByKey(AccountIncomingKey key) throws SQLException {
+		AccountIncoming param = new AccountIncoming();
+		param.setAcntOid(key.getAcntOid());
+		param.setIncomingOid(key.getIncomingOid());
+		
+		dao.delete(param);
+	}
 
 }

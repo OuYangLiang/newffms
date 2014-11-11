@@ -16,9 +16,9 @@
 
     <cache:advice id="categoryCacheAdvice" cache-manager="cacheManager">
 		<cache:caching cache="categoryCache">
-            <cache:cacheable method="selectByKey" key="#categoryOid" />
+            <cache:cacheable method="selectByKey" key="#key.categoryOid" />
             
-            <cache:cache-evict method="deleteByKey" key="#categoryOid" />
+            <cache:cache-evict method="deleteByKey" key="#key.categoryOid" />
             <cache:cache-evict method="updateByPrimaryKeySelective" key="#param.categoryOid" />
             <cache:cache-evict method="updateByPrimaryKey" key="#param.categoryOid" />
 		</cache:caching>
@@ -26,7 +26,7 @@
 	
 	<cache:advice id="userCacheAdvice" cache-manager="cacheManager">
         <cache:caching cache="userCache">
-            <cache:cacheable method="selectByKey" key="#userOid" />
+            <cache:cacheable method="selectByKey" key="#key.userOid" />
             
             <cache:cache-evict method="updateByPrimaryKeySelective" key="#param.userOid" />
             <cache:cache-evict method="updateByPrimaryKey" key="#param.userOid" />
@@ -35,9 +35,9 @@
     
     <cache:advice id="accountCacheAdvice" cache-manager="cacheManager">
         <cache:caching cache="accountCache">
-            <cache:cacheable method="selectByKey" key="#acntOid" />
+            <cache:cacheable method="selectByKey" key="#key.acntOid" />
             
-            <cache:cache-evict method="deleteByKey" key="#acntOid" />
+            <cache:cache-evict method="deleteByKey" key="#key.acntOid" />
             <cache:cache-evict method="updateByPrimaryKeySelective" key="#param.acntOid" />
             <cache:cache-evict method="updateByPrimaryKey" key="#param.acntOid" />
         </cache:caching>

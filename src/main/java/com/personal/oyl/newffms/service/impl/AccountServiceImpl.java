@@ -10,6 +10,7 @@ import com.personal.oyl.newffms.dao.AccountConsumptionDao;
 import com.personal.oyl.newffms.dao.AccountDao;
 import com.personal.oyl.newffms.dao.AccountIncomingDao;
 import com.personal.oyl.newffms.pojo.Account;
+import com.personal.oyl.newffms.pojo.key.AccountKey;
 import com.personal.oyl.newffms.service.AccountService;
 
 public class AccountServiceImpl implements AccountService {
@@ -37,9 +38,9 @@ public class AccountServiceImpl implements AccountService {
         dao.updateByKey(param);
     }
 
-    public Account selectByKey(BigDecimal acntOid) throws SQLException {
+    public Account selectByKey(AccountKey key) throws SQLException {
         Account param = new Account();
-        param.setAcntOid(acntOid);
+        param.setAcntOid(key.getAcntOid());
         
         List<Account> list = dao.select(param);
         
@@ -66,9 +67,9 @@ public class AccountServiceImpl implements AccountService {
         return dao.getListOfSummary(param);
     }
 
-    public void deleteByKey(BigDecimal acntOid) throws SQLException {
+    public void deleteByKey(AccountKey key) throws SQLException {
         Account param = new Account();
-        param.setAcntOid(acntOid);
+        param.setAcntOid(key.getAcntOid());
         
         dao.delete(param);
     }

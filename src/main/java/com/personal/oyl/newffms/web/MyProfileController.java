@@ -20,6 +20,7 @@ import com.personal.oyl.newffms.constants.Constants;
 import com.personal.oyl.newffms.constants.Gender;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.UserProfile;
+import com.personal.oyl.newffms.pojo.key.UserProfileKey;
 import com.personal.oyl.newffms.pojo.validator.ProfileValidator;
 import com.personal.oyl.newffms.security.PwdEncoder;
 import com.personal.oyl.newffms.util.SessionUtil;
@@ -98,7 +99,7 @@ public class MyProfileController extends BaseController {
         session.removeAttribute("userForm");
         session.removeAttribute(Constants.SESSION_USER_KEY);
         
-        oldObj = userProfileService.selectByKey(oldObj.getUserOid());
+        oldObj = userProfileService.selectByKey(new UserProfileKey(oldObj.getUserOid()));
         session.setAttribute(Constants.SESSION_USER_KEY, oldObj);
         
         return "redirect:/profile/initEdit";

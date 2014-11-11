@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Category;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
+import com.personal.oyl.newffms.pojo.key.CategoryKey;
 import com.personal.oyl.newffms.pojo.validator.CategoryValidator;
 import com.personal.oyl.newffms.service.CategoryService;
 import com.personal.oyl.newffms.util.SessionUtil;
@@ -102,7 +103,7 @@ public class CategoryController extends BaseController{
     @RequestMapping("/view")
     public String view(@RequestParam("categoryOid") BigDecimal categoryOid, Model model) throws SQLException {
     	
-    	Category form = categoryService.selectByKey(categoryOid);
+    	Category form = categoryService.selectByKey(new CategoryKey(categoryOid));
     	form.setCategoryDesc(categoryService.selectFullDescByKey(categoryOid));
         
         model.addAttribute("catForm", form);
@@ -122,7 +123,7 @@ public class CategoryController extends BaseController{
             form = (Category) session.getAttribute("catForm");
         }
         else {
-            form = categoryService.selectByKey(categoryOid);
+            form = categoryService.selectByKey(new CategoryKey(categoryOid));
             if (null != form.getParentOid()) {
             	form.setParentCategoryFullDesc(categoryService.selectFullDescByKey(form.getParentOid()));
             }
@@ -152,7 +153,7 @@ public class CategoryController extends BaseController{
     public String saveEdit(Model model, HttpSession session) throws SQLException {
     	Category form = (Category) session.getAttribute("catForm");
         
-    	Category oldObj = categoryService.selectByKey(form.getCategoryOid());
+    	Category oldObj = categoryService.selectByKey(new CategoryKey(form.getCategoryOid()));
         form.setBaseObject(new BaseObject());
         form.getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
         form.getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());

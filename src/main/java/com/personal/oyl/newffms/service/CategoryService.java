@@ -8,11 +8,10 @@ import java.util.Set;
 import com.personal.oyl.newffms.base.service.BaseService;
 import com.personal.oyl.newffms.base.service.DbActionService;
 import com.personal.oyl.newffms.pojo.Category;
+import com.personal.oyl.newffms.pojo.key.CategoryKey;
 
-public interface CategoryService extends BaseService<Category>,
-		DbActionService<Category> {
-
-	public Category selectByKey(BigDecimal categoryOid) throws SQLException;
+public interface CategoryService extends BaseService<Category, CategoryKey>,
+		DbActionService<Category, CategoryKey> {
 
 	public List<Category> selectByLevel(Integer categoryLevel)
 			throws SQLException;
@@ -35,5 +34,4 @@ public interface CategoryService extends BaseService<Category>,
 	
 	public boolean isCategoryExist(BigDecimal parentOid, String categoryDesc) throws SQLException;
 	
-	public void deleteByKey(BigDecimal categoryOid) throws SQLException;
 }

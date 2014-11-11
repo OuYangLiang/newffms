@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.ConsumptionItemDao;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
+import com.personal.oyl.newffms.pojo.key.ConsumptionItemKey;
 import com.personal.oyl.newffms.service.ConsumptionItemService;
 
 public class ConsumptionItemServiceImpl implements ConsumptionItemService {
@@ -44,6 +45,27 @@ public class ConsumptionItemServiceImpl implements ConsumptionItemService {
 	public List<ConsumptionItem> getListOfSummary(ConsumptionItem param)
 			throws SQLException {
 		return dao.getListOfSummary(param);
+	}
+
+	public ConsumptionItem selectByKey(ConsumptionItemKey key)
+			throws SQLException {
+		ConsumptionItem param = new ConsumptionItem();
+		param.setItemOid(key.getItemOid());
+		
+		List<ConsumptionItem> list = dao.select(param);
+		
+		if (list != null && !list.isEmpty()) {
+			return list.get(0);
+		}
+		
+		return null;
+	}
+
+	public void deleteByKey(ConsumptionItemKey key) throws SQLException {
+		ConsumptionItem param = new ConsumptionItem();
+		param.setItemOid(key.getItemOid());
+		
+		dao.delete(param);
 	}
 
 }

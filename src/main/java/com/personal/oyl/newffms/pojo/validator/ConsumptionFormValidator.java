@@ -13,6 +13,7 @@ import org.springframework.validation.Validator;
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
+import com.personal.oyl.newffms.pojo.key.AccountKey;
 import com.personal.oyl.newffms.service.AccountService;
 
 public class ConsumptionFormValidator implements Validator {
@@ -74,7 +75,7 @@ public class ConsumptionFormValidator implements Validator {
         	totalPayment = totalPayment.add(acnt.getPayment());
             
             try {
-                Account dbAcnt = accountService.selectByKey(acnt.getAcntOid());
+                Account dbAcnt = accountService.selectByKey(new AccountKey(acnt.getAcntOid()));
                 
                 if (acnt.getPayment() != null) {
                     if (dbAcnt.getBalance().compareTo(acnt.getPayment()) < 0) {

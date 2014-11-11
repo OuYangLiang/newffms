@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import com.personal.oyl.newffms.dao.CategoryDao;
 import com.personal.oyl.newffms.dao.ConsumptionItemDao;
 import com.personal.oyl.newffms.pojo.Category;
+import com.personal.oyl.newffms.pojo.key.CategoryKey;
 import com.personal.oyl.newffms.service.CategoryService;
 
 public class CategoryServiceImpl implements CategoryService {
@@ -27,9 +28,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ConsumptionItemDao consumptionItemDao;
 
-    public Category selectByKey(BigDecimal categoryOid) throws SQLException {
+    public Category selectByKey(CategoryKey key) throws SQLException {
         Category param = new Category();
-        param.setCategoryOid(categoryOid);
+        param.setCategoryOid(key.getCategoryOid());
         
         List<Category> list = dao.select(param);
         
@@ -44,11 +45,11 @@ public class CategoryServiceImpl implements CategoryService {
     public String selectFullDescByKey(BigDecimal categoryOid) throws SQLException {
         StringBuffer rlt = new StringBuffer();
         
-        Category param = this.getMeBean().selectByKey(categoryOid);
+        Category param = this.getMeBean().selectByKey(new CategoryKey(categoryOid));
         rlt.append(param.getCategoryDesc());
         
         while (param.getParentOid() != null) {
-            param = this.getMeBean().selectByKey(param.getParentOid());
+            param = this.getMeBean().selectByKey(new CategoryKey(param.getParentOid()));
             rlt.insert(0, "-->").insert(0, param.getCategoryDesc());
         }
         
@@ -187,9 +188,9 @@ public class CategoryServiceImpl implements CategoryService {
 		return dao.selectByParentAndDesc(param);
 	}
 
-	public void deleteByKey(BigDecimal categoryOid) throws SQLException {
+	public void deleteByKey(CategoryKey key) throws SQLException {
 		Category param = new Category();
-		param.setCategoryOid(categoryOid);
+		param.setCategoryOid(key.getCategoryOid());
 		
 		dao.delete(param);
 	}

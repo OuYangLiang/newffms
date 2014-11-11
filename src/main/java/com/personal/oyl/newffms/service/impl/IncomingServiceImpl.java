@@ -1,6 +1,5 @@
 package com.personal.oyl.newffms.service.impl;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.IncomingDao;
 import com.personal.oyl.newffms.pojo.Incoming;
+import com.personal.oyl.newffms.pojo.key.IncomingKey;
 import com.personal.oyl.newffms.service.IncomingService;
 
 public class IncomingServiceImpl implements IncomingService {
@@ -35,9 +35,9 @@ public class IncomingServiceImpl implements IncomingService {
         return dao.getListOfSummary(param);
     }
 
-    public Incoming selectByKey(BigDecimal incomingOid) throws SQLException {
+    public Incoming selectByKey(IncomingKey key) throws SQLException {
         Incoming param = new Incoming();
-        param.setIncomingOid(incomingOid);
+        param.setIncomingOid(key.getIncomingOid());
         
         List<Incoming> list = dao.select(param);
         
@@ -48,9 +48,9 @@ public class IncomingServiceImpl implements IncomingService {
         return null;
     }
 
-    public void deleteByKey(BigDecimal incomingOid) throws SQLException {
+    public void deleteByKey(IncomingKey key) throws SQLException {
         Incoming param = new Incoming();
-        param.setIncomingOid(incomingOid);
+        param.setIncomingOid(key.getIncomingOid());
         
         dao.delete(param);
     }

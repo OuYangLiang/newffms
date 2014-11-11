@@ -20,6 +20,10 @@ import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
 import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.UserProfile;
+import com.personal.oyl.newffms.pojo.key.AccountKey;
+import com.personal.oyl.newffms.pojo.key.CategoryKey;
+import com.personal.oyl.newffms.pojo.key.ConsumptionKey;
+import com.personal.oyl.newffms.pojo.key.IncomingKey;
 import com.personal.oyl.newffms.service.AccountAuditService;
 import com.personal.oyl.newffms.service.AccountConsumptionService;
 import com.personal.oyl.newffms.service.AccountIncomingService;
@@ -96,13 +100,13 @@ public class TransactionServiceImpl implements TransactionService {
         accountConsumptionService.deleteByConsumption(cpnOid);
         consumptionItemService.deleteByConsumption(cpnOid);
         
-        consumptionService.deleteByKey(cpnOid);
+        consumptionService.deleteByKey(new ConsumptionKey(cpnOid));
     }
 
     public void confirmConsumption(BigDecimal cpnOid, String operator) throws SQLException {
         Date now = new Date();
         
-        Consumption oldObj = consumptionService.selectByKey(cpnOid);
+        Consumption oldObj = consumptionService.selectByKey(new ConsumptionKey(cpnOid));
         
         Consumption newObj = new Consumption();
         newObj.setCpnOid(cpnOid);
@@ -116,7 +120,7 @@ public class TransactionServiceImpl implements TransactionService {
         
         List<AccountConsumption> acntConsumptions = accountConsumptionService.selectByConsumption(cpnOid);
         for (AccountConsumption acntConsumption : acntConsumptions) {
-            Account oldAcnt = accountService.selectByKey(acntConsumption.getAcntOid());
+            Account oldAcnt = accountService.selectByKey(new AccountKey(acntConsumption.getAcntOid()));
             oldAcnt.subtract(acntConsumption.getAmount());
             oldAcnt.getBaseObject().setUpdateTime(now);
             oldAcnt.getBaseObject().setUpdateBy(operator);
@@ -149,7 +153,7 @@ public class TransactionServiceImpl implements TransactionService {
     public void rollbackConsumption(BigDecimal cpnOid, String operator) throws SQLException {
         Date now = new Date();
         
-        Consumption oldObj = consumptionService.selectByKey(cpnOid);
+        Consumption oldObj = consumptionService.selectByKey(new ConsumptionKey(cpnOid));
         
         Consumption newObj = new Consumption();
         newObj.setCpnOid(cpnOid);
@@ -164,7 +168,7 @@ public class TransactionServiceImpl implements TransactionService {
         
         List<AccountConsumption> acntConsumptions = accountConsumptionService.selectByConsumption(cpnOid);
         for (AccountConsumption acntConsumption : acntConsumptions) {
-            Account oldAcnt = accountService.selectByKey(acntConsumption.getAcntOid());
+            Account oldAcnt = accountService.selectByKey(new AccountKey(acntConsumption.getAcntOid()));
             oldAcnt.add(acntConsumption.getAmount());
             oldAcnt.getBaseObject().setUpdateTime(now);
             oldAcnt.getBaseObject().setUpdateBy(operator);
@@ -206,12 +210,12 @@ public class TransactionServiceImpl implements TransactionService {
     public void deleteIncoming(BigDecimal incomingOid) throws SQLException {
         accountIncomingService.deleteByIncoming(incomingOid);
         
-        incomingService.deleteByKey(incomingOid);
+        incomingService.deleteByKey(new IncomingKey(incomingOid));
     }
 
     public void confirmIncoming(BigDecimal incomingOid, String operator) throws SQLException {
         Date now = new Date();
-        Incoming oldObj = incomingService.selectByKey(incomingOid);
+        Incoming oldObj = incomingService.selectByKey(new IncomingKey(incomingOid));
         
         Incoming newObj = new Incoming();
         newObj.setIncomingOid(incomingOid);
@@ -224,7 +228,7 @@ public class TransactionServiceImpl implements TransactionService {
         incomingService.updateByPrimaryKeySelective(newObj);
         
         AccountIncoming acntIncoming = accountIncomingService.selectByIncoming(incomingOid);
-        Account oldAcnt = accountService.selectByKey(acntIncoming.getAcntOid());
+        Account oldAcnt = accountService.selectByKey(new AccountKey(acntIncoming.getAcntOid()));
         oldAcnt.add(oldObj.getAmount());
         oldAcnt.getBaseObject().setUpdateTime(now);
         oldAcnt.getBaseObject().setUpdateBy(operator);
@@ -255,7 +259,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     public void rollbackIncoming(BigDecimal incomingOid, String operator) throws SQLException {
         Date now = new Date();
-        Incoming oldObj = incomingService.selectByKey(incomingOid);
+        Incoming oldObj = incomingService.selectByKey(new IncomingKey(incomingOid));
         
         Incoming newObj = new Incoming();
         newObj.setIncomingOid(incomingOid);
@@ -269,7 +273,7 @@ public class TransactionServiceImpl implements TransactionService {
         accountAuditService.deleteByIncoming(incomingOid);
         
         AccountIncoming acntIncoming = accountIncomingService.selectByIncoming(incomingOid);
-        Account oldAcnt = accountService.selectByKey(acntIncoming.getAcntOid());
+        Account oldAcnt = accountService.selectByKey(new AccountKey(acntIncoming.getAcntOid()));
         oldAcnt.subtract(oldObj.getAmount());
         oldAcnt.getBaseObject().setUpdateTime(now);
         oldAcnt.getBaseObject().setUpdateBy(operator);
@@ -300,7 +304,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public void updateAccount(Account form) throws SQLException {
-        Account oldObj = accountService.selectByKey(form.getAcntOid());
+        Account oldObj = accountService.selectByKey(new AccountKey(form.getAcntOid()));
         accountService.updateByPrimaryKeySelective(form);
         
         boolean balanceChanged = oldObj.getBalance().compareTo(form.getBalance()) != 0;
@@ -339,15 +343,15 @@ public class TransactionServiceImpl implements TransactionService {
 
     public void deleteAccount(BigDecimal acntOid) throws SQLException {
         accountAuditService.deleteByAcnt(acntOid);
-        accountService.deleteByKey(acntOid);
+        accountService.deleteByKey(new AccountKey(acntOid));
     }
 
     public void doAccountTransfer(BigDecimal srcAcntOid, BigDecimal targetAcntOid, BigDecimal payment, String operator)
             throws SQLException {
         Date now = new Date();
         
-        Account srcObj = accountService.selectByKey(srcAcntOid);
-        Account targetObj = accountService.selectByKey(targetAcntOid);
+        Account srcObj = accountService.selectByKey(new AccountKey(srcAcntOid));
+        Account targetObj = accountService.selectByKey(new AccountKey(targetAcntOid));
         
         srcObj.subtract(payment);
         targetObj.add(payment);
@@ -415,7 +419,7 @@ public class TransactionServiceImpl implements TransactionService {
 		if (null == form.getParentOid()) {
 			form.setCategoryLevel(Integer.valueOf(0));
 		} else {
-			parent = categoryService.selectByKey(form.getParentOid());
+			parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
 			form.setCategoryLevel(parent.getCategoryLevel() + 1);
 		}
 		
@@ -442,7 +446,7 @@ public class TransactionServiceImpl implements TransactionService {
 			if (null == parent.getParentOid()) {
 				parent = null;
 			} else {
-				parent = categoryService.selectByKey(parent.getParentOid());
+				parent = categoryService.selectByKey(new CategoryKey(parent.getParentOid()));
 			}
 		}
 	}
@@ -455,7 +459,7 @@ public class TransactionServiceImpl implements TransactionService {
 			Category parent = null;
 			
 			if (null != form.getParentOid()) {
-				parent = categoryService.selectByKey(form.getParentOid());
+				parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
 			}
 			
 			while (null != parent) {
@@ -473,20 +477,20 @@ public class TransactionServiceImpl implements TransactionService {
 				if (null == parent.getParentOid()) {
 					parent = null;
 				} else {
-					parent = categoryService.selectByKey(parent.getParentOid());
+					parent = categoryService.selectByKey(new CategoryKey(parent.getParentOid()));
 				}
 			}
 		}
 	}
 
 	public void deleteCategory(BigDecimal categoryOid, String operator) throws SQLException {
-		Category oldObj = categoryService.selectByKey(categoryOid);
-		categoryService.deleteByKey(categoryOid);
+		Category oldObj = categoryService.selectByKey(new CategoryKey(categoryOid));
+		categoryService.deleteByKey(new CategoryKey(categoryOid));
 		
 		Category parent = null;
 		
 		if (null != oldObj.getParentOid()) {
-			parent = categoryService.selectByKey(oldObj.getParentOid());
+			parent = categoryService.selectByKey(new CategoryKey(oldObj.getParentOid()));
 		}
 		
 		while (null != parent) {
@@ -513,7 +517,7 @@ public class TransactionServiceImpl implements TransactionService {
 			if (null == parent.getParentOid()) {
 				parent = null;
 			} else {
-				parent = categoryService.selectByKey(parent.getParentOid());
+				parent = categoryService.selectByKey(new CategoryKey(parent.getParentOid()));
 			}
 		}
 		

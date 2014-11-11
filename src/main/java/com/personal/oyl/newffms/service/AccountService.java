@@ -8,17 +8,18 @@ import com.personal.oyl.newffms.base.service.BaseService;
 import com.personal.oyl.newffms.base.service.DbActionService;
 import com.personal.oyl.newffms.base.service.PaginatingService;
 import com.personal.oyl.newffms.pojo.Account;
+import com.personal.oyl.newffms.pojo.key.AccountKey;
 
-public interface AccountService extends BaseService<Account>, DbActionService<Account>, PaginatingService<Account> {
-    public List<Account> queryAccounts() throws SQLException;
+public interface AccountService extends BaseService<Account, AccountKey>,
+		DbActionService<Account, AccountKey>, PaginatingService<Account> {
+	public List<Account> queryAccounts() throws SQLException;
 
-    public Account selectByKey(BigDecimal acntOid) throws SQLException;
+	public List<Account> queryAccountsByConsumption(BigDecimal cpnOid)
+			throws SQLException;
 
-    public List<Account> queryAccountsByConsumption(BigDecimal cpnOid) throws SQLException;
+	public Account queryAccountsByIncoming(BigDecimal incomingOid)
+			throws SQLException;
 
-    public Account queryAccountsByIncoming(BigDecimal incomingOid) throws SQLException;
-    
-    public void deleteByKey(BigDecimal acntOid) throws SQLException;
-    
-    public boolean isAccountSafeToRemove(BigDecimal acntOid) throws SQLException;
+	public boolean isAccountSafeToRemove(BigDecimal acntOid)
+			throws SQLException;
 }

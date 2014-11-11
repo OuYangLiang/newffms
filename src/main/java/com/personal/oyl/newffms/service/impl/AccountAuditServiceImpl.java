@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.AccountAuditDao;
 import com.personal.oyl.newffms.pojo.AccountAudit;
+import com.personal.oyl.newffms.pojo.key.AccountAuditKey;
 import com.personal.oyl.newffms.service.AccountAuditService;
 
 public class AccountAuditServiceImpl implements AccountAuditService {
@@ -54,5 +55,25 @@ public class AccountAuditServiceImpl implements AccountAuditService {
     public List<AccountAudit> getListOfSummary(AccountAudit param) throws SQLException {
         return dao.getListOfSummary(param);
     }
+
+	public AccountAudit selectByKey(AccountAuditKey key) throws SQLException {
+		AccountAudit param = new AccountAudit();
+		param.setAdtOid(key.getAdtOid());
+		
+		List<AccountAudit> list = dao.select(param);
+		
+		if (list != null && !list.isEmpty()) {
+			return list.get(0);
+		}
+		
+		return null;
+	}
+
+	public void deleteByKey(AccountAuditKey key) throws SQLException {
+		AccountAudit param = new AccountAudit();
+		param.setAdtOid(key.getAdtOid());
+		
+		dao.select(param);
+	}
 
 }

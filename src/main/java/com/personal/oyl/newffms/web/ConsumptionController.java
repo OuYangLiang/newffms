@@ -24,6 +24,8 @@ import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
+import com.personal.oyl.newffms.pojo.key.ConsumptionKey;
+import com.personal.oyl.newffms.pojo.key.UserProfileKey;
 import com.personal.oyl.newffms.pojo.validator.ConsumptionFormValidator;
 import com.personal.oyl.newffms.util.SessionUtil;
 
@@ -161,7 +163,7 @@ public class ConsumptionController extends BaseController{
         form.getConsumption().setCpnTypeDesc(form.getConsumption().getCpnType().getDesc());
         
         for ( ConsumptionItem item : form.getCpnItems() ) {
-            item.setUserName(userProfileService.selectByKey(item.getOwnerOid()).getUserName());
+            item.setUserName(userProfileService.selectByKey(new UserProfileKey(item.getOwnerOid())).getUserName());
             item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
         }
         
@@ -194,7 +196,7 @@ public class ConsumptionController extends BaseController{
     public String view(@RequestParam("cpnOid") BigDecimal cpnOid, Model model) throws SQLException {
         ConsumptionForm form = new ConsumptionForm();
         
-        Consumption consumption = consumptionService.selectByKey(cpnOid);
+        Consumption consumption = consumptionService.selectByKey(new ConsumptionKey(cpnOid));
         List<ConsumptionItem> cItems = consumptionItemService.queryConsumptionItemByCpn(cpnOid);
         List<Account> acntItems = accountService.queryAccountsByConsumption(cpnOid);
         
@@ -226,7 +228,7 @@ public class ConsumptionController extends BaseController{
         else {
             form = new ConsumptionForm();
             
-            Consumption consumption = consumptionService.selectByKey(cpnOid);
+            Consumption consumption = consumptionService.selectByKey(new ConsumptionKey(cpnOid));
             List<ConsumptionItem> cItems = consumptionItemService.queryConsumptionItemByCpn(cpnOid);
             List<Account> acntItems = accountService.queryAccountsByConsumption(cpnOid);
             
@@ -256,7 +258,7 @@ public class ConsumptionController extends BaseController{
         form.getConsumption().setCpnTypeDesc(form.getConsumption().getCpnType().getDesc());
         
         for ( ConsumptionItem item : form.getCpnItems() ) {
-            item.setUserName(userProfileService.selectByKey(item.getOwnerOid()).getUserName());
+            item.setUserName(userProfileService.selectByKey(new UserProfileKey(item.getOwnerOid())).getUserName());
             item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
         }
         
@@ -271,7 +273,7 @@ public class ConsumptionController extends BaseController{
         
         form.getConsumption().setAmount(form.getTotalItemAmount());
         
-        Consumption oldObj = consumptionService.selectByKey(form.getConsumption().getCpnOid());
+        Consumption oldObj = consumptionService.selectByKey(new ConsumptionKey(form.getConsumption().getCpnOid()));
         form.getConsumption().setBaseObject(new BaseObject());
         form.getConsumption().getBaseObject().setSeqNo(oldObj.getBaseObject().getSeqNo());
         form.getConsumption().getBaseObject().setUpdateBy(SessionUtil.getInstance().getLoginUser(session).getUserName());

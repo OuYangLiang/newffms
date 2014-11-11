@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.personal.oyl.newffms.dao.AccountConsumptionDao;
 import com.personal.oyl.newffms.pojo.AccountConsumption;
+import com.personal.oyl.newffms.pojo.key.AccountConsumptionKey;
 import com.personal.oyl.newffms.service.AccountConsumptionService;
 
 public class AccountConsumptionServiceImpl implements AccountConsumptionService {
@@ -39,5 +40,28 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
         
         return dao.select(param);
     }
+
+	public AccountConsumption selectByKey(AccountConsumptionKey key)
+			throws SQLException {
+		AccountConsumption param = new AccountConsumption();
+		param.setAcntOid(key.getAcntOid());
+		param.setCpnOid(key.getCpnOid());
+		
+		List<AccountConsumption> list = dao.select(param);
+		
+		if (list != null && !list.isEmpty()) {
+			return list.get(0);
+		}
+		
+		return null;
+	}
+
+	public void deleteByKey(AccountConsumptionKey key) throws SQLException {
+		AccountConsumption param = new AccountConsumption();
+		param.setAcntOid(key.getAcntOid());
+		param.setCpnOid(key.getCpnOid());
+		
+		dao.delete(param);
+	}
 
 }

@@ -19,10 +19,6 @@ public class ConsumptionServiceImpl implements ConsumptionService {
     @Autowired
     private ConsumptionDao dao;
 
-    public List<Consumption> select(Consumption param) throws SQLException {
-        return dao.select(param);
-    }
-
     public void insert(Consumption param) throws SQLException {
         dao.insert(param);
     }
@@ -47,7 +43,7 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         Consumption param = new Consumption();
         param.setCpnOid(cpnOid);
         
-        List<Consumption> list = this.select(param);
+        List<Consumption> list = dao.select(param);
         
         if (list != null && !list.isEmpty()) {
             return list.get(0);

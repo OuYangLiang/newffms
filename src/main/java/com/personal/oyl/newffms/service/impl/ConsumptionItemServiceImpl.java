@@ -14,10 +14,6 @@ public class ConsumptionItemServiceImpl implements ConsumptionItemService {
     @Autowired
     private ConsumptionItemDao dao;
 
-    public List<ConsumptionItem> select(ConsumptionItem param) throws SQLException {
-        return dao.select(param);
-    }
-
     public void insert(ConsumptionItem param) throws SQLException {
         dao.insert(param);
     }

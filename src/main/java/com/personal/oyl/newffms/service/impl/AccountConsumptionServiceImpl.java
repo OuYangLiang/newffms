@@ -33,15 +33,11 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
         dao.delete(param);
     }
 
-    public List<AccountConsumption> select(AccountConsumption param) throws SQLException {
-        return dao.select(param);
-    }
-
     public List<AccountConsumption> selectByConsumption(BigDecimal cpnOid) throws SQLException {
         AccountConsumption param = new AccountConsumption();
         param.setCpnOid(cpnOid);
         
-        return this.select(param);
+        return dao.select(param);
     }
 
 }

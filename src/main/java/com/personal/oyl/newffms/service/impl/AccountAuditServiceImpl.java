@@ -14,10 +14,6 @@ public class AccountAuditServiceImpl implements AccountAuditService {
     @Autowired
     private AccountAuditDao dao;
 
-    public List<AccountAudit> select(AccountAudit param) throws SQLException {
-        return dao.select(param);
-    }
-
     public void insert(AccountAudit param) throws SQLException {
         dao.insert(param);
     }

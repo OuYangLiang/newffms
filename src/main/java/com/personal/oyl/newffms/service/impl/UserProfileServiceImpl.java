@@ -15,15 +15,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private UserProfileDao dao;
 
-    public List<UserProfile> select(UserProfile param) throws SQLException {
-        return dao.select(param);
-    }
-
     public UserProfile selectByLoginId(String loginId) throws SQLException {
         UserProfile param = new UserProfile();
         param.setLoginId(loginId.trim());
         
-        List<UserProfile> list = this.select(param);
+        List<UserProfile> list = dao.select(param);
         
         if (null != list && !list.isEmpty()) {
             return list.get(0);
@@ -36,7 +32,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         UserProfile param = new UserProfile();
         param.setUserOid(userOid);
         
-        List<UserProfile> list = this.select(param);
+        List<UserProfile> list = dao.select(param);
         
         if (null != list && !list.isEmpty()) {
             return list.get(0);
@@ -46,7 +42,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     public List<UserProfile> selectAllUsers() throws SQLException {
-        return this.select(null);
+        return dao.select(null);
     }
 
 	public void insert(UserProfile param) throws SQLException {

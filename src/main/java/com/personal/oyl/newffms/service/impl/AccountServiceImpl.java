@@ -25,10 +25,6 @@ public class AccountServiceImpl implements AccountService {
         return dao.queryAccounts();
     }
 
-    public List<Account> select(Account param) throws SQLException {
-        return dao.select(param);
-    }
-
     public void insert(Account param) throws SQLException {
         dao.insert(param);
     }
@@ -45,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
         Account param = new Account();
         param.setAcntOid(acntOid);
         
-        List<Account> list = this.select(param);
+        List<Account> list = dao.select(param);
         
         if (list != null && !list.isEmpty()) {
             return list.get(0);

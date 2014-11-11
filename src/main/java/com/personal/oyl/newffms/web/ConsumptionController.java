@@ -141,7 +141,7 @@ public class ConsumptionController extends BaseController{
         
         model.addAttribute("cpnForm", form);
         model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
-        model.addAttribute("users", userProfileService.select(null));
+        model.addAttribute("users", userProfileService.selectAllUsers());
         
         return "consumption/add";
     }
@@ -151,7 +151,7 @@ public class ConsumptionController extends BaseController{
     public String confirmAdd(@Valid @ModelAttribute("cpnForm") ConsumptionForm form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
             model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
-            model.addAttribute("users", userProfileService.select(null));
+            model.addAttribute("users", userProfileService.selectAllUsers());
             model.addAttribute("validation", false);
             
             return "consumption/add";
@@ -237,7 +237,7 @@ public class ConsumptionController extends BaseController{
         
         model.addAttribute("cpnForm", form);
         model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
-        model.addAttribute("users", userProfileService.select(null));
+        model.addAttribute("users", userProfileService.selectAllUsers());
         
         return "consumption/edit";
     }
@@ -246,7 +246,7 @@ public class ConsumptionController extends BaseController{
     public String confirmEdit(@Valid @ModelAttribute("cpnForm") ConsumptionForm form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
             model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
-            model.addAttribute("users", userProfileService.select(null));
+            model.addAttribute("users", userProfileService.selectAllUsers());
             model.addAttribute("validation", false);
             
             return "consumption/edit";

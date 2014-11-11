@@ -27,15 +27,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ConsumptionItemDao consumptionItemDao;
 
-    public List<Category> select(Category param) throws SQLException {
-        return dao.select(param);
-    }
-    
     public Category selectByKey(BigDecimal categoryOid) throws SQLException {
         Category param = new Category();
         param.setCategoryOid(categoryOid);
         
-        List<Category> list = this.select(param);
+        List<Category> list = dao.select(param);
         
         if (list != null && !list.isEmpty()) {
             return list.get(0);
@@ -63,11 +59,11 @@ public class CategoryServiceImpl implements CategoryService {
         Category param = new Category();
         param.setCategoryLevel(categoryLevel);
         
-        return this.select(param);
+        return dao.select(param);
     }
 
     public List<Category> selectAllCategories() throws SQLException {
-    	List<Category> list =  this.select(null);
+    	List<Category> list =  dao.select(null);
         
         Map<BigDecimal, List<Category>> catMap = new HashMap<BigDecimal, List<Category>>();
         

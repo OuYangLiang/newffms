@@ -15,10 +15,6 @@ public class IncomingServiceImpl implements IncomingService {
     @Autowired
     private IncomingDao dao;
 
-    public List<Incoming> select(Incoming param) throws SQLException {
-        return dao.select(param);
-    }
-
     public void insert(Incoming param) throws SQLException {
         dao.insert(param);
     }
@@ -43,7 +39,7 @@ public class IncomingServiceImpl implements IncomingService {
         Incoming param = new Incoming();
         param.setIncomingOid(incomingOid);
         
-        List<Incoming> list = this.select(param);
+        List<Incoming> list = dao.select(param);
         
         if (list != null && !list.isEmpty()) {
             return list.get(0);
@@ -64,7 +60,7 @@ public class IncomingServiceImpl implements IncomingService {
         param.setIncomingDateFrom(incomingDateFrom);
         param.setIncomingDateTo(incomingDateTo);
         
-        return this.select(param);
+        return dao.select(param);
     }
 
 }

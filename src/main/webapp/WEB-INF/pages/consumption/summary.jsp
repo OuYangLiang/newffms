@@ -148,15 +148,15 @@
                     rowNum: "<c:url value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.sizePerPage}' />",
                     
                     jsonReader: {id: "itemOid"},
-                    colNames: ["描述", "类别", "消费人", "消费方式", "行金额", "总金额", "时间", "登记人", "状态", ""],
+                    colNames: ["时间", "描述", "类别", "消费人", "消费方式", "行金额", "总金额", "登记人", "状态", ""],
                     colModel: [
+{ sortable: true , name: "consumption.cpnTime", index:"CPN_TIME", width: 130, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i'}},
                         { sortable: false, name: "itemDesc", width: 100, align: "left" },
-                        { sortable: false, name: "categoryFullDesc", width: 100, align: "left" },
+                        { sortable: true,  name: "categoryFullDesc", index:"I.CATEGORY_OID", width: 100, align: "left" },
                         { sortable: false, name: "userName", width: 60, align: "center" },
                         { sortable: false, name: "consumption.cpnType", width: 50, align: "center" },
                         { sortable: false, name: "amount", width: 70, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
                         { sortable: false, name: "consumption.amount", width: 70, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
-                        { sortable: true , name: "consumption.cpnTime", index:"CPN_TIME", width: 130, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i'}},
                         { sortable: false, name: "consumption.baseObject.createBy", width: 50, align: "center" },
                         { sortable: false, name: "consumption.confirmed", width: 50, align: "center", formatter:function(cellvalue){return cellvalue?"确认":"初始";}},
                         { sortable: false, align: "center", width: 50, formatter:function (cellvalue, options, rowObject){

@@ -15,6 +15,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private UserProfileDao dao;
 
+    @Override
     public UserProfile selectByLoginId(String loginId) throws SQLException {
         UserProfile param = new UserProfile();
         param.setLoginId(loginId.trim());
@@ -28,6 +29,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         return null;
     }
 
+    @Override
     public UserProfile selectByKey(UserProfileKey key) throws SQLException {
         UserProfile param = new UserProfile();
         param.setUserOid(key.getUserOid());
@@ -41,23 +43,28 @@ public class UserProfileServiceImpl implements UserProfileService {
         return null;
     }
 
+    @Override
     public List<UserProfile> selectAllUsers() throws SQLException {
         return dao.select(null);
     }
 
+    @Override
 	public void insert(UserProfile param) throws SQLException {
 		dao.insert(param);
 	}
 
+    @Override
 	public void updateByPrimaryKeySelective(UserProfile param)
 			throws SQLException {
 		dao.updateByKeySelectively(param);
 	}
 
+    @Override
 	public void updateByPrimaryKey(UserProfile param) throws SQLException {
 		dao.updateByKey(param);
 	}
 
+    @Override
 	public void deleteByKey(UserProfileKey key) throws SQLException {
 		UserProfile param = new UserProfile();
         param.setUserOid(key.getUserOid());

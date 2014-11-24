@@ -17,10 +17,12 @@ public class CategoryValidator implements Validator {
 	@Autowired
 	private CategoryService categoryService;
 
+	@Override
 	public boolean supports(Class<?> clazz) {
 		return Category.class.equals(clazz);
 	}
 
+	@Override
 	public void validate(Object target, Errors errors) {
 		Category category = (Category) target;
 		

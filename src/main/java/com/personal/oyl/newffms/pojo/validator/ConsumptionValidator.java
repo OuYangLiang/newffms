@@ -8,10 +8,12 @@ import com.personal.oyl.newffms.pojo.Consumption;
 
 public class ConsumptionValidator implements Validator {
 
+	@Override
     public boolean supports(Class<?> clazz) {
         return Consumption.class.equals(clazz);
     }
 
+	@Override
     public void validate(Object target, Errors errors) {
         ValidationUtils.rejectIfEmpty(errors, "cpnType", null, "消费类型不可以为空哦，亲。");
     }

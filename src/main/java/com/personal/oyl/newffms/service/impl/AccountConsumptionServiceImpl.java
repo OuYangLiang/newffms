@@ -15,18 +15,22 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
     @Autowired
     private AccountConsumptionDao dao;
 
+    @Override
     public void insert(AccountConsumption param) throws SQLException {
         dao.insert(param);
     }
 
+    @Override
     public void updateByPrimaryKeySelective(AccountConsumption param) throws SQLException {
         // not available
     }
 
+    @Override
     public void updateByPrimaryKey(AccountConsumption param) throws SQLException {
         // not available
     }
 
+    @Override
     public void deleteByConsumption(BigDecimal cpnOid) throws SQLException {
         AccountConsumption param = new AccountConsumption();
         param.setCpnOid(cpnOid);
@@ -34,6 +38,7 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
         dao.delete(param);
     }
 
+    @Override
     public List<AccountConsumption> selectByConsumption(BigDecimal cpnOid) throws SQLException {
         AccountConsumption param = new AccountConsumption();
         param.setCpnOid(cpnOid);
@@ -41,6 +46,7 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
         return dao.select(param);
     }
 
+    @Override
 	public AccountConsumption selectByKey(AccountConsumptionKey key)
 			throws SQLException {
 		AccountConsumption param = new AccountConsumption();
@@ -56,6 +62,7 @@ public class AccountConsumptionServiceImpl implements AccountConsumptionService 
 		return null;
 	}
 
+    @Override
 	public void deleteByKey(AccountConsumptionKey key) throws SQLException {
 		AccountConsumption param = new AccountConsumption();
 		param.setAcntOid(key.getAcntOid());

@@ -13,6 +13,7 @@ public class PwdEncoder implements PasswordEncoder {
     
     private static final Logger log = LoggerFactory.getLogger(PwdEncoder.class);
     
+    @Override
     public String encode(CharSequence rawPassword) {
         
         try {
@@ -24,11 +25,11 @@ public class PwdEncoder implements PasswordEncoder {
         return null;
     }
 
+    @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
         
         return this.encode(rawPassword).equals(encodedPassword);
     }
-    
     
     private String encodePassword(byte[] data) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(algorithm);  

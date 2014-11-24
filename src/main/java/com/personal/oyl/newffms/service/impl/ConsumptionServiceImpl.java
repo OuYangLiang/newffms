@@ -19,26 +19,32 @@ public class ConsumptionServiceImpl implements ConsumptionService {
     @Autowired
     private ConsumptionDao dao;
 
+    @Override
     public void insert(Consumption param) throws SQLException {
         dao.insert(param);
     }
 
+    @Override
     public void updateByPrimaryKeySelective(Consumption param) throws SQLException {
         dao.updateByKeySelectively(param);
     }
 
+    @Override
     public void updateByPrimaryKey(Consumption param) throws SQLException {
         dao.updateByKey(param);
     }
 
+    @Override
     public int getCountOfSummary(Consumption param) throws SQLException {
         return dao.getCountOfSummary(param);
     }
 
+    @Override
     public List<Consumption> getListOfSummary(Consumption param) throws SQLException {
         return dao.getListOfSummary(param);
     }
 
+    @Override
     public Consumption selectByKey(ConsumptionKey key) throws SQLException {
         Consumption param = new Consumption();
         param.setCpnOid(key.getCpnOid());
@@ -52,6 +58,7 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         return null;
     }
 
+    @Override
     public void deleteByKey(ConsumptionKey key) throws SQLException {
         Consumption param = new Consumption();
         param.setCpnOid(key.getCpnOid());
@@ -59,6 +66,7 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         dao.delete(param);
     }
 
+    @Override
     public List<PersonalConsumption> queryPersonalConsumption(Date start, Date end) throws SQLException {
         Map<String, Date> param = new HashMap<String, Date>();
         param.put("start", start);

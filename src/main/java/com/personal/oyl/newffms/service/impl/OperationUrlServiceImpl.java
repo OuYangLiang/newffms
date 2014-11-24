@@ -14,6 +14,7 @@ public class OperationUrlServiceImpl implements OperationUrlService {
 	@Autowired
 	private OperationUrlDao dao;
 
+	@Override
 	public List<String> selectUrlsByUser(BigDecimal userOid)
 			throws SQLException {
 		return dao.selectUrlsByUser(userOid);

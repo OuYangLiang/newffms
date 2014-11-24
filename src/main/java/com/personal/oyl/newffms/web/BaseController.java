@@ -43,7 +43,7 @@ public abstract class BaseController {
     @Autowired
     protected AccountAuditService accountAuditService;
     
-    protected boolean isKeepSearchParameter(HttpServletRequest request)
+    protected final boolean isKeepSearchParameter(HttpServletRequest request)
     {
         String keepSP = request.getParameter("keepSp");
         
@@ -55,8 +55,7 @@ public abstract class BaseController {
 
     }
 
-    
-    protected void clearSearchParameter(HttpServletRequest request, HttpSession session, String sessionKey_)
+    protected final void clearSearchParameter(HttpServletRequest request, HttpSession session, String sessionKey_)
     {
         if(!isKeepSearchParameter(request))
         {
@@ -64,7 +63,7 @@ public abstract class BaseController {
         }
     }
     
-    protected <T extends BasePojo> JqGridJsonRlt<T> initPaging(PaginatingService<T> service, T param) throws SQLException {
+    protected final <T extends BasePojo> JqGridJsonRlt<T> initPaging(PaginatingService<T> service, T param) throws SQLException {
         int count = service.getCountOfSummary(param);
         List<T> list = service.getListOfSummary(param);
         

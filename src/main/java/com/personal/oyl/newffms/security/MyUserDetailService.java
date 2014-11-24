@@ -27,6 +27,7 @@ public class MyUserDetailService implements UserDetailsService {
     @Autowired
     private OperationUrlService operationUrlService;
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserProfile user = null;
         

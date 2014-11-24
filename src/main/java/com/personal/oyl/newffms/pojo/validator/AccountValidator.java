@@ -10,11 +10,12 @@ import com.personal.oyl.newffms.pojo.Account;
 
 public class AccountValidator implements Validator {
     
-
+	@Override
     public boolean supports(Class<?> clazz) {
         return Account.class.equals(clazz);
     }
-
+	
+	@Override
     public void validate(Object target, Errors errors) {
         Account acnt = (Account) target;
         

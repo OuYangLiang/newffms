@@ -28,6 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ConsumptionItemDao consumptionItemDao;
 
+    @Override
     public Category selectByKey(CategoryKey key) throws SQLException {
         Category param = new Category();
         param.setCategoryOid(key.getCategoryOid());
@@ -41,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
         return null;
     }
 
-    
+    @Override
     public String selectFullDescByKey(BigDecimal categoryOid) throws SQLException {
         StringBuffer rlt = new StringBuffer();
         
@@ -56,6 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
         return rlt.toString();
     }
 
+    @Override
     public List<Category> selectByLevel(Integer categoryLevel) throws SQLException {
         Category param = new Category();
         param.setCategoryLevel(categoryLevel);
@@ -63,6 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
         return dao.select(param);
     }
 
+    @Override
     public List<Category> selectAllCategories() throws SQLException {
     	List<Category> list =  dao.select(null);
         
@@ -107,6 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
     	}
     }
 
+    @Override
     public List<Category> selectAllCategoriesWithExclusion(Set<BigDecimal> excludingRootCategoryOids)
             throws SQLException {
         List<Category> allCategories = this.selectAllCategories();
@@ -150,23 +154,28 @@ public class CategoryServiceImpl implements CategoryService {
         return allCategories;
     }
 
+    @Override
 	public void insert(Category param) throws SQLException {
 		dao.insert(param);
 	}
 
+    @Override
 	public void updateByPrimaryKeySelective(Category param) throws SQLException {
 		dao.updateByKeySelectively(param);
 	}
 
+    @Override
 	public void updateByPrimaryKey(Category param) throws SQLException {
 		dao.updateByKey(param);
 	}
 
+    @Override
 	public BigDecimal selectTotalBudgetByParent(BigDecimal parentOid)
 			throws SQLException {
 		return dao.selectTotalBudgetByParent(parentOid);
 	}
 
+    @Override
 	public boolean isCategoryUsedByIncoming(BigDecimal categoryOid)
 			throws SQLException {
 		Object obj = consumptionItemDao.selectOneByCategory(categoryOid);
@@ -174,11 +183,13 @@ public class CategoryServiceImpl implements CategoryService {
 		return null != obj;
 	}
 
+    @Override
 	public boolean isCategoryExist(BigDecimal parentOid, String categoryDesc)
 			throws SQLException {
 		return null != this.selectByParentAndDesc(parentOid, categoryDesc);
 	}
 
+    @Override
 	public Category selectByParentAndDesc(BigDecimal parentOid,
 			String categoryDesc) throws SQLException {
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -188,6 +199,7 @@ public class CategoryServiceImpl implements CategoryService {
 		return dao.selectByParentAndDesc(param);
 	}
 
+    @Override
 	public void deleteByKey(CategoryKey key) throws SQLException {
 		Category param = new Category();
 		param.setCategoryOid(key.getCategoryOid());
@@ -195,6 +207,7 @@ public class CategoryServiceImpl implements CategoryService {
 		dao.delete(param);
 	}
 
+    @Override
 	public List<Category> selectByParent(BigDecimal parentOid)
 			throws SQLException {
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -203,8 +216,7 @@ public class CategoryServiceImpl implements CategoryService {
 		return dao.selectByParent(param);
 	}
 	
-
-	public CategoryService getMeBean() {
+	private CategoryService getMeBean() {
 		return context.getBean("categoryService", CategoryService.class);
 	}
 

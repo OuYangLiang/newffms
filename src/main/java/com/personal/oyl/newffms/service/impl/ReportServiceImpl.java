@@ -28,6 +28,7 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private UserProfileService userProfileService;
 
+    @Override
     public List<CategoryConsumption> queryCategoryConsumptions(Date start, Date end,
             Set<BigDecimal> excludingRootCategoryOids) throws SQLException {
 

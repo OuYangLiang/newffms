@@ -25,10 +25,12 @@ public class ProfileValidator implements Validator {
 	@Autowired
 	private UserProfileService userProfileService;
 
+	@Override
 	public boolean supports(Class<?> clazz) {
 		return UserProfile.class.equals(clazz);
 	}
 
+	@Override
 	public void validate(Object target, Errors errors) {
 		UserProfile user = (UserProfile) target;
 		UserProfile oldObj = null;

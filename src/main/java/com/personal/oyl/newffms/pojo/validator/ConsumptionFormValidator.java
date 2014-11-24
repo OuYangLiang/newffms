@@ -27,10 +27,12 @@ public class ConsumptionFormValidator implements Validator {
     @Autowired
     private AccountService accountService;
 
+    @Override
     public boolean supports(Class<?> clazz) {
         return ConsumptionForm.class.equals(clazz);
     }
 
+    @Override
     public void validate(Object target, Errors errors) {
         ConsumptionForm form = (ConsumptionForm) target;
         

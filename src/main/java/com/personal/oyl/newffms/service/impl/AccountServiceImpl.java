@@ -22,22 +22,27 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountConsumptionDao accountConsumptionDao;
 
+    @Override
     public List<Account> queryAccounts() throws SQLException {
         return dao.queryAccounts();
     }
 
+    @Override
     public void insert(Account param) throws SQLException {
         dao.insert(param);
     }
 
+    @Override
     public void updateByPrimaryKeySelective(Account param) throws SQLException {
         dao.updateByKeySelectively(param);
     }
 
+    @Override
     public void updateByPrimaryKey(Account param) throws SQLException {
         dao.updateByKey(param);
     }
 
+    @Override
     public Account selectByKey(AccountKey key) throws SQLException {
         Account param = new Account();
         param.setAcntOid(key.getAcntOid());
@@ -51,22 +56,27 @@ public class AccountServiceImpl implements AccountService {
         return null;
     }
 
+    @Override
     public List<Account> queryAccountsByConsumption(BigDecimal cpnOid) throws SQLException {
         return dao.queryAccountsByConsumption(cpnOid);
     }
 
+    @Override
     public Account queryAccountsByIncoming(BigDecimal incomingOid) throws SQLException {
         return dao.queryAccountsByIncoming(incomingOid);
     }
 
+    @Override
     public int getCountOfSummary(Account param) throws SQLException {
         return dao.getCountOfSummary(param);
     }
 
+    @Override
     public List<Account> getListOfSummary(Account param) throws SQLException {
         return dao.getListOfSummary(param);
     }
 
+    @Override
     public void deleteByKey(AccountKey key) throws SQLException {
         Account param = new Account();
         param.setAcntOid(key.getAcntOid());
@@ -74,6 +84,7 @@ public class AccountServiceImpl implements AccountService {
         dao.delete(param);
     }
 
+    @Override
     public boolean isAccountSafeToRemove(BigDecimal acntOid) throws SQLException {
         Object obj = accountConsumptionDao.selectOneByAccount(acntOid);
         

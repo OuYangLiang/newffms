@@ -14,14 +14,17 @@ import org.springframework.security.web.FilterInvocation;
 public class CustomAccessDecisionVoter implements AccessDecisionVoter<FilterInvocation> {
     private static final Logger log = LoggerFactory.getLogger(CustomAccessDecisionVoter.class);
     
+    @Override
     public boolean supports(ConfigAttribute attribute) {
         return true;
     }
 
+    @Override
     public boolean supports(Class<?> clazz) {
         return true;
     }
 
+    @Override
     public int vote(Authentication authentication, FilterInvocation object, Collection<ConfigAttribute> attributes) {
         String url = object.getRequestUrl().toString();
         

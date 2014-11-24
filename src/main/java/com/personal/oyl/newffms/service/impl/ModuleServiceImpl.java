@@ -14,6 +14,7 @@ public class ModuleServiceImpl implements ModuleService {
 	@Autowired
 	private ModuleDao dao;
 
+	@Override
 	public List<Module> selectMenusByUser(BigDecimal userOid)
 			throws SQLException {
 		return dao.selectMenusByUser(userOid);

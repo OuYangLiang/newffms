@@ -8,10 +8,12 @@ import com.personal.oyl.newffms.pojo.ConsumptionItem;
 
 public class ConsumptionItemValidator implements Validator {
 
+	@Override
     public boolean supports(Class<?> clazz) {
         return ConsumptionItem.class.equals(clazz);
     }
 
+	@Override
     public void validate(Object target, Errors errors) {
         ValidationUtils.rejectIfEmpty(errors, "ownerOid", null, "是谁在消费啊，亲。");
     }

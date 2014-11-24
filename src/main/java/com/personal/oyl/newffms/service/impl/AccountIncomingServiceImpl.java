@@ -15,18 +15,22 @@ public class AccountIncomingServiceImpl implements AccountIncomingService {
     @Autowired
     private AccountIncomingDao dao;
 
+    @Override
     public void insert(AccountIncoming param) throws SQLException {
         dao.insert(param);
     }
 
+    @Override
     public void updateByPrimaryKeySelective(AccountIncoming param) throws SQLException {
         //N/A
     }
 
+    @Override
     public void updateByPrimaryKey(AccountIncoming param) throws SQLException {
         //N/A
     }
 
+    @Override
     public AccountIncoming selectByIncoming(BigDecimal incomingOid) throws SQLException {
         AccountIncoming param = new AccountIncoming();
         param.setIncomingOid(incomingOid);
@@ -40,6 +44,7 @@ public class AccountIncomingServiceImpl implements AccountIncomingService {
         return null;
     }
 
+    @Override
     public void deleteByIncoming(BigDecimal incomingOid) throws SQLException {
         AccountIncoming param = new AccountIncoming();
         param.setIncomingOid(incomingOid);
@@ -47,6 +52,7 @@ public class AccountIncomingServiceImpl implements AccountIncomingService {
         dao.delete(param);
     }
 
+    @Override
 	public AccountIncoming selectByKey(AccountIncomingKey key)
 			throws SQLException {
 		AccountIncoming param = new AccountIncoming();
@@ -62,6 +68,7 @@ public class AccountIncomingServiceImpl implements AccountIncomingService {
 		return null;
 	}
 
+    @Override
 	public void deleteByKey(AccountIncomingKey key) throws SQLException {
 		AccountIncoming param = new AccountIncoming();
 		param.setAcntOid(key.getAcntOid());

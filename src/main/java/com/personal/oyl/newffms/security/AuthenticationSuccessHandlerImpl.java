@@ -30,6 +30,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     @Autowired
     private ModuleService moduleService;
 
+    @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
         try {

@@ -1,5 +1,6 @@
 package com.personal.oyl.newffms.web;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,10 +24,12 @@ public class ConsumptionItemController extends BaseController {
 	private static final String SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM = "SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM";
     
     @RequestMapping("summary")
-    public String summary(HttpServletRequest request, HttpSession session) throws SQLException {
+    public String summary(HttpServletRequest request, Model model, HttpSession session) throws SQLException {
         this.clearSearchParameter(request, session, SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM);
         
         //初始化查询条件。
+        
+        model.addAttribute("users", userProfileService.selectAllUsers());
         
         //设置默认查询条件值，并放入session中
         
@@ -53,10 +57,16 @@ public class ConsumptionItemController extends BaseController {
 	public String search(@RequestParam("cpnTimeFrom") Date cpnTimeFrom,
 			@RequestParam("cpnTimeTo") Date cpnTimeTo,
 			@RequestParam("confirmed") Boolean confirmed, 
-			@RequestParam("itemDesc") String itemDesc, HttpSession session) throws Exception {
+			@RequestParam("itemDesc") String itemDesc,
+			@RequestParam("ownerOid") BigDecimal ownerOid,
+			@RequestParam("categoryOid") BigDecimal categoryOid,
+			@RequestParam("categoryDesc") String categoryDesc, HttpSession session) throws Exception {
     	//从页面接受查询参数，并放入session中。
         ConsumptionItem searchParam = new ConsumptionItem();
         searchParam.setConsumption(new Consumption());
+        searchParam.setOwnerOid(ownerOid);
+        searchParam.setCategoryOid(categoryOid);
+        searchParam.setCategoryDesc(categoryDesc);
         searchParam.getConsumption().setCpnTimeFrom(DateUtil.getInstance().getBeginTime(cpnTimeFrom));
         searchParam.getConsumption().setCpnTimeTo(DateUtil.getInstance().getEndTime(cpnTimeTo));
         searchParam.getConsumption().setConfirmed(confirmed);

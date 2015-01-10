@@ -37,6 +37,12 @@
             <if test="itemDesc != null">
                 AND I.ITEM_DESC LIKE CONCAT('%',#{itemDesc,jdbcType=NVARCHAR},'%')
             </if>
+            <if test="ownerOid != null">
+                AND I.OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
+            <if test="categoryOid != null">
+                AND I.CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
+            </if>
     </select>
     
     <select id="getListOfSummary" parameterType="com.personal.oyl.newffms.pojo.ConsumptionItem" resultMap="GridResultMap">
@@ -56,8 +62,14 @@
             <if test="itemDesc != null">
                 AND I.ITEM_DESC LIKE CONCAT('%',#{itemDesc,jdbcType=NVARCHAR},'%')
             </if>
+            <if test="ownerOid != null">
+                AND I.OWNER_OID = #{ownerOid,jdbcType=DECIMAL}
+            </if>
             <if test="sortField == null" >
                 ORDER BY C.CPN_TIME DESC
+            </if>
+            <if test="categoryOid != null">
+                AND I.CATEGORY_OID = #{categoryOid,jdbcType=DECIMAL}
             </if>
             <if test="sortField != null" >
                 ORDER BY ${sortField} ${sortDir}

@@ -75,7 +75,7 @@ public class IncomingController extends BaseController{
 			@RequestParam("confirmed") Boolean confirmed,
 			@RequestParam("incomingType") IncomingType incomingType,
 			HttpSession session) {
-  //从页面接受查询参数，并放入session中。
+    	//从页面接受查询参数，并放入session中。
         Incoming searchParam = new Incoming();
         
         searchParam.setOwnerOid(ownerOid);

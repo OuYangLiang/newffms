@@ -23,14 +23,29 @@
                 
                     <div class="input" >
                         <span>起始日期</span>
-                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
+                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.cpnTimeFrom }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeFrom" id="start" class="inputbox" readonly="readonly" data-validation-engine="validate[required]" />
                         
                         <span style="margin-left:50px;">结束日期</span>
-                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.cpnTimeTo }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeTo" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
+                        <input style="width: 100px;" value="<fmt:formatDate value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.cpnTimeTo }' pattern="yyyy-MM-dd" />" type="text" name="cpnTimeTo" id="end" class="inputbox" readonly="readonly" data-validation-engine="validate[required]" />
                         
                         <span id="btn-query" style="margin-left:20px; margin-top:-5px;">查询</span>
                         
                         <div style="clear:both;" ></div>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
+                
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">消费人</div>
+                    
+                    <div class="input" style="width: 35%;">
+                        <select name="ownerOid" class="selectbox" >
+                            <option value ="">全部</option>
+                            <c:forEach var="user" items="${ users }" varStatus="status">
+                                <option value ="${user.userOid}" <c:if test='${user.userOid == SESSION_KEY_SEARCH_PARAM_INCOMING.ownerOid }' >selected="selected"</c:if>>${user.userName}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -45,6 +60,19 @@
                             <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed && SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed }' >selected="selected"</c:if>>确认</option>
                             <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed && !SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.consumption.confirmed }' >selected="selected"</c:if>>初始</option>
                         </select>
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
+                
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">消费类别</div>
+                    
+                    <div class="input" >
+                        <input onClick="javascript:selectCategory();" value="<c:out value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.categoryDesc }' />" readonly="readonly" type="text" name="categoryDesc" id="categoryDesc" class="inputbox" />
+                        <input value="<c:out value='${SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM.categoryOid }' />" type="hidden" name="categoryOid" id="categoryOid" />
+                    
+                        <span id="btn-clear-category" style="margin-left:20px; margin-top:-5px;">清除</span>
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -71,6 +99,12 @@
                     <table id="gridList" ></table> 
                     <div id="gridListNav"></div>
                 </div>
+            </div>
+        </div>
+        
+        <div id="category-select-dialog" title="类型" >
+            <div>
+                <table id="category-select-grid" ></table> 
             </div>
         </div>
         
@@ -150,9 +184,9 @@
                     jsonReader: {id: "itemOid"},
                     colNames: ["时间", "描述", "类别", "消费人", "消费方式", "行金额", "总金额", "登记人", "状态", ""],
                     colModel: [
-{ sortable: true , name: "consumption.cpnTime", index:"CPN_TIME", width: 130, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i'}},
+                        { sortable: true , name: "consumption.cpnTime", index:"CPN_TIME", width: 130, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i'}},
                         { sortable: false, name: "itemDesc", width: 100, align: "left" },
-                        { sortable: true,  name: "categoryFullDesc", index:"I.CATEGORY_OID", width: 100, align: "left" },
+                        { sortable: false, name: "categoryFullDesc", width: 100, align: "left" },
                         { sortable: false, name: "userName", width: 60, align: "center" },
                         { sortable: false, name: "consumption.cpnType", width: 50, align: "center" },
                         { sortable: false, name: "amount", width: 70, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
@@ -194,6 +228,79 @@
                     		$("#gridList").trigger("reloadGrid");
                     	}
                     });
+                });
+                
+                //类别表格
+                var categoryGridLoaded = false;
+                
+                chooseCategory = function(categoryOid, categoryDesc) {
+                    $( "#categoryDesc" ).val(categoryDesc);
+                    $( "#categoryOid" ).val(categoryOid);
+                    $ ( "#category-select-dialog" ).dialog( "close" );
+                };
+                
+                selectCategory = function() {
+                    if (!categoryGridLoaded) {
+                        categoryGridLoaded = true;
+                        
+                        var categoryFormatter = function (cellvalue, options, rowObject){
+                            if (rowObject.isLeaf)
+                                return "<a href=\"javascript:chooseCategory(" + rowObject.categoryOid + ", '" + cellvalue + "');\" >" + cellvalue + "</a>";
+                            else
+                                return cellvalue;
+                        };
+                        
+                        $("#category-select-grid").jqGrid({
+                            url: "<c:url value='/category/ajaxGetAllCategories' />",
+                            jsonReader: {id: "categoryOidDesc"},
+                            colNames: ["描术", "级别"],
+                            colModel: [
+                                { name: "categoryDesc", width: 155, align: "left", sortable: false, formatter:categoryFormatter },
+                                { name: "categoryLevel", width: 50, align: "center", sortable: false }
+                            ],
+                            
+                            treeGrid: true,
+                            treeReader: {
+                                level_field: "categoryLevel",
+                                parent_id_field: "parentOidDesc",
+                                leaf_field: "isLeaf"
+                            },
+                            ExpandColClick: true,
+                            ExpandColumn: "categoryDesc",
+                            treeIcons: {leaf:'ui-icon-circle-check'},
+                            treeGridModel: "adjacency",
+                            rownumbers: false,
+                            autowidth: true,
+                            pager: "", 
+                        });
+                    }
+                    
+                    $ ( "#category-select-dialog" ).dialog( "open" );
+                };
+               
+                $( "#category-select-dialog" ).dialog( {
+                    autoOpen: false,
+                    maxHeight: 300,
+                    modal: true,
+                    show: {
+                        effect: "blind",
+                        duration: 300
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    },
+                    buttons: {
+                        "Close": function(){
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+                
+                $ ("#btn-clear-category").button();
+                $ ("#btn-clear-category").click(function(){
+                	$( "#categoryDesc" ).val('');
+                    $( "#categoryOid" ).val('');
                 });
             });
         </script>

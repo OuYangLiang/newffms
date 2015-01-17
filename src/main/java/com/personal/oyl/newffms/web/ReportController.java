@@ -47,6 +47,7 @@ public class ReportController {
     @Autowired
     private IncomingService incomingService;
     
+    
     @RequestMapping("/consumption")
     public String consumption(Model model) throws SQLException {
         List<Category> rootCategories = categoryService.selectByLevel(Constants.CATEGORY_LEVEL_ROOT);
@@ -125,12 +126,13 @@ public class ReportController {
         return rlt;
     }
     
+    
     @RequestMapping("/incoming")
     public String incoming(Model model) throws SQLException {
         
-        String[] years = new String[15];
+        String[] years = new String[10];
         
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 10; i++)
             years[i] = Integer.toString(2010 + i);
         
         model.addAttribute("years", years);
@@ -139,26 +141,6 @@ public class ReportController {
         return "/report/incoming";
     }
     
-    public static List<String> months(String start, String end) {
-        Date startParam = DateUtil.getInstance().getFirstTimeOfYear(start);
-        Date endParam   = DateUtil.getInstance().getLastTimeOfYear(end);
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
-        
-        List<String> rlt = new ArrayList<String>();
-        
-        while (startParam.before(endParam)) {
-            rlt.add(sdf.format(startParam));
-            
-            startParam = DateUtil.getInstance().getNextMonthTime(startParam);
-        }
-        
-        return rlt;
-    }
-    
-    public static void main(String[] args) {
-        System.out.println(months("2013", "2014"));
-    }
     
     @RequestMapping("/incomingDataSource")
     @ResponseBody
@@ -172,14 +154,19 @@ public class ReportController {
         List<String> allMonths = months(start, end);
         
         //按月分总额，每个用户的总额，每个收入类别的总额
-        Map<String, BigDecimal> total = new HashMap<String, BigDecimal>();
-        Map<String, BigDecimal> userTotal = new HashMap<String, BigDecimal>();//key: userOid-yyMM
-        Map<String, BigDecimal> typeTotal = new HashMap<String, BigDecimal>();//key: type-yyMM
+        BigDecimal totalAmt = BigDecimal.ZERO;
+        Map<String, BigDecimal> total = new HashMap<String, BigDecimal>();//key: yyMM
+        Map<String, BigDecimal> userMonthTotal = new HashMap<String, BigDecimal>();//key: userOid-yyMM
+        Map<String, BigDecimal> typeMonthTotal = new HashMap<String, BigDecimal>();//key: type-yyMM
+        Map<String, BigDecimal> userTotal = new HashMap<String, BigDecimal>();//key: userOid
+        Map<String, BigDecimal> typeTotal = new HashMap<String, BigDecimal>();//key: type
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
         for (Incoming incoming : incomings) {
         	if (!incoming.getConfirmed())
         		continue;//过滤掉未确认的收入记录。
+        	
+        	totalAmt = totalAmt.add(incoming.getAmount());
         	
             String date = sdf.format(incoming.getIncomingDate());
             
@@ -190,34 +177,55 @@ public class ReportController {
                 total.put(key, incoming.getAmount());
             }
             
-            key = incoming.getOwnerOid() + "-" + date;
+            key = incoming.getOwnerOid().toString();
             if (userTotal.containsKey(key)) {
-                userTotal.put(key, userTotal.get(key).add(incoming.getAmount()));
+            	userTotal.put(key, userTotal.get(key).add(incoming.getAmount()));
             } else {
-                userTotal.put(key, incoming.getAmount());
+            	userTotal.put(key, incoming.getAmount());
+            }
+            
+            key = incoming.getOwnerOid() + "-" + date;
+            if (userMonthTotal.containsKey(key)) {
+                userMonthTotal.put(key, userMonthTotal.get(key).add(incoming.getAmount()));
+            } else {
+                userMonthTotal.put(key, incoming.getAmount());
             }
             
             key = incoming.getIncomingType().getDesc() + "-" + date;
-            if (typeTotal.containsKey(key)) {
-                typeTotal.put(key, typeTotal.get(key).add(incoming.getAmount()));
+            if (typeMonthTotal.containsKey(key)) {
+                typeMonthTotal.put(key, typeMonthTotal.get(key).add(incoming.getAmount()));
             } else {
-                typeTotal.put(key, incoming.getAmount());
+                typeMonthTotal.put(key, incoming.getAmount());
+            }
+            
+            key = incoming.getIncomingType().getDesc();
+            if (typeTotal.containsKey(key)) {
+            	typeTotal.put(key, typeTotal.get(key).add(incoming.getAmount()));
+            } else {
+            	typeTotal.put(key, incoming.getAmount());
             }
         }
         
-        List<UserProfile> allUsers = userProfileService.selectAllUsers();
-        Map<String, String> incomingTypes = IncomingType.toMapValue();
-        
-        HighChartGraphResult first = new HighChartGraphResult();
-        HighChartGraphResult second = new HighChartGraphResult();
         
         String title = start.equals(end) ? end + "年收入情况" : start + "年 ~ " + end + "年收入情况";
-        first.setTitle(title);
-        second.setTitle(title);
+        List<UserProfile> allUsers = userProfileService.selectAllUsers();
         
-        first.setSeries(new ArrayList<HightChartSeries>());
-        second.setSeries(new ArrayList<HightChartSeries>());
+        HighChartResult rlt = new HighChartResult();
+        rlt.setIncomingOfUser(this.incomingResultOfUser(allUsers, title, allMonths, typeTotal, userMonthTotal));
+        rlt.setIncomingOfType(this.incomingResultOfType(title, allMonths, typeTotal, typeMonthTotal));
+        rlt.setIncomingOfAll(this.incomingResultOfAll(allUsers, title, totalAmt, userTotal, typeTotal));
         
+        return rlt;
+    }
+    
+    
+	private HighChartGraphResult incomingResultOfType(String title,
+			List<String> allMonths, Map<String, BigDecimal> total,
+			Map<String, BigDecimal> typeMonthTotal) {
+    	
+        HighChartGraphResult rlt = new HighChartGraphResult();
+        rlt.setTitle(title);
+        rlt.setSeries(new ArrayList<HightChartSeries>());
         
         //处理总入收
         HightChartSeries series = new HightChartSeries();
@@ -232,8 +240,52 @@ public class ReportController {
             series.getData().add(innerSeries);
         }
         
-        first.getSeries().add(series);
-        second.getSeries().add(series);
+        rlt.getSeries().add(series);
+        
+        //按收入类别分组
+        for (Map.Entry<String, String> entry : IncomingType.toMapValue().entrySet()) {
+            series = new HightChartSeries();
+            series.setName(entry.getValue());
+            series.setData(new ArrayList<HightChartSeries>());
+            
+            for (String month : allMonths) {
+                HightChartSeries innerSeries = new HightChartSeries();
+                innerSeries.setName(month.endsWith("01") ? month.substring(0, 2) + "年1月" : month.substring(2, 4) + "月");
+                BigDecimal y = typeMonthTotal.get(entry.getValue() + "-" + month);
+                innerSeries.setY(null == y ? BigDecimal.ZERO : y);
+                series.getData().add(innerSeries);
+            }
+            
+            rlt.getSeries().add(series);
+        }
+        
+        return rlt;
+    }
+    
+    
+	private HighChartGraphResult incomingResultOfUser(
+			List<UserProfile> allUsers, String title, List<String> allMonths,
+			Map<String, BigDecimal> total,
+			Map<String, BigDecimal> userMonthTotal) {
+		
+		HighChartGraphResult rlt = new HighChartGraphResult();
+        rlt.setTitle(title);
+        rlt.setSeries(new ArrayList<HightChartSeries>());
+        
+        //处理总入收
+        HightChartSeries series = new HightChartSeries();
+        series.setName("总收入");
+        series.setData(new ArrayList<HightChartSeries>());
+        
+        for (String month : allMonths) {
+            HightChartSeries innerSeries = new HightChartSeries();
+            innerSeries.setName(month.endsWith("01") ? month.substring(0, 2) + "年1月" : month.substring(2, 4) + "月");
+            BigDecimal y = total.get(month);
+            innerSeries.setY(null == y ? BigDecimal.ZERO : y);
+            series.getData().add(innerSeries);
+        }
+        
+        rlt.getSeries().add(series);
         
         //按人分组
         for (UserProfile user : allUsers) {
@@ -244,36 +296,66 @@ public class ReportController {
             for (String month : allMonths) {
                 HightChartSeries innerSeries = new HightChartSeries();
                 innerSeries.setName(month.endsWith("01") ? month.substring(0, 2) + "年1月" : month.substring(2, 4) + "月");
-                BigDecimal y = userTotal.get(user.getUserOid() + "-" + month);
+                BigDecimal y = userMonthTotal.get(user.getUserOid() + "-" + month);
                 innerSeries.setY(null == y ? BigDecimal.ZERO : y);
                 series.getData().add(innerSeries);
             }
             
-            first.getSeries().add(series);
+            rlt.getSeries().add(series);
         }
-        
-        //按收入类别分组
-        for (Map.Entry<String, String> entry : incomingTypes.entrySet()) {
-            series = new HightChartSeries();
-            series.setName(entry.getValue());
-            series.setData(new ArrayList<HightChartSeries>());
-            
-            for (String month : allMonths) {
-                HightChartSeries innerSeries = new HightChartSeries();
-                innerSeries.setName(month.endsWith("01") ? month.substring(0, 2) + "年1月" : month.substring(2, 4) + "月");
-                BigDecimal y = typeTotal.get(entry.getValue() + "-" + month);
-                innerSeries.setY(null == y ? BigDecimal.ZERO : y);
-                series.getData().add(innerSeries);
-            }
-            
-            second.getSeries().add(series);
-        }
-        
-        HighChartResult rlt = new HighChartResult();
-        rlt.setIncomingOfUser(first);
-        rlt.setIncomingOfType(second);
         
         return rlt;
+    }
+    
+    
+	private HighChartGraphResult incomingResultOfAll(
+			List<UserProfile> allUsers, String title, BigDecimal totalAmt,
+			Map<String, BigDecimal> userTotal, Map<String, BigDecimal> typeTotal) {
+		
+		HighChartGraphResult rlt = new HighChartGraphResult();
+    	rlt.setTitle(title);
+    	rlt.setSeries(new ArrayList<HightChartSeries>());
+    	
+    	HightChartSeries series = new HightChartSeries();
+        series.setName("消费金额");
+        series.setType("column");
+        series.setData(new ArrayList<HightChartSeries>());
+        rlt.getSeries().add(series);
+        
+        series = new HightChartSeries();
+        series.setName("总收入");
+        series.setY(totalAmt);
+        rlt.getSeries().get(0).getData().add(series);
+        
+        for (UserProfile user : allUsers) {
+			String key = user.getUserOid().toString();
+			BigDecimal amount = userTotal.get(key);
+			
+			if (null == amount)
+				continue;
+			
+			series = new HightChartSeries();
+            series.setName(user.getUserName());
+            series.setY(amount);
+            
+            rlt.getSeries().get(0).getData().add(series);
+		}
+        
+        for (Map.Entry<String, String> entry : IncomingType.toMapValue().entrySet()) {
+        	String key = entry.getValue();
+        	BigDecimal amount = typeTotal.get(key);
+        	
+        	if (null == amount)
+				continue;
+			
+			series = new HightChartSeries();
+            series.setName(key);
+            series.setY(amount);
+            
+            rlt.getSeries().get(0).getData().add(series);
+        }
+		
+		return rlt;
     }
     
     
@@ -613,6 +695,24 @@ public class ReportController {
                     drilldownList.add(series);
                 }
             }
+        }
+        
+        return rlt;
+    }
+    
+    
+    private List<String> months(String start, String end) {
+        Date startParam = DateUtil.getInstance().getFirstTimeOfYear(start);
+        Date endParam   = DateUtil.getInstance().getLastTimeOfYear(end);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
+        
+        List<String> rlt = new ArrayList<String>();
+        
+        while (startParam.before(endParam)) {
+            rlt.add(sdf.format(startParam));
+            
+            startParam = DateUtil.getInstance().getNextMonthTime(startParam);
         }
         
         return rlt;

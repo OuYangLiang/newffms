@@ -14,32 +14,29 @@
         <div class="contentWrapper">
             <div class="mainArea">
                 <div class="newline-wrapper ui-widget-content" id="dateArea">
-                    <div class="label">查询范围</div>
                 
-                    <div class="input" >
-                        <div style="float: left; margin-top: 10px; margin-right: 5px;">起始</div>
-                        <div style="float:left; margin-right: 50px;">
-                        <select id="start" name="start" style="width: 70px;" class="selectbox" >
+                    <div class="label">查询年份</div>
+                    
+                    <div class="input" style="width: 35%;">
+                        <select id="year" name="year" class="selectbox" >
                             <c:forEach var="year" items="${ years }" varStatus="status">
                                 <option value ="${year}" <c:if test='${year == curYear }' >selected="selected"</c:if> >${year}年</option>
                             </c:forEach>
                         </select>
-                        </div>
-                        
-                        <div style="float: left; margin-top: 10px; margin-right: 5px;">结束</div>
-                        <div style="float:left;">
-                        <select id="end" name="end" style="width: 70px;" class="selectbox" >
-                            <c:forEach var="year" items="${ years }" varStatus="status">
-                                <option value ="${year}" <c:if test='${year == curYear }' >selected="selected"</c:if> >${year}年</option>
-                            </c:forEach>
-                        </select>
-                        </div>
-                        
-                        <div id="btn-query" style="float: left; margin-left: 120px; margin-top: 5px;">查询</div>
                     </div>
                     
+                    <div id="btn-query" style="float:left; margin-top: 5px;">查询</div>
+                
                     <div style="clear:both;" ></div>
                 </div>
+            </div>
+            
+            <div class="content-title ui-widget-header">
+                总收入情况
+            </div>
+        
+            <div class="mainArea">
+                <div id="container3" style="padding: 0 20px" ></div>
             </div>
         
             <div class="content-title ui-widget-header">
@@ -141,6 +138,41 @@
                         series: []
                     };
             	
+            	var options3 = {
+                        chart: {
+                            type: "column"
+                        },
+                        title: {
+                            text: 'Title'
+                        },
+                        xAxis: {
+                            type:'category'
+                        },
+                        tooltip: {
+                            "pointFormat": "{series.name}: <b>{point.y:,.2f}</b>"
+                        },
+                        yAxis: {
+                            title: {
+                                text: ""
+                            }
+                        },
+                        plotOptions: {
+                            series: {
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: false,
+                                    "format": "{point.y:,.2f}"
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            "enabled": true,
+                            "format": "<b>{point.name}</b>: {point.y:,.2f}"
+                        },
+                        series: [],
+                        drilldown: {series:[]}
+                    };
+            	
             	var refresh = function(data) {
                     options.series = data.incomingOfUser.series;
                     options.title.text = data.incomingOfUser.title;
@@ -149,14 +181,17 @@
                     options2.series = data.incomingOfType.series;
                     options2.title.text = data.incomingOfType.title;
                     $('#container2').highcharts(options2);
+                    
+                    options3.series = data.incomingOfAll.series;
+                    options3.title.text = data.incomingOfAll.title;
+                    $('#container3').highcharts(options3);
                 };
                 
                 doQuery = function() {
                     
-                    var start = $ ("#start").val();
-                    var end   = $ ("#end").val();
+                    var year = $ ("#year").val();
                     
-                    var queryStr = "?start=" + start + "&end=" + end;
+                    var queryStr = "?start=" + year + "&end=" + year;
                     
                     $.ajax({
                         cache: false,

@@ -29,15 +29,9 @@ public class CategoryConsumption {
     }
     
     public static CategoryConsumption init(Category category, UserProfile user) {
-        CategoryConsumption rlt = new CategoryConsumption();
+        CategoryConsumption rlt = init(category);
         rlt.setUserOid(user.getUserOid());
         rlt.setUserName(user.getUserName());
-        rlt.setCategoryOid(category.getCategoryOid());
-        rlt.setCategoryDesc(category.getCategoryDesc());
-        rlt.setIsLeaf(category.getIsLeaf());
-        rlt.setCategoryLevel(category.getCategoryLevel());
-        rlt.setParentOid(category.getParentOid());
-        rlt.setTotal(BigDecimal.ZERO);
         
         return rlt;
     }

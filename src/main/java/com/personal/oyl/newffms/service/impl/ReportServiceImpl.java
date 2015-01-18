@@ -76,8 +76,6 @@ public class ReportServiceImpl implements ReportService {
                 continue;
             }
             
-            personalConsumption.setUserName(userMap.get(personalConsumption.getUserOid()).getUserName());//需要优化
-            
             do {
                 Category category = catMap.get(key);
                 CategoryConsumption categoryConsumption = categoryConsumptionsMap.get(key + "_-1");

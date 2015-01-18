@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 public class PersonalConsumption {
     private BigDecimal userOid;
-    private String userName;
     private BigDecimal categoryOid;
     private BigDecimal total;
 
@@ -16,14 +15,6 @@ public class PersonalConsumption {
         this.userOid = userOid;
     }
     
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public BigDecimal getCategoryOid() {
         return categoryOid;
     }

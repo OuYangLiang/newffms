@@ -38,7 +38,7 @@ public class ConsumptionItemController extends BaseController {
         if (null == searchParam) {
             searchParam = new ConsumptionItem();
             searchParam.setConsumption(new Consumption());
-            searchParam.getConsumption().setCpnTimeFrom(DateUtil.getInstance().getFirstTimeOfLastMonth());
+            searchParam.getConsumption().setCpnTimeFrom(DateUtil.getInstance().getFirstTimeOfCurrentMonth());
             searchParam.getConsumption().setCpnTimeTo(DateUtil.getInstance().getEndTime(new Date()));
             
             searchParam.setRequestPage(1);

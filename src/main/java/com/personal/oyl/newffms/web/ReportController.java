@@ -211,8 +211,8 @@ public class ReportController {
         List<UserProfile> allUsers = userProfileService.selectAllUsers();
         
         HighChartResult rlt = new HighChartResult();
-        rlt.setIncomingOfUser(this.incomingResultOfUser(allUsers, title, allMonths, typeTotal, userMonthTotal));
-        rlt.setIncomingOfType(this.incomingResultOfType(title, allMonths, typeTotal, typeMonthTotal));
+        rlt.setIncomingOfUser(this.incomingResultOfUser(allUsers, title, allMonths, total, userMonthTotal));
+        rlt.setIncomingOfType(this.incomingResultOfType(title, allMonths, total, typeMonthTotal));
         rlt.setIncomingOfAll(this.incomingResultOfAll(allUsers, title, totalAmt, userTotal, typeTotal));
         
         return rlt;
@@ -317,7 +317,7 @@ public class ReportController {
     	rlt.setSeries(new ArrayList<HightChartSeries>());
     	
     	HightChartSeries series = new HightChartSeries();
-        series.setName("消费金额");
+        series.setName("收入额");
         series.setType("column");
         series.setData(new ArrayList<HightChartSeries>());
         rlt.getSeries().add(series);

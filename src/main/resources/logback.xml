@@ -8,7 +8,7 @@
 
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/Users/ouyang/logs/newffms.%d{yyyy-MM-dd}.log
+			<fileNamePattern>/Users/ouyang/logs/newffms.%d{yyyy-MM}.log
 			</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
@@ -18,8 +18,8 @@
 	</appender>
 	
 	<root level="DEBUG">
- 		<appender-ref ref="FILE" />
-		<!-- <appender-ref ref="STDOUT" /> -->
+ 		<!-- <appender-ref ref="FILE" /> -->
+		<appender-ref ref="STDOUT" />
 	</root>
 
 </configuration>

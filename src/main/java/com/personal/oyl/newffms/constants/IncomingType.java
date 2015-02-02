@@ -7,6 +7,7 @@ public enum IncomingType {
     Salary("工资"),
     Bonus("奖金"),
     Cash("礼金"),
+    Accumulation("公积金"),
     Other("其它");
     
     private String desc;

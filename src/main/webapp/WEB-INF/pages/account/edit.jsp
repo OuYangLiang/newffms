@@ -68,7 +68,7 @@
                     <div class="label">初始可用额度</div>
                     
                     <div class="input">
-                        <spring:input data-validation-engine="validate[required]" path="balance" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
+                        <spring:input data-validation-engine="validate[required]" path="balance" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="11" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -78,7 +78,7 @@
                     <div class="label">限定额度</div>
                     
                     <div class="input">
-                        <spring:input id="quotaInput" path="quota" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
+                        <spring:input id="quotaInput" path="quota" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="11" />
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -88,7 +88,7 @@
                     <div class="label">初始欠款额度</div>
                     
                     <div class="input">
-                        <spring:input id="debtInput" path="debt" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
+                        <spring:input id="debtInput" path="debt" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="11" />
                     </div>
                     
                     <div style="clear:both;" ></div>

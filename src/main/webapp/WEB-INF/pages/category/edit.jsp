@@ -49,7 +49,7 @@
 		                    <div class="label">月度预算</div>
 		                    
 		                    <div class="input">
-		                        <spring:input data-validation-engine="validate[required]" path="monthlyBudget" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
+		                        <spring:input data-validation-engine="validate[required]" path="monthlyBudget" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="11" />
 		                    </div>
 		                    
 		                    <div style="clear:both;" ></div>

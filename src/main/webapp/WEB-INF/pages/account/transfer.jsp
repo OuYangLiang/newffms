@@ -64,7 +64,7 @@
                     <div class="label">转账金额</div>
                     
                     <div class="input">
-                        <spring:input data-validation-engine="validate[required]" path="payment" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="7" />
+                        <spring:input data-validation-engine="validate[required]" path="payment" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="11" />
                     </div>
                     
                     <div style="clear:both;" ></div>

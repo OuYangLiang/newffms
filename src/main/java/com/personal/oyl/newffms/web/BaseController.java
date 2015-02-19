@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.web;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +66,14 @@ public abstract class BaseController {
     
     protected final <T extends BasePojo> JqGridJsonRlt<T> initPaging(PaginatingService<T> service, T param) throws SQLException {
         int count = service.getCountOfSummary(param);
-        List<T> list = service.getListOfSummary(param);
+        
+        List<T> list = null;
+        
+        if (count == 0) {
+        	list = new ArrayList<T>();
+        } else {
+        	list = service.getListOfSummary(param);
+        }
         
         JqGridJsonRlt<T> rlt = new JqGridJsonRlt<T>();
         rlt.setRows(list);

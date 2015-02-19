@@ -10,6 +10,7 @@ public class AccountAudit extends BasePojo {
     private BigDecimal adtOid;
     private String adtDesc;
     private AccountAuditType adtType;
+    private Date adtTime;
     private BigDecimal amount;
     private Boolean confirmed;
     private BigDecimal acntOid;
@@ -46,7 +47,15 @@ public class AccountAudit extends BasePojo {
         this.adtType = adtType;
     }
 
-    public BigDecimal getAmount() {
+    public Date getAdtTime() {
+		return adtTime;
+	}
+
+	public void setAdtTime(Date adtTime) {
+		this.adtTime = adtTime;
+	}
+
+	public BigDecimal getAmount() {
         return amount;
     }
 

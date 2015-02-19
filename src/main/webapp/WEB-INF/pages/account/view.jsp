@@ -136,16 +136,17 @@
                         url: "<c:url value='/account/listOfItemSummary' />" + "<c:out value='?acntOid=${acntForm.acntOid}' />",
                         
                         page: "1",
-                        sortname: "CREATE_TIME",
+                        sortname: "ADT_TIME",
                         sortorder: "desc",
                         rowNum: "10",
                         
                         jsonReader: {id: "adtOid"},
-                        colNames: ["描述", "类型", "变化量", "操作人", "操作时间" , ""],
+                        colNames: ["描述", "类型", "变化量", "发生时间", "操作人", "操作时间" , ""],
                         colModel: [
-                            {sortable: false, name: "adtDesc", width: 300, align: "left"},
+                            {sortable: false, name: "adtDesc", width: 250, align: "left"},
                             {sortable: false, name: "adtType", width: 100, align: "center"},
                             {sortable: false, name: "amount", width: 100, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
+                            {sortable: false, name: "adtTime", width: 150, align: "center"},
                             {sortable: false, name: "baseObject.createBy", width: 100, align: "center"},
                             {sortable: false, name: "baseObject.createTime", width: 100, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d'}},
                             { sortable: false, align: "center", formatter:function (cellvalue, options, rowObject){

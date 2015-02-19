@@ -5,6 +5,7 @@
 		<id column="ADT_OID" property="adtOid" jdbcType="DECIMAL" />
         <result column="ADT_DESC" property="adtDesc" jdbcType="NVARCHAR" />
         <result column="ADT_TYPE" property="adtType" jdbcType="VARCHAR" />
+        <result column="ADT_TIME" property="adtTime" jdbcType="TIMESTAMP" />
         <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
         <result column="CREATE_TIME" property="baseObject.createTime" jdbcType="TIMESTAMP" />
         <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
@@ -12,13 +13,14 @@
 
 
 	<sql id="Grid_Column_List">
-        ADT_OID, ADT_DESC, ADT_TYPE, AMOUNT, CREATE_TIME, CREATE_BY
+        ADT_OID, ADT_DESC, ADT_TYPE, ADT_TIME, AMOUNT, CREATE_TIME, CREATE_BY
 	</sql>
 
     <select id="getCountOfSummary" parameterType="com.personal.oyl.newffms.pojo.AccountAudit" resultType="int">
         SELECT COUNT(*)
             FROM ACCOUNT_AUDIT
         WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+            <!-- 下面几个条件目前没有用到 -->
             <if test="createTimeFrom != null">
                 AND CREATE_TIME >= #{createTimeFrom,jdbcType=DECIMAL}
             </if>
@@ -34,6 +36,7 @@
         SELECT <include refid="Grid_Column_List" />
             FROM ACCOUNT_AUDIT
         WHERE ACNT_OID = #{acntOid,jdbcType=DECIMAL}
+            <!-- 下面几个条件目前没有用到 -->
             <if test="createTimeFrom != null">
                 AND CREATE_TIME >= #{createTimeFrom,jdbcType=DECIMAL}
             </if>
@@ -44,7 +47,7 @@
                 AND ADT_TYPE = #{adtType,jdbcType=VARCHAR}
             </if>
         <if test="sortField == null" >
-            ORDER BY CREATE_TIME DESC
+            ORDER BY ADT_TIME DESC
         </if>
         <if test="sortField != null" >
             ORDER BY ${sortField} ${sortDir}

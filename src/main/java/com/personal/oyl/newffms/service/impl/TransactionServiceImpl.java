@@ -145,6 +145,7 @@ public class TransactionServiceImpl implements TransactionService {
             
             audit.setAdtDesc(oldObj.getCpnType().getDesc());
             audit.setAdtType(AccountAuditType.Subtract);
+            audit.setAdtTime(oldObj.getCpnTime());
             audit.setAmount(acntConsumption.getAmount());
             audit.setConfirmed(true);
             audit.setAcntOid(oldAcnt.getAcntOid());
@@ -258,6 +259,7 @@ public class TransactionServiceImpl implements TransactionService {
         
         audit.setAdtDesc("[" + oldObj.getIncomingType().getDesc() + "], " + oldObj.getIncomingDesc());
         audit.setAdtType(AccountAuditType.Add);
+        audit.setAdtTime(oldObj.getIncomingDate());
         audit.setAmount(oldObj.getAmount());
         audit.setConfirmed(true);
         audit.setAcntOid(oldAcnt.getAcntOid());
@@ -307,6 +309,7 @@ public class TransactionServiceImpl implements TransactionService {
         
         audit.setAdtDesc("初始化");
         audit.setAdtType(AccountAuditType.Add);
+        audit.setAdtTime(audit.getBaseObject().getCreateTime());
         audit.setAmount(form.getBalance());
         audit.setConfirmed(true);
         audit.setAcntOid(form.getAcntOid());
@@ -345,6 +348,7 @@ public class TransactionServiceImpl implements TransactionService {
             
             audit.setAdtDesc(desc);
             audit.setAdtType(AccountAuditType.Change);
+            audit.setAdtTime(audit.getBaseObject().getCreateTime());
             audit.setAmount(form.getBalance().subtract(oldObj.getBalance()));
             audit.setConfirmed(true);
             audit.setAcntOid(oldObj.getAcntOid());
@@ -401,6 +405,7 @@ public class TransactionServiceImpl implements TransactionService {
         audit.getBaseObject().setCreateTime(now);
         audit.setAdtDesc("转账至：" + targetObj.getAcntHumanDesc());
         audit.setAdtType(AccountAuditType.Subtract);
+        audit.setAdtTime(now);
         audit.setAmount(payment);
         audit.setConfirmed(true);
         audit.setAcntOid(srcAcntOid);
@@ -414,6 +419,7 @@ public class TransactionServiceImpl implements TransactionService {
         audit.getBaseObject().setCreateTime(now);
         audit.setAdtDesc("进账自：" + srcObj.getAcntHumanDesc());
         audit.setAdtType(AccountAuditType.Add);
+        audit.setAdtTime(now);
         audit.setAmount(payment);
         audit.setConfirmed(true);
         audit.setAcntOid(targetAcntOid);

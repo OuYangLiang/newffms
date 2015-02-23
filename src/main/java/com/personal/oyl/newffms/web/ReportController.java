@@ -71,6 +71,7 @@ public class ReportController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         
         if (null == queryMethod || 1 == queryMethod) {
+        	queryMethod = 1;
             startParam = DateUtil.getInstance().getFirstTimeOfCurrentMonth();
             endParam   = DateUtil.getInstance().getLastTimeOfCurrentMonth();
             title = sdf.format(startParam);

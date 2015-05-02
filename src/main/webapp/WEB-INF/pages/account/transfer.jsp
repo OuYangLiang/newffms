@@ -53,7 +53,7 @@
 	                <div class="label">目标账户</div>
 	                
 	                <div class="input">
-	                    <spring:input data-validation-engine="validate[required]" id="targetAcntHumanDesc" path="target.acntHumanDesc" class="inputbox" readonly="true" onClick="javascript:selectAccount();" />
+	                    <input data-validation-engine="validate[required]" id="targetAcntHumanDesc" value="<c:out value='${acntForm.target.acntHumanDesc }' />" class="inputbox" readonly="true" onClick="javascript:selectAccount();" />
 	                    <input type="hidden" id="targetAcntOid" name="target.acntOid" value="<c:out value='${acntForm.target.acntOid }' />" />
 	                </div>
 	                

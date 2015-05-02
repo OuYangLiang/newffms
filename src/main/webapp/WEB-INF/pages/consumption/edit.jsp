@@ -137,7 +137,7 @@
                         
                         <div class="label">账户</div>
                         <div class="input" style="width: 400px;">
-                            <spring:input data-validation-engine="validate[required]" id="acntHumanDesc${status.index }" style="width: 400px;" path="accounts[${status.index }].acntHumanDesc" class="inputbox" readonly="true" onClick="javascript:selectAccount(${status.index });" />
+                            <input data-validation-engine="validate[required]" id="acntHumanDesc${status.index }" style="width: 400px;" value="${item.acntHumanDesc }" class="inputbox" readonly="true" onClick="javascript:selectAccount(${status.index });" />
                             <input type="hidden" id="accountOid${status.index }" name="accounts[${status.index }].acntOid" value="${item.acntOid }" />
                         </div>
                         
@@ -460,7 +460,7 @@
 		                
 		                "<div class=\"label\">账户</div>" +
 		                "<div class=\"input\" style=\"width: 400px;\">" +
-		                    "<input type=\"text\" data-validation-engine=\"validate[required]\" id=\"acntHumanDesc\#{accountSeq}\" style=\"width: 400px;\" name=\"accounts[\#{accountSeq}].acntHumanDesc\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectAccount(\#{accountSeq});\" />" +
+		                    "<input type=\"text\" data-validation-engine=\"validate[required]\" id=\"acntHumanDesc\#{accountSeq}\" style=\"width: 400px;\" class=\"inputbox\" readonly=\"true\" onClick=\"javascript:selectAccount(\#{accountSeq});\" />" +
 		                    "<input type=\"hidden\" id=\"accountOid\#{accountSeq}\" name=\"accounts[\#{accountSeq}].acntOid\" value=\"\" />" +
 		                "</div>" +
 		                
@@ -521,7 +521,6 @@
                             $ ( "#remove-account" + seq).attr("href", "javascript:removeAccount(" + (seq-1) + ");");
                             $ ( "#remove-account" + seq).attr("id", "remove-account" + (seq-1));
                         	
-                        	$ ( "#acntHumanDesc" + seq).attr("name", "accounts[" + (seq-1) + "].acntHumanDesc");
                         	$ ( "#acntHumanDesc" + seq).attr("onClick", "javascript:selectAccount(" + (seq-1) + ");");
                             $ ( "#acntHumanDesc" + seq).attr("id", "acntHumanDesc" + (seq-1));
                             

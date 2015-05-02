@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.web;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionForm;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
+import com.personal.oyl.newffms.pojo.key.AccountKey;
 import com.personal.oyl.newffms.pojo.key.ConsumptionKey;
 import com.personal.oyl.newffms.pojo.key.UserProfileKey;
 import com.personal.oyl.newffms.pojo.validator.ConsumptionFormValidator;
@@ -152,6 +154,22 @@ public class ConsumptionController extends BaseController{
     @RequestMapping("/confirmAdd")
     public String confirmAdd(@Valid @ModelAttribute("cpnForm") ConsumptionForm form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
+        	//回显
+        	if (null != form.getAccounts()) {
+        		List<Account> accounts = new ArrayList<Account>();
+        		
+        		for (Account acnt : form.getAccounts()) {
+        			BigDecimal payment = acnt.getPayment();
+        			
+        			acnt = accountService.selectByKey(new AccountKey(acnt.getAcntOid()));
+        			acnt.setOwner(userProfileService.selectByKey(new UserProfileKey(acnt.getOwnerOid())));
+        			acnt.setPayment(payment);
+        			
+        			accounts.add(acnt);
+        		}
+        		form.setAccounts(accounts);
+        	}
+        	
             model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
             model.addAttribute("users", userProfileService.selectAllUsers());
             model.addAttribute("validation", false);
@@ -166,6 +184,18 @@ public class ConsumptionController extends BaseController{
             item.setUserName(userProfileService.selectByKey(new UserProfileKey(item.getOwnerOid())).getUserName());
             item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
         }
+        
+        List<Account> accounts = new ArrayList<Account>();
+		for (Account acnt : form.getAccounts()) {
+			BigDecimal payment = acnt.getPayment();
+			
+			acnt = accountService.selectByKey(new AccountKey(acnt.getAcntOid()));
+			acnt.setOwner(userProfileService.selectByKey(new UserProfileKey(acnt.getOwnerOid())));
+			acnt.setPayment(payment);
+			
+			accounts.add(acnt);
+		}
+		form.setAccounts(accounts);
         
         session.setAttribute("cpnForm", form);
         
@@ -247,6 +277,22 @@ public class ConsumptionController extends BaseController{
     @RequestMapping("/confirmEdit")
     public String confirmEdit(@Valid @ModelAttribute("cpnForm") ConsumptionForm form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
+        	//回显
+        	if (null != form.getAccounts()) {
+        		List<Account> accounts = new ArrayList<Account>();
+        		
+        		for (Account acnt : form.getAccounts()) {
+        			BigDecimal payment = acnt.getPayment();
+        			
+        			acnt = accountService.selectByKey(new AccountKey(acnt.getAcntOid()));
+        			acnt.setOwner(userProfileService.selectByKey(new UserProfileKey(acnt.getOwnerOid())));
+        			acnt.setPayment(payment);
+        			
+        			accounts.add(acnt);
+        		}
+        		form.setAccounts(accounts);
+        	}
+        	
             model.addAttribute("cpnTypes", ConsumptionType.toMapValue());
             model.addAttribute("users", userProfileService.selectAllUsers());
             model.addAttribute("validation", false);
@@ -261,6 +307,18 @@ public class ConsumptionController extends BaseController{
             item.setUserName(userProfileService.selectByKey(new UserProfileKey(item.getOwnerOid())).getUserName());
             item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));
         }
+        
+        List<Account> accounts = new ArrayList<Account>();
+		for (Account acnt : form.getAccounts()) {
+			BigDecimal payment = acnt.getPayment();
+			
+			acnt = accountService.selectByKey(new AccountKey(acnt.getAcntOid()));
+			acnt.setOwner(userProfileService.selectByKey(new UserProfileKey(acnt.getOwnerOid())));
+			acnt.setPayment(payment);
+			
+			accounts.add(acnt);
+		}
+		form.setAccounts(accounts);
         
         session.setAttribute("cpnForm", form);
         

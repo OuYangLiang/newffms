@@ -15,10 +15,8 @@ public class Account extends BasePojo {
     private BigDecimal ownerOid;
     private BaseObject baseObject;
     
-    private UserProfile owner;
-    
     //extended field
-    private String acntHumanDesc;
+    private UserProfile owner;
     private BigDecimal payment;
     private Account target;
     
@@ -108,25 +106,16 @@ public class Account extends BasePojo {
         return this.getAcntType().getDesc();
     }
 
-    public void setAcntHumanDesc(String acntHumanDesc) {
-        this.acntHumanDesc = acntHumanDesc;
-    }
-
     public String getAcntHumanDesc() {
-        if (null ==  acntHumanDesc) {
-            
-            if (null == owner || null == owner.getUserName()) {
-                if (null == acntType) {
-                    return this.getAcntDesc();
-                }
-                
-                return this.getAcntTypeDesc() + " " + this.getAcntDesc();
+        if (null == owner || null == owner.getUserName()) {
+            if (null == acntType) {
+                return this.getAcntDesc();
             }
             
-            return owner.getUserName() + " " + this.getAcntTypeDesc() + " " + this.getAcntDesc();
+            return this.getAcntTypeDesc() + " " + this.getAcntDesc();
         }
         
-        return acntHumanDesc;
+        return owner.getUserName() + " " + this.getAcntTypeDesc() + " " + this.getAcntDesc();
     }
 
     public BigDecimal getPayment() {

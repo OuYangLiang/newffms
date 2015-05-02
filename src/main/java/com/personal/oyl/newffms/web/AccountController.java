@@ -252,6 +252,9 @@ public class AccountController extends BaseController{
     public String confirmTransfer(@Valid @ModelAttribute("acntForm") Account form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
             form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
+            form.setTarget(accountService.selectByKey(new AccountKey(form.getTarget().getAcntOid())));
+            form.getTarget().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTarget().getOwnerOid())));
+            
             model.addAttribute("validation", false);
             
             return "account/transfer";

@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.IncomingType;
-import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
+import com.personal.oyl.newffms.pojo.key.AccountKey;
 import com.personal.oyl.newffms.pojo.key.IncomingKey;
 import com.personal.oyl.newffms.pojo.key.UserProfileKey;
 import com.personal.oyl.newffms.pojo.validator.IncomingValidator;
@@ -135,6 +135,10 @@ public class IncomingController extends BaseController{
     @RequestMapping("/confirmAdd")
     public String confirmAdd(@Valid @ModelAttribute("incomingForm") Incoming form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
+        	//页面回显
+        	form.setTargetAccount(accountService.selectByKey(new AccountKey(form.getTargetAccount().getAcntOid())));
+            form.getTargetAccount().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTargetAccount().getOwnerOid())));
+        	
             model.addAttribute("incomingTypes", IncomingType.toMapValue());
             model.addAttribute("users", userProfileService.selectAllUsers());
             model.addAttribute("validation", false);
@@ -142,7 +146,9 @@ public class IncomingController extends BaseController{
             return "incoming/add";
         }
         
-        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
+        form.setTargetAccount(accountService.selectByKey(new AccountKey(form.getTargetAccount().getAcntOid())));
+        form.getTargetAccount().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTargetAccount().getOwnerOid())));
         
         session.setAttribute("incomingForm", form);
         
@@ -171,11 +177,11 @@ public class IncomingController extends BaseController{
     @RequestMapping("/view")
     public String view(@RequestParam("incomingOid") BigDecimal incomingOid, Model model) throws SQLException {
         Incoming form = incomingService.selectByKey(new IncomingKey(incomingOid));
-        Account acnt = accountService.queryAccountsByIncoming(incomingOid);
         
-        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
-        form.setAcntOid(acnt.getAcntOid());
-        form.setAcntHumanDesc(acnt.getAcntHumanDesc());
+        
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
+        form.setTargetAccount(accountService.queryAccountsByIncoming(incomingOid));
+        form.getTargetAccount().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTargetAccount().getOwnerOid())));
         
         model.addAttribute("incomingForm", form);
         
@@ -194,10 +200,8 @@ public class IncomingController extends BaseController{
         }
         else {
             form = incomingService.selectByKey(new IncomingKey(incomingOid));
-            Account acnt = accountService.queryAccountsByIncoming(incomingOid);
-            
-            form.setAcntOid(acnt.getAcntOid());
-            form.setAcntHumanDesc(acnt.getAcntHumanDesc());
+            form.setTargetAccount(accountService.queryAccountsByIncoming(incomingOid));
+            form.getTargetAccount().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTargetAccount().getOwnerOid())));
         }
         
         model.addAttribute("incomingForm", form);
@@ -210,6 +214,10 @@ public class IncomingController extends BaseController{
     @RequestMapping("/confirmEdit")
     public String confirmEdit(@Valid @ModelAttribute("incomingForm") Incoming form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
+        	//页面回显
+        	form.setTargetAccount(accountService.selectByKey(new AccountKey(form.getTargetAccount().getAcntOid())));
+            form.getTargetAccount().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTargetAccount().getOwnerOid())));
+            
             model.addAttribute("incomingTypes", IncomingType.toMapValue());
             model.addAttribute("users", userProfileService.selectAllUsers());
             model.addAttribute("validation", false);
@@ -217,7 +225,9 @@ public class IncomingController extends BaseController{
             return "incoming/edit";
         }
         
-        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
+        form.setTargetAccount(accountService.selectByKey(new AccountKey(form.getTargetAccount().getAcntOid())));
+        form.getTargetAccount().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTargetAccount().getOwnerOid())));
         
         session.setAttribute("incomingForm", form);
         

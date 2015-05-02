@@ -7,7 +7,7 @@
         <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
         <result column="INCOMING_TYPE" property="incomingType" jdbcType="VARCHAR" />
         <result column="CONFIRMED" property="confirmed" jdbcType="BIT" />
-        <result column="OWNER" property="owner" jdbcType="NVARCHAR" />
+        <result column="OWNER" property="owner.userName" jdbcType="NVARCHAR" />
         <result column="INCOMING_DATE" property="incomingDate" jdbcType="TIMESTAMP" />
         <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
 	</resultMap>

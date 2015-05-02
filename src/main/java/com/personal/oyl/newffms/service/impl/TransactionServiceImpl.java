@@ -195,7 +195,7 @@ public class TransactionServiceImpl implements TransactionService {
         incomingService.insert(form);
         
         AccountIncoming param = new AccountIncoming();
-        param.setAcntOid(form.getAcntOid());
+        param.setAcntOid(form.getTargetAccount().getAcntOid());
         param.setIncomingOid(form.getIncomingOid());
         
         accountIncomingService.insert(param);
@@ -209,7 +209,7 @@ public class TransactionServiceImpl implements TransactionService {
         accountIncomingService.deleteByIncoming(form.getIncomingOid());
         
         AccountIncoming param = new AccountIncoming();
-        param.setAcntOid(form.getAcntOid());
+        param.setAcntOid(form.getTargetAccount().getAcntOid());
         param.setIncomingOid(form.getIncomingOid());
         
         accountIncomingService.insert(param);

@@ -17,9 +17,8 @@ public class Incoming extends BasePojo {
     private BaseObject baseObject;
     
     //extended field
-    private String owner;
-    private BigDecimal acntOid;
-    private String acntHumanDesc;
+    private UserProfile owner;
+    private Account targetAccount;
     private Date incomingDateFrom;
     private Date incomingDateTo;
 
@@ -87,31 +86,23 @@ public class Incoming extends BasePojo {
         this.baseObject = baseObject;
     }
 
-    public String getOwner() {
+    public UserProfile getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(UserProfile owner) {
         this.owner = owner;
     }
 
-    public BigDecimal getAcntOid() {
-        return acntOid;
-    }
+    public Account getTargetAccount() {
+		return targetAccount;
+	}
 
-    public void setAcntOid(BigDecimal acntOid) {
-        this.acntOid = acntOid;
-    }
+	public void setTargetAccount(Account targetAccount) {
+		this.targetAccount = targetAccount;
+	}
 
-    public String getAcntHumanDesc() {
-        return acntHumanDesc;
-    }
-
-    public void setAcntHumanDesc(String acntHumanDesc) {
-        this.acntHumanDesc = acntHumanDesc;
-    }
-
-    public Date getIncomingDateFrom() {
+	public Date getIncomingDateFrom() {
         return incomingDateFrom;
     }
 

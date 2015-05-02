@@ -109,7 +109,7 @@
                         {sortable: false, name: "incomingDesc", width: 100, align: "left"},
                         {sortable: false, name: "incomingType", width: 100, align: "center"},
                         {sortable: false, name: "amount", width: 100, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
-                        {sortable: false, name: "owner", width: 100, align: "center"},
+                        {sortable: false, name: "owner.userName", width: 100, align: "center"},
                         {sortable: false, name: "incomingDate", width: 100, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d'}},
                         { sortable: false, name: "baseObject.createBy", width: 180, align: "center" },
                         { sortable: false, name: "confirmed", width: 100, align: "center", formatter:function(cellvalue){return cellvalue?"确认":"初始";}},

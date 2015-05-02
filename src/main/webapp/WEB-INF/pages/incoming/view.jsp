@@ -26,7 +26,7 @@
                     <div class="label">收入人</div>
                     
                     <div class="input">
-                        <div class="confirmed-text">${incomingForm.owner }</div>
+                        <div class="confirmed-text">${incomingForm.owner.userName }</div>
                     </div>
                     
                     <div style="clear:both;" ></div>
@@ -76,7 +76,7 @@
                     <div class="label">目标账户</div>
                     
                     <div class="input">
-                        <div class="confirmed-text">${incomingForm.acntHumanDesc }</div>
+                        <div class="confirmed-text">${incomingForm.targetAccount.acntHumanDesc }</div>
                     </div>
                     
                     <div style="clear:both;" ></div>

@@ -15,8 +15,9 @@ public class Account extends BasePojo {
     private BigDecimal ownerOid;
     private BaseObject baseObject;
     
+    private UserProfile owner;
+    
     //extended field
-    private String ownerUserName;
     private String acntHumanDesc;
     private BigDecimal payment;
     private Account target;
@@ -103,14 +104,6 @@ public class Account extends BasePojo {
         super.trimAllString();
     }
     
-    public String getOwnerUserName() {
-        return ownerUserName;
-    }
-
-    public void setOwnerUserName(String ownerUserName) {
-        this.ownerUserName = ownerUserName;
-    }
-
     public String getAcntTypeDesc() {
         return this.getAcntType().getDesc();
     }
@@ -122,7 +115,7 @@ public class Account extends BasePojo {
     public String getAcntHumanDesc() {
         if (null ==  acntHumanDesc) {
             
-            if (null == ownerUserName) {
+            if (null == owner || null == owner.getUserName()) {
                 if (null == acntType) {
                     return this.getAcntDesc();
                 }
@@ -130,7 +123,7 @@ public class Account extends BasePojo {
                 return this.getAcntTypeDesc() + " " + this.getAcntDesc();
             }
             
-            return ownerUserName + " " + this.getAcntTypeDesc() + " " + this.getAcntDesc();
+            return owner.getUserName() + " " + this.getAcntTypeDesc() + " " + this.getAcntDesc();
         }
         
         return acntHumanDesc;
@@ -144,7 +137,15 @@ public class Account extends BasePojo {
         this.payment = payment;
     }
     
-    public void subtract(BigDecimal value) {
+    public UserProfile getOwner() {
+		return owner;
+	}
+
+	public void setOwner(UserProfile owner) {
+		this.owner = owner;
+	}
+
+	public void subtract(BigDecimal value) {
         this.setBalance(balance.subtract(value));
         
         if (AccountType.Creditcard.equals(acntType)) {
@@ -167,5 +168,5 @@ public class Account extends BasePojo {
     public void setTarget(Account target) {
         this.target = target;
     }
-
+    
 }

@@ -80,7 +80,7 @@
                     jsonReader: {id: "acntOid"},
                     colNames: ["所有人", "类型", "描述", "可用额度", ""],
                     colModel: [
-                        {sortable: true, name: "ownerUserName", index: "OWNER_OID", width: 60, align: "center"},
+                        {sortable: true, name: "owner.userName", index: "OWNER_OID", width: 60, align: "center"},
                         {sortable: true, name: "acntType", index: "ACNT_TYPE",  width: 60, align: "center"},
                         {sortable: false, name: "acntDesc", width: 200, align: "left"},
                         {sortable: false, name: "balance", width: 100, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},

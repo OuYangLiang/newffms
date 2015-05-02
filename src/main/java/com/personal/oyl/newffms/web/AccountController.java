@@ -137,7 +137,7 @@ public class AccountController extends BaseController{
             return "account/add";
         }
         
-        form.setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
         
         session.setAttribute("acntForm", form);
         
@@ -166,7 +166,7 @@ public class AccountController extends BaseController{
     public String view(@RequestParam("acntOid") BigDecimal acntOid, Model model) throws SQLException {
         Account form = accountService.selectByKey(new AccountKey(acntOid));
         
-        form.setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
         
         model.addAttribute("acntForm", form);
         model.addAttribute("isAccountSafeToRemove", accountService.isAccountSafeToRemove(acntOid));
@@ -186,7 +186,7 @@ public class AccountController extends BaseController{
         }
         else {
             form = accountService.selectByKey(new AccountKey(acntOid));
-            form.setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+            form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
         }
         
         model.addAttribute("acntForm", form);
@@ -206,7 +206,7 @@ public class AccountController extends BaseController{
             return "account/edit";
         }
         
-        form.setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
         
         session.setAttribute("acntForm", form);
         
@@ -240,7 +240,7 @@ public class AccountController extends BaseController{
         }
         else {
             form = accountService.selectByKey(new AccountKey(acntOid));
-            form.setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+            form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
         }
         
         model.addAttribute("acntForm", form);
@@ -251,16 +251,16 @@ public class AccountController extends BaseController{
     @RequestMapping("/confirmTransfer")
     public String confirmTransfer(@Valid @ModelAttribute("acntForm") Account form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
-            form.setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+            form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
             model.addAttribute("validation", false);
             
             return "account/transfer";
         }
         
-        form.setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())).getUserName());
+        form.setOwner(userProfileService.selectByKey(new UserProfileKey(form.getOwnerOid())));
         
         form.setTarget(accountService.selectByKey(new AccountKey(form.getTarget().getAcntOid())));
-        form.getTarget().setOwnerUserName(userProfileService.selectByKey(new UserProfileKey(form.getTarget().getOwnerOid())).getUserName());
+        form.getTarget().setOwner(userProfileService.selectByKey(new UserProfileKey(form.getTarget().getOwnerOid())));
         
         session.setAttribute("acntForm", form);
         

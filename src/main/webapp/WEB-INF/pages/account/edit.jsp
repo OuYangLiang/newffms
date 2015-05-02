@@ -38,7 +38,7 @@
                     <div class="label">账户所有人</div>
                     
                     <div class="input">
-                        <div class="confirmed-text">${acntForm.ownerUserName }</div>
+                        <div class="confirmed-text">${acntForm.owner.userName }</div>
                     </div>
                     
                     <div style="clear:both;" ></div>

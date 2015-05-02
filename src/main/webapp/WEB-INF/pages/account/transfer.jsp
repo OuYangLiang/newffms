@@ -155,7 +155,7 @@
                             jsonReader: {id: "accountOid"},
                             colNames: ["所有人", "账户类型", "账户", "可用余额"],
                             colModel: [
-                                { name: "ownerUserName", width: 100, align: "center", sortable: false },
+                                { name: "owner.userName", width: 100, align: "center", sortable: false },
                                 { name: "acntTypeDesc", width: 100,align: "center", sortable: false },
                                 { name: "acntHumanDesc", width: 300, align: "center", sortable: false, formatter:accountFormatter },
                                 { name: "balance", width: 180, align: "center", sortable: false}

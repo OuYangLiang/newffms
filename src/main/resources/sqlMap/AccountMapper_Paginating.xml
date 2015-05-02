@@ -8,7 +8,7 @@
         <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
         <result column="QUOTA" property="quota" jdbcType="DECIMAL" />
         <result column="DEBT" property="debt" jdbcType="DECIMAL" />
-        <result column="OWNER" property="ownerUserName" jdbcType="NVARCHAR" />
+        <result column="OWNER" property="owner.userName" jdbcType="NVARCHAR" />
 	</resultMap>
 
 

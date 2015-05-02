@@ -187,10 +187,10 @@
         <result column="CREATE_BY" property="baseObject.createBy" jdbcType="NVARCHAR" />
         <result column="UPDATE_BY" property="baseObject.updateBy" jdbcType="NVARCHAR" />
         <result column="SEQ_NO" property="baseObject.seqNo" jdbcType="DECIMAL" />
-        <result column="USER_NAME" property="ownerUserName" jdbcType="NVARCHAR" />
+        <result column="OWNER" property="owner.userName" jdbcType="NVARCHAR" />
     </resultMap>
     <select id="queryAccounts" resultMap="queryAccountsResultMap" >
-        SELECT ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, USER_NAME
+        SELECT ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, USER_NAME AS OWNER
         FROM ACCOUNT, USER_PROFILE
         WHERE ACCOUNT.OWNER_OID = USER_PROFILE.USER_OID
     </select>
@@ -204,10 +204,10 @@
         <result column="DEBT" property="debt" jdbcType="DECIMAL" />
         <result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
         <result column="PAYMENT" property="payment" jdbcType="DECIMAL" />
-        <result column="USER_NAME" property="ownerUserName" jdbcType="NVARCHAR" />
+        <result column="OWNER" property="owner.userName" jdbcType="NVARCHAR" />
     </resultMap>
     <select id="queryAccountsByConsumption" resultMap="queryAccountsByConsumptionResultMap" parameterType="java.math.BigDecimal" >
-        SELECT A.ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, AMOUNT AS PAYMENT, U.USER_NAME
+        SELECT A.ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, AMOUNT AS PAYMENT, U.USER_NAME AS OWNER
         FROM ACCOUNT A, ACCOUNT_CONSUMPTION B, USER_PROFILE U
         WHERE A.ACNT_OID = B.ACNT_OID
         AND A.OWNER_OID = U.USER_OID
@@ -222,10 +222,10 @@
         <result column="QUOTA" property="quota" jdbcType="DECIMAL" />
         <result column="DEBT" property="debt" jdbcType="DECIMAL" />
         <result column="OWNER_OID" property="ownerOid" jdbcType="DECIMAL" />
-        <result column="USER_NAME" property="ownerUserName" jdbcType="NVARCHAR" />
+        <result column="OWNER" property="owner.userName" jdbcType="NVARCHAR" />
     </resultMap>
     <select id="queryAccountsByIncoming" resultMap="queryAccountsByConsumptionResultMap" parameterType="java.math.BigDecimal" >
-        SELECT A.ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, U.USER_NAME
+        SELECT A.ACNT_OID, ACNT_DESC, ACNT_TYPE, BALANCE, QUOTA, DEBT, OWNER_OID, U.USER_NAME AS OWNER
         FROM ACCOUNT A, ACCOUNT_INCOMING B, USER_PROFILE U
         WHERE A.ACNT_OID = B.ACNT_OID
         AND A.OWNER_OID = U.USER_OID

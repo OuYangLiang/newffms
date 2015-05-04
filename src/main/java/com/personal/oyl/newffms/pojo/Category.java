@@ -13,8 +13,7 @@ public class Category extends BasePojo {
     private BaseObject baseObject;
     
     //extended field
-    private String parentCategoryDesc;
-    private String parentCategoryFullDesc;
+    private Category parent;
 
     public BigDecimal getCategoryOid() {
         return categoryOid;
@@ -72,20 +71,12 @@ public class Category extends BasePojo {
         this.baseObject = baseObject;
     }
 
-    public String getParentCategoryDesc() {
-		return parentCategoryDesc;
+	public Category getParent() {
+		return parent;
 	}
 
-	public void setParentCategoryDesc(String parentCategoryDesc) {
-		this.parentCategoryDesc = parentCategoryDesc;
-	}
-
-	public String getParentCategoryFullDesc() {
-		return parentCategoryFullDesc;
-	}
-
-	public void setParentCategoryFullDesc(String parentCategoryFullDesc) {
-		this.parentCategoryFullDesc = parentCategoryFullDesc;
+	public void setParent(Category parent) {
+		this.parent = parent;
 	}
 
 	@Override

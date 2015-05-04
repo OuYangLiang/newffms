@@ -56,7 +56,7 @@
                     <div class="label">父类别</div>
                     
                     <div class="input">
-                        <spring:input id="parentCategoryDesc" path="parentCategoryDesc" class="inputbox" readonly="true" onClick="javascript:selectCategory();" />
+                        <input id="parentCategoryDesc" value="${catForm.parent.categoryDesc} " class="inputbox" readonly="true" onClick="javascript:selectCategory();" />
                         <input type="hidden" id="parentOid" name="parentOid" value="${catForm.parentOid }" />
                     </div>
                     

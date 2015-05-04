@@ -68,13 +68,20 @@ public class CategoryController extends BaseController{
     @RequestMapping("/confirmAdd")
     public String confirmAdd(@Valid @ModelAttribute("catForm") Category form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
+        	if (null != form.getParentOid()) {
+        		Category parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
+        		form.setParent(parent);
+        	}
+        	
             model.addAttribute("validation", false);
             
             return "category/add";
         }
         
         if (null != form.getParentOid()) {
-        	form.setParentCategoryFullDesc(categoryService.selectFullDescByKey(form.getParentOid()));
+        	Category parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
+    		form.setParent(parent);
+    		parent.setCategoryDesc(categoryService.selectFullDescByKey(parent.getCategoryOid()));
         }
         
         session.setAttribute("catForm", form);
@@ -125,7 +132,9 @@ public class CategoryController extends BaseController{
         else {
             form = categoryService.selectByKey(new CategoryKey(categoryOid));
             if (null != form.getParentOid()) {
-            	form.setParentCategoryFullDesc(categoryService.selectFullDescByKey(form.getParentOid()));
+            	Category parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
+        		form.setParent(parent);
+        		parent.setCategoryDesc(categoryService.selectFullDescByKey(parent.getCategoryOid()));
             }
         }
         
@@ -141,7 +150,9 @@ public class CategoryController extends BaseController{
         }
         
         if (null != form.getParentOid()) {
-        	form.setParentCategoryFullDesc(categoryService.selectFullDescByKey(form.getParentOid()));
+        	Category parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
+    		form.setParent(parent);
+    		parent.setCategoryDesc(categoryService.selectFullDescByKey(parent.getCategoryOid()));
         }
         
         session.setAttribute("catForm", form);

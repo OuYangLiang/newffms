@@ -73,7 +73,7 @@
                     <div class="label">父类别</div>
                     
                     <div class="input">
-                        <div class="confirmed-text">${catForm.parentCategoryFullDesc }</div>
+                        <div class="confirmed-text">${catForm.parent.categoryDesc }</div>
                     </div>
                     
                     <div style="clear:both;" ></div>

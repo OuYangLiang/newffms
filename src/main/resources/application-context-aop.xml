@@ -18,6 +18,11 @@
         </property>
 	</bean>
 	
+	<bean id="serviceProfiling"
+       class="com.personal.oyl.newffms.profiling.ServiceProfiling">
+       <property name="alarmValue" value="50" />
+    </bean>
+    
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <!-- all methods requires a transaction -->
@@ -27,8 +32,14 @@
     </tx:advice>
     
     <aop:config>
+        <!-- 数据库事务 -->
         <aop:advisor advice-ref="txAdvice"
             pointcut="execution(* com.personal.oyl.newffms.service.TransactionService.*(..))" />
+            
+		<aop:aspect ref="serviceProfiling">
+            <aop:around pointcut="execution(* com.personal.oyl.newffms.service.*.*(..))" method="arround" />
+        </aop:aspect>
+        
     </aop:config>
     
 </beans>

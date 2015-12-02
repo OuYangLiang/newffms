@@ -36,6 +36,22 @@
                     
                     <div style="clear:both;" ></div>
                 </div>
+                
+                <div class="newline-wrapper ui-widget-content">
+                    <div class="label">账户类型</div>
+                    
+                    <div class="input" style="width: 35%;">
+                        <select name="acntType" class="selectbox" >
+                            <option value ="">全部</option>
+                            <c:forEach var="item" items="${ acntTypes }" varStatus="status">
+                                <option value="${item.key }" <c:if test='${item.key == SESSION_KEY_SEARCH_PARAM_ACCOUNT.acntType }' >selected="selected"</c:if>>${item.value }</option>
+                            </c:forEach>
+                        </select>
+                        
+                    </div>
+                    
+                    <div style="clear:both;" ></div>
+                </div>
                 </form>
             </div>
             

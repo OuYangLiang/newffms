@@ -200,3 +200,22 @@ A:active {
     COLOR: #ff7f24;  
     text-decoration: underline;
 }
+.ui-jqgrid .ui-jqgrid-htable th {
+    height: 3em !important;
+}
+
+.ui-jqgrid tr.jqgrow td{
+    height: 2em !important;
+}
+
+.ui-jqgrid .ui-jqgrid-title{
+    font-size:15px;
+}
+    
+.ui-jqgrid-sortable {
+    font-size:15px;
+}
+
+.ui-jqgrid tr.jqgrow td {
+    font-size:15px;
+}

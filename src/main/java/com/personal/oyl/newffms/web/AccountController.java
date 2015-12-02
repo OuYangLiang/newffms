@@ -51,6 +51,7 @@ public class AccountController extends BaseController{
         //初始化查询条件。
         
         model.addAttribute("users", userProfileService.selectAllUsers());
+        model.addAttribute("acntTypes", AccountType.toMapValue());
         
         //设置默认查询条件值，并放入session中
         
@@ -72,10 +73,13 @@ public class AccountController extends BaseController{
     
     @RequestMapping("search")
     @ResponseBody
-    public String search(@RequestParam("ownerOid") BigDecimal ownerOid, HttpSession session) {
+    public String search(@RequestParam("ownerOid") BigDecimal ownerOid, 
+    		@RequestParam("acntType") AccountType acntType,
+    		HttpSession session) {
         //从页面接受查询参数，并放入session中。
         Account searchParam = new Account();
         searchParam.setOwnerOid(ownerOid);
+        searchParam.setAcntType(acntType);
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_ACCOUNT, searchParam);
         

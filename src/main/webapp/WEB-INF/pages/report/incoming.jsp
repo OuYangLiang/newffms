@@ -3,7 +3,6 @@
 <!doctype html>
 <html lang="zh-CN">
     <head>
-        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
 
     <body>
@@ -14,9 +13,16 @@
 	        
 	        <div class="text-left">
 	            <p>
-	                <button type="button" class="btn btn-primary" id="btn-previous">上一年</button>
-	                <button type="button" class="btn btn-primary" id="btn-next">下一年</button>
-	            </p>
+	                <div class="row">
+	                    <div class="col-xs-12 col-md-2">
+	                        <button type="button" class="btn btn-primary btn-block" id="btn-previous">上一年</button>
+	                    </div>
+	                    
+	                    <div class="col-xs-12 col-md-2">
+	                        <button type="button" class="btn btn-primary btn-block" id="btn-next">下一年</button>
+	                    </div>
+	                </div>
+                </p>
 	        </div>
 	        
 	        <div class="panel panel-primary">
@@ -60,7 +66,7 @@
 	    </div>
     
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='//bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/highcharts.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/drilldown.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/moment.js' />" charset="utf-8"></script>

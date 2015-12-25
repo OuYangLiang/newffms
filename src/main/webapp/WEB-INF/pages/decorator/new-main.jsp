@@ -37,6 +37,7 @@
                     <c:forEach var="item" items="${ SESSION_MENU_KEY }" varStatus="status" >
                         <li><a href="<c:url value='${item.moduleLink }' />">${item.moduleDesc }</a></li>
                     </c:forEach>
+                    <li><a href="<c:url value='/j_spring_security_logout' />">退出</a></li>
 	            </ul>
 	        </div>
 	    </nav>

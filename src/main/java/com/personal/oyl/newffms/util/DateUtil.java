@@ -110,6 +110,36 @@ public class DateUtil {
         return Integer.toString(c.get(Calendar.YEAR));
     }
     
+    public Date getFirstTimeOfMonth(int year, int month) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, (month -1) );
+        
+        return c.getTime();
+    }
+    
+    public Date getLastTimeOfMonth(int year, int month) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.add(Calendar.MONTH, 1);
+        c.add(Calendar.DAY_OF_YEAR, -1);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        c.set(Calendar.MILLISECOND, 999);
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, (month -1) );
+        
+        return c.getTime();
+    }
+    
     public static void main(String[] args) {
         System.out.println(DateUtil.getInstance().getFirstTimeOfCurrentMonth());
         System.out.println(DateUtil.getInstance().getFirstTimeOfLastMonth());

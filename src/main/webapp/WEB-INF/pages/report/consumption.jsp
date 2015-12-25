@@ -3,123 +3,105 @@
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
 
     <body>
-        <div class="content-header ui-widget-header">
-            消费情况查询
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content" >
-                    <div class="label">时间</div>
-                
-                    <div class="input" >
-                    
-                        <div style="float: left;width: 100px;"><input type="radio" name="queryMethod" id="r1" class="ratio" checked="true">当前月</input></div>
-                        <div style="float: left;width: 100px;"><input type="radio" name="queryMethod" id="r2" class="ratio" >前一月</input></div>
-                        <div style="float: left;width: 100px;"><input type="radio" name="queryMethod" id="r3" class="ratio" >指定日期</input></div>
-                        <div style="float: left;width: 100px;"><input type="checkbox" id="r4" class="checkbox">排除类别</input></div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
+        <div class="container">
+            <div class="page-header">
+                <h1>消费情况查询</h1>
+            </div>
             
-                <div class="newline-wrapper ui-widget-content" style="display:none;" id="dateArea">
-                    <div class="label">日期范围</div>
-                
-                    <div class="input" >
-                        <form id="form" method="post" autocomplete="off" >
-                        <span >起始日期</span>
-                        <input style="width: 100px;" type="text" name="start" id="start" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
-                        
-                        <span style="margin-left:30px;">结束日期</span>
-                        <input style="width: 100px;" type="text" name="end" id="end" class="inputbox" readonly="true" data-validation-engine="validate[required]" />
-                        
-                        <span id="btn-query" style="margin-left:20px; margin-top:-5px;">查询</span>
-                        </form>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
+            <div class="text-left">
+                <p>
+	                <div class="row">
+	                    <div class="col-xs-12 col-md-2">
+	                        <button type="button" class="btn btn-primary btn-block" id="btn-previous">上一月</button>
+	                    </div>
+	                    
+	                    <div class="col-xs-12 col-md-2">
+	                        <button type="button" class="btn btn-primary btn-block" id="btn-next">下一月</button>
+	                    </div>
+	                    
+	                    <div class="col-xs-12 col-md-2">
+	                        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#searchArea">排除类别</a>
+	                    </div>
+	                </div>
+                </p>
+            </div>
+            
+            <div class="collapse" id="searchArea">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+	                    <h3 class="panel-title text-center">请沟选排除项</h3>
+	                </div>
+	                <div class="panel-body" style="padding:0 100px;">
+	                    <div class="row">
+		                    <c:forEach var="item" items="${ rootCategories }" varStatus="status" >
+		                    <div class="col-xs-6 col-md-3">
+		                        <input type="checkbox" id="category${status.index }" value="${item.categoryOid }" onclick="javascript:doQuery();"><c:out value="${ item.categoryDesc }" /></input>
+		                    </div>
+		                    </c:forEach>
+		                </div>
+	                </div>
+                </div>
+            </div>
+            
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">报表</h3>
                 </div>
                 
-                <div class="newline-wrapper ui-widget-content" style="display:none;" id="categoryArea">
-                    <div class="label">排除类别</div>
-                    
-                    <div class="input">
-                        <c:forEach var="item" items="${ rootCategories }" varStatus="status" >
-                            <div style="float: left;width: 100px;">
-                                <input type="checkbox" id="category${status.index }" value="${item.categoryOid }" onclick="javascript:doQuery();" class="checkbox" ><c:out value="${ item.categoryDesc }" /></input>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="container4" ></div>
+                                </div>
                             </div>
-                            
-                            <c:if test="${ (status.index + 1) % 4 == 0 && status.index != 0}" ><br/><div style="clear:both;" ></div></c:if>
-                        </c:forEach>
+                        </div>
                     </div>
                     
-                    <div style="clear:both;" ></div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="container" ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="container2" ></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xs-12 col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="container3" ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
             </div>
-            
-            <div class="content-title ui-widget-header">
-                消费金额
-            </div>
-        
-            <div class="mainArea">
-                <div id="container4" style="padding: 0 20px" ></div>
-            </div>
-            
-            <div class="content-title ui-widget-header">
-                消费比例
-            </div>
-        
-            <div class="mainArea" style="width: 50%; float: left; padding: 0 0 0 0;">
-                <div>
-                    <div id="container2" style="padding: 0 20px" ></div>
-                </div>
-            </div>
-            <div class="mainArea" style="width: 50%; float: right; padding: 0 0 0 0;">
-                <div>
-                    <div id="container3" style="padding: 0 20px" ></div>
-                </div>
-            </div>
-            <div style="clear:both;" ></div>
-        
-            <div class="content-title ui-widget-header">
-                消费明细
-            </div>
-        
-            <div class="mainArea">
-                <div id="container" style="padding: 0 20px" ></div>
-            </div>
-            
         </div>
-        
+    
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/highcharts.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/drilldown.src.js' />" charset="utf-8"></script>
-        
+        <script src="<c:url value='/js/moment.js' />" charset="utf-8"></script>
 
         <script>
             $( document ).ready(function() {
-            	$ ("#btn-query").button();
-            	
-            	$( "#start" ).datepicker({
-                    dateFormat: "yy-mm-dd",
-                    changeYear: true,
-                    showAnim: "slide"
-                });
-            	
-            	$( "#end" ).datepicker({
-                    dateFormat: "yy-mm-dd",
-                    changeYear: true,
-                    showAnim: "slide"
-                });
-            	
             	var options = {
                     chart: {
                         type: "column"
@@ -255,15 +237,8 @@
                     $('#container4').highcharts(options4);
             	};
             	
-            	$.ajax({
-                    cache: false,
-                    url: '<c:url value="/report/consumptionDataSource" />',
-                    type: "POST",
-                    async: true,
-                    success: function(data) {
-                        refresh(data);
-                    }
-                });
+            	selectYear  = parseInt(moment().format("YYYY"));
+                selectMonth = parseInt(moment().format("MM"));
             	
             	doQuery = function() {
             	    var selectedCategories = [];
@@ -278,23 +253,7 @@
                         i++;
                     }
                     
-                    var queryStr;
-                    if ($("#r1").prop("checked")) {
-                        queryStr = "?queryMethod=1";
-                    } else if ($("#r2").prop("checked")) {
-                        queryStr = "?queryMethod=2";
-                    } else if ($("#r3").prop("checked")) {
-                        $("#form").validationEngine();
-                        if ($ ("#form").validationEngine('validate')) {
-                            var p1 = $("#start").val();
-                            var p2 = $("#end").val();
-                            
-                            queryStr = "?queryMethod=3&start=" + p1 + "&end=" + p2;
-                        }else {
-                            return;
-                        }
-                            
-                    }
+                    var queryStr = "?year=" + selectYear + "&month=" + selectMonth;
                     
                     if (selectedCategories.length != 0) {
                         queryStr = queryStr + "&excludeCategories=" + selectedCategories.join("|");
@@ -311,31 +270,28 @@
                     });
             	};
             	
-                
-                $("#r1").click(function(){
-                    $ ("#dateArea").attr("style", "display:none;");
+            	doQuery();
+            	
+            	$("#btn-previous").click(function(){
+            		selectMonth--;
+            		
+            		if (selectMonth == 0) {
+            			selectMonth = 12;
+            			selectYear--;
+            		}
+            		
                     doQuery();
                 });
                 
-                $("#r2").click(function(){
-                    $ ("#dateArea").attr("style", "display:none;");
+                $("#btn-next").click(function(){
+                    selectMonth++;
+                    
+                    if (selectMonth == 13) {
+                        selectMonth = 1;
+                        selectYear++;
+                    }
+                    
                     doQuery();
-                });
-                
-                $("#r3").click(function(){
-                	$ ("#dateArea").attr("style", "display:''");
-                });
-                
-                $("#r4").click(function(){
-                	if ($("#r4").prop("checked")) {
-                		$ ("#categoryArea").attr("style", "display:''");
-                	} else {
-                		$ ("#categoryArea").attr("style", "display:none;");
-                	}
-                });
-                
-                $ ("#btn-query").click(function(){
-                	doQuery();
                 });
                 
             });

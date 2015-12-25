@@ -60,9 +60,8 @@ public class ReportController {
     @RequestMapping("/consumptionDataSource")
     @ResponseBody
     public HighChartResult consumptionDataSource(
-            @RequestParam(value = "queryMethod", required = false) Integer queryMethod,
-            @RequestParam(value = "start", required = false) Date start,
-            @RequestParam(value = "end", required = false) Date end,
+    		@RequestParam(value = "year", required = false) Integer year,
+    		@RequestParam(value = "month", required = false) Integer month,
             @RequestParam(value = "excludeCategories", required = false) String excludeCategories) throws SQLException, ParseException {
         
         Date startParam = null;
@@ -70,24 +69,28 @@ public class ReportController {
         String title = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         
-        if (null == queryMethod || 1 == queryMethod) {
-        	queryMethod = 1;
-            startParam = DateUtil.getInstance().getFirstTimeOfCurrentMonth();
-            endParam   = DateUtil.getInstance().getLastTimeOfCurrentMonth();
-            title = sdf.format(startParam);
-            
-        } else if (2 == queryMethod) {
-            startParam = DateUtil.getInstance().getFirstTimeOfLastMonth();
-            endParam   = DateUtil.getInstance().getLastTimeOfLastMonth();
-            title = sdf.format(startParam);
-            
-        } else if (3 == queryMethod) {
-            startParam = DateUtil.getInstance().getBeginTime(start);
-            endParam   = DateUtil.getInstance().getEndTime(end);
-            
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
-            title = sdf.format(startParam) + " ~ " + sdf.format(endParam);
-        }
+        startParam = DateUtil.getInstance().getFirstTimeOfMonth(year, month);
+        endParam   = DateUtil.getInstance().getLastTimeOfMonth(year, month);
+        title      = year + "-" + month;
+        
+//        if (null == queryMethod || 1 == queryMethod) {
+//        	queryMethod = 1;
+//            startParam = DateUtil.getInstance().getFirstTimeOfCurrentMonth();
+//            endParam   = DateUtil.getInstance().getLastTimeOfCurrentMonth();
+//            title = sdf.format(startParam);
+//            
+//        } else if (2 == queryMethod) {
+//            startParam = DateUtil.getInstance().getFirstTimeOfLastMonth();
+//            endParam   = DateUtil.getInstance().getLastTimeOfLastMonth();
+//            title = sdf.format(startParam);
+//            
+//        } else if (3 == queryMethod) {
+//            startParam = DateUtil.getInstance().getBeginTime(start);
+//            endParam   = DateUtil.getInstance().getEndTime(end);
+//            
+//            sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            title = sdf.format(startParam) + " ~ " + sdf.format(endParam);
+//        }
         
         List<UserProfile> allUsers = userProfileService.selectAllUsers();
         List<Category> allCategories = null;
@@ -108,7 +111,7 @@ public class ReportController {
         }
         
         HighChartResult rlt = new HighChartResult();
-        HighChartGraphResult colRlt = this.columnResult(categoryConsumptions, allCategories, allUsers, queryMethod == 3);
+        HighChartGraphResult colRlt = this.columnResult(categoryConsumptions, allCategories, allUsers, false);
         HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories);
         HighChartGraphResult pieRltOfUser = this.pieResultOfUser(categoryConsumptions);
         HighChartGraphResult colRltOfAmount = this.columnResultOfAmount(categoryConsumptions);

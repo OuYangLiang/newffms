@@ -282,12 +282,15 @@
             		if (mode == "monthly") {
             			$ ("#btn-previous").html("上一年");
             			$ ("#btn-next").html("下一年");
+            			$ ("#btn-mode-toggle").html("按月查询");
             			
             			mode = "annually";
             			
             		} else if (mode == "annually" ) {
             			$ ("#btn-previous").html("上一月");
                         $ ("#btn-next").html("下一月");
+                        
+                        $ ("#btn-mode-toggle").html("按年查询");
                         
                         mode = "monthly";
             		}

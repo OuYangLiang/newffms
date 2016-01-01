@@ -3,7 +3,6 @@ package com.personal.oyl.newffms.web;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,18 +59,26 @@ public class ReportController {
     @RequestMapping("/consumptionDataSource")
     @ResponseBody
     public HighChartResult consumptionDataSource(
+    		@RequestParam(value = "mode", required = false) String mode,
     		@RequestParam(value = "year", required = false) Integer year,
     		@RequestParam(value = "month", required = false) Integer month,
-            @RequestParam(value = "excludeCategories", required = false) String excludeCategories) throws SQLException, ParseException {
+            @RequestParam(value = "excludeCategories", required = false) String excludeCategories) throws Exception {
         
         Date startParam = null;
         Date endParam   = null;
-        String title = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        String title 	= null;
         
-        startParam = DateUtil.getInstance().getFirstTimeOfMonth(year, month);
-        endParam   = DateUtil.getInstance().getLastTimeOfMonth(year, month);
-        title      = year + "-" + month;
+        if ("monthly".equals(mode) ) {
+        	startParam = DateUtil.getInstance().getFirstTimeOfMonth(year, month);
+            endParam   = DateUtil.getInstance().getLastTimeOfMonth(year, month);
+            title	   = year + "-" + month;
+        } else if ("annually".equals(mode)) {
+        	title	   = Integer.toString(year);
+        	startParam = DateUtil.getInstance().getFirstTimeOfYear(title);
+            endParam   = DateUtil.getInstance().getLastTimeOfYear(title);
+        } else {
+        	throw new Exception ("不可识别的参数mode: " + mode);
+        }
         
 //        if (null == queryMethod || 1 == queryMethod) {
 //        	queryMethod = 1;

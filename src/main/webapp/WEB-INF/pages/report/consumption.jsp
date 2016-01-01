@@ -23,6 +23,10 @@
 	                    </div>
 	                    
 	                    <div class="col-xs-12 col-md-2">
+                            <button type="button" class="btn btn-primary btn-block" id="btn-mode-toggle">按年查询</button>
+                        </div>
+	                    
+	                    <div class="col-xs-12 col-md-2">
 	                        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#searchArea">排除类别</a>
 	                    </div>
 	                </div>
@@ -237,6 +241,7 @@
                     $('#container4').highcharts(options4);
             	};
             	
+            	mode        = "monthly";
             	selectYear  = parseInt(moment().format("YYYY"));
                 selectMonth = parseInt(moment().format("MM"));
             	
@@ -253,7 +258,7 @@
                         i++;
                     }
                     
-                    var queryStr = "?year=" + selectYear + "&month=" + selectMonth;
+                    var queryStr = "?mode=" + mode + "&year=" + selectYear + "&month=" + selectMonth;
                     
                     if (selectedCategories.length != 0) {
                         queryStr = queryStr + "&excludeCategories=" + selectedCategories.join("|");
@@ -272,23 +277,52 @@
             	
             	doQuery();
             	
-            	$("#btn-previous").click(function(){
-            		selectMonth--;
+            	$("#btn-mode-toggle").click(function(){
             		
-            		if (selectMonth == 0) {
-            			selectMonth = 12;
-            			selectYear--;
+            		if (mode == "monthly") {
+            			$ ("#btn-previous").html("上一年");
+            			$ ("#btn-next").html("下一年");
+            			
+            			mode = "annually";
+            			
+            		} else if (mode == "annually" ) {
+            			$ ("#btn-previous").html("上一月");
+                        $ ("#btn-next").html("下一月");
+                        
+                        mode = "monthly";
             		}
+                    
+            		selectYear  = parseInt(moment().format("YYYY"));
+                    selectMonth = parseInt(moment().format("MM"));
+            		
+                    doQuery();
+                });
+            	
+            	$("#btn-previous").click(function(){
+            		if (mode == "monthly") {
+            			selectMonth--;
+                        
+                        if (selectMonth == 0) {
+                            selectMonth = 12;
+                            selectYear--;
+                        }
+                    } else if (mode == "annually" ) {
+                    	selectYear--;
+                    }
             		
                     doQuery();
                 });
                 
                 $("#btn-next").click(function(){
-                    selectMonth++;
-                    
-                    if (selectMonth == 13) {
-                        selectMonth = 1;
-                        selectYear++;
+                    if (mode == "monthly") {
+                    	selectMonth++;
+                        
+                        if (selectMonth == 13) {
+                            selectMonth = 1;
+                            selectYear++;
+                        }
+                    } else if (mode == "annually" ) {
+                    	selectYear++;
                     }
                     
                     doQuery();

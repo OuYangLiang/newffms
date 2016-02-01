@@ -113,13 +113,13 @@ public class DateUtil {
     public Date getFirstTimeOfMonth(int year, int month) {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
+        c.set(Calendar.MONTH, (month -1) );
         c.set(Calendar.DAY_OF_MONTH, 1);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, (month -1) );
         
         return c.getTime();
     }
@@ -127,6 +127,7 @@ public class DateUtil {
     public Date getLastTimeOfMonth(int year, int month) {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
+        c.set(Calendar.MONTH, (month -1) );
         c.set(Calendar.DAY_OF_MONTH, 1);
         c.add(Calendar.MONTH, 1);
         c.add(Calendar.DAY_OF_YEAR, -1);
@@ -135,7 +136,6 @@ public class DateUtil {
         c.set(Calendar.SECOND, 59);
         c.set(Calendar.MILLISECOND, 999);
         c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, (month -1) );
         
         return c.getTime();
     }

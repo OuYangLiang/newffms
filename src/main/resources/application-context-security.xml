@@ -15,7 +15,8 @@
 	<http pattern="/css/**" security="none" />
 	<http pattern="/login*" security="none" />
 	<http pattern="/bootstrap-3.3.5-dist/**" security="none" />
-
+	<http pattern="/bootstrap-table-1.10.1/**" security="none" />
+	
 	<http access-decision-manager-ref="accessDecisionManager" access-denied-page="/accessDeniedRouter?q=accessDenied">
 		
 		<intercept-url pattern="/**" access="valueBeAnything" />

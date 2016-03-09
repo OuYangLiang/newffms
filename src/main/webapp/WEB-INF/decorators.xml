@@ -11,5 +11,7 @@
     <decorator name="new" page="new-main.jsp">
         <pattern>/report/incoming</pattern>
         <pattern>/report/consumption</pattern>
+        
+        <pattern>/account/summary</pattern>
     </decorator>
 </decorators>

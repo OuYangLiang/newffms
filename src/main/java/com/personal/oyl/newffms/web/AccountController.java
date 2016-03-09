@@ -3,7 +3,9 @@ package com.personal.oyl.newffms.web;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +26,7 @@ import com.personal.oyl.newffms.constants.AccountType;
 import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.AccountAudit;
 import com.personal.oyl.newffms.pojo.BaseObject;
+import com.personal.oyl.newffms.pojo.BootstrapTableJsonRlt;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.key.AccountKey;
 import com.personal.oyl.newffms.pojo.key.UserProfileKey;
@@ -35,6 +38,13 @@ import com.personal.oyl.newffms.util.SessionUtil;
 public class AccountController extends BaseController{
     
     private static final String SESSION_KEY_SEARCH_PARAM_ACCOUNT = "SESSION_KEY_SEARCH_PARAM_ACCOUNT";
+    private static final Map<String, String> colMapping;
+	
+	static {
+		colMapping = new HashMap<String, String>();
+		colMapping.put("owner.userName", "OWNER_OID");
+		colMapping.put("acntType", "ACNT_TYPE");
+	}
     
     @Autowired
     private AccountValidator accountValidator;
@@ -88,10 +98,15 @@ public class AccountController extends BaseController{
     
     @RequestMapping("/listOfSummary")
     @ResponseBody
-    public JqGridJsonRlt<Account> listOfSummary(@RequestParam(value = "requestPage", required = true) int requestPage,
-            @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
-            @RequestParam(value = "sortField", required = true) String sortField,
-            @RequestParam(value = "sortDir", required = true) String sortDir, HttpSession session) throws SQLException {
+    public BootstrapTableJsonRlt<Account> listOfSummary(@RequestParam(value = "offset", required = true) int offset,
+            @RequestParam(value = "limit", required = true) int limit,
+            @RequestParam(value = "sort", required = true) String sort,
+            @RequestParam(value = "order", required = true) String order, HttpSession session) throws SQLException {
+		
+		int sizePerPage = limit;
+		int requestPage = offset / limit + 1;
+		String sortField = colMapping.get(sort);
+		String sortDir = order;
         
         //从session中取出查询对象并查询
 
@@ -108,7 +123,7 @@ public class AccountController extends BaseController{
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_ACCOUNT, searchParam);
         
-        return this.initPaging(accountService, searchParam);
+        return this.initBootstrapPaging(accountService, searchParam);
     }
     
     @RequestMapping("/initAdd")

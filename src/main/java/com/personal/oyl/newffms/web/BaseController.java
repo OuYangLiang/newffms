@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.personal.oyl.newffms.base.service.PaginatingService;
 import com.personal.oyl.newffms.constants.Constants;
 import com.personal.oyl.newffms.pojo.BasePojo;
+import com.personal.oyl.newffms.pojo.BootstrapTableJsonRlt;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.service.AccountAuditService;
 import com.personal.oyl.newffms.service.AccountIncomingService;
@@ -80,6 +81,24 @@ public abstract class BaseController {
         rlt.setPage(param.getRequestPage());
         rlt.setRecords(count);
         rlt.setTotal(BigDecimal.valueOf(count).divide(BigDecimal.valueOf(param.getSizePerPage()), BigDecimal.ROUND_UP).intValue());
+        
+        return rlt;
+    }
+    
+    protected final <T extends BasePojo> BootstrapTableJsonRlt<T> initBootstrapPaging(PaginatingService<T> service, T param) throws SQLException {
+        int count = service.getCountOfSummary(param);
+        
+        List<T> list = null;
+        
+        if (count == 0) {
+        	list = new ArrayList<T>();
+        } else {
+        	list = service.getListOfSummary(param);
+        }
+        
+        BootstrapTableJsonRlt<T> rlt = new BootstrapTableJsonRlt<T>();
+        rlt.setRows(list);
+        rlt.setTotal(count);
         
         return rlt;
     }

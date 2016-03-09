@@ -12,6 +12,6 @@
         <pattern>/report/incoming</pattern>
         <pattern>/report/consumption</pattern>
         
-        <pattern>/account/summary</pattern>
+        <pattern>/account/*</pattern>
     </decorator>
 </decorators>

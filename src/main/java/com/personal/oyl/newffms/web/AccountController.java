@@ -178,7 +178,7 @@ public class AccountController extends BaseController{
         
         session.removeAttribute("acntForm");
         
-        return "account/summary";
+        return "redirect:/account/summary?keepSp=Y";
     }
     
     @RequestMapping("/view")

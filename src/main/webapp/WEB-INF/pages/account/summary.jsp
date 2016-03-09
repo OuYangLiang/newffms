@@ -22,11 +22,11 @@
 
                     <div id="search-toolbar" class="btn-group">
                         <button type="button" class="btn btn-default" id="btn-add">
-                            <i class="glyphicon glyphicon glyphicon-plus"></i>
+                            <i class="glyphicon glyphicon-plus"></i>
                         </button>
                     
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">
-                            <i class="glyphicon glyphicon glyphicon-search"></i>
+                            <i class="glyphicon glyphicon-search"></i>
                         </button>
                     </div>
                     <table id="data-table" data-toggle="table"

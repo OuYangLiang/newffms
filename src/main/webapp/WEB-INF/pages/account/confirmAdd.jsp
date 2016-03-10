@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="zh-CN">
     <head>
+    
     </head>
 
     <body>
@@ -21,62 +22,50 @@
                 </button>
             </div>
             
-            <div class="panel panel-danger">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">新建确认</h3>
                 </div>
                 <div>&nbsp;</div>
                 
-                <div class="container">
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right"><strong>账户所有人</strong></div>
-                    <div class="col-xs-1">:</div>
-                    <div class="col-md-4">
-                        <div class="confirmed-text">${acntForm.owner.userName }</div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right"><strong>账户类型</strong></div>
-                    <div class="col-xs-1">:</div>
-                    <div class="col-md-4">
-                        <div class="confirmed-text">${acntForm.acntType.desc }</div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right"><strong>描述</strong></div>
-                    <div class="col-xs-1">:</div>
-                    <div class="col-md-4">
-                        <div class="confirmed-text">${acntForm.acntDesc }</div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-xs-4 col-md-2 text-right"><strong>初始可用额度</strong></div>
-                    <div class="col-xs-1">:</div>
-                    <div class="col-md-4">
-                        <div class="confirmed-text">${acntForm.balance }</div>
-                    </div>
-                </div>
-                
-                <c:if test="${acntForm.acntType == \"Creditcard\" }" >
-	                <div class="row">
-	                    <div class="col-xs-4 col-md-2 text-right"><strong>限定额度</strong></div>
+                <div class="container lead">
+	                <div class="row" style="margin-bottom: 10px;">
+	                    <div class="col-xs-5 col-md-2 text-right"><strong>账户所有人</strong></div>
 	                    <div class="col-xs-1">:</div>
-	                    <div class="col-md-4">
-	                        <div class="confirmed-text">${acntForm.quota }</div>
-	                    </div>
+	                    <div class="col-md-4">${acntForm.owner.userName }</div>
 	                </div>
-	                    
-	                <div class="row">
-	                    <div class="col-xs-4 col-md-2 text-right"><strong>初始欠款额度</strong></div>
+	                
+	                <div class="row" style="margin-bottom: 10px;">
+	                    <div class="col-xs-5 col-md-2 text-right"><strong>账户类型</strong></div>
 	                    <div class="col-xs-1">:</div>
-	                    <div class="col-md-4">
-	                        <div class="confirmed-text">${acntForm.debt }</div>
-	                    </div>
+	                    <div class="col-md-4">${acntForm.acntType.desc }</div>
 	                </div>
-                </c:if>
+	                
+	                <div class="row" style="margin-bottom: 10px;">
+	                    <div class="col-xs-5 col-md-2 text-right"><strong>描述</strong></div>
+	                    <div class="col-xs-1">:</div>
+	                    <div class="col-md-4">${acntForm.acntDesc }</div>
+	                </div>
+	                
+	                <div class="row" style="margin-bottom: 10px;">
+	                    <div class="col-xs-5 col-md-2 text-right"><strong>初始可用额度</strong></div>
+	                    <div class="col-xs-1">:</div>
+	                    <div class="col-md-4">${acntForm.balance }</div>
+	                </div>
+	                
+	                <c:if test="${acntForm.acntType == \"Creditcard\" }" >
+		                <div class="row" style="margin-bottom: 10px;">
+		                    <div class="col-xs-5 col-md-2 text-right"><strong>限定额度</strong></div>
+		                    <div class="col-xs-1">:</div>
+		                    <div class="col-md-4">${acntForm.quota }</div>
+		                </div>
+		                    
+		                <div class="row" style="margin-bottom: 10px;">
+		                    <div class="col-xs-5 col-md-2 text-right"><strong>初始欠款额度</strong></div>
+		                    <div class="col-xs-1">:</div>
+		                    <div class="col-md-4">${acntForm.debt }</div>
+		                </div>
+	                </c:if>
                 </div>
             </div>
         </div>

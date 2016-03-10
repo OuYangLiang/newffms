@@ -13,7 +13,7 @@
                 <h1>账户</h1>
             </div>
 
-            <div class="panel panel-danger">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title text-center">数据明细</h3>
                 </div>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" id="btn-query" data-dismiss="modal">查询</button>
+                            <button type="button" class="btn btn-default" id="btn-query" data-dismiss="modal">查询</button>
                         </div>
                     </div>
                 </div>

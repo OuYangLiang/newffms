@@ -24,7 +24,7 @@
                 </button>
             </div>
             
-            <div class="panel panel-danger">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">新建</h3>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="row" id="errorArea" style="display:none">
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
-	                        <div class="alert alert-warning" role="alert" >
+	                        <div class="alert alert-danger" role="alert" >
 		                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 		                        <span class="sr-only">Error:</span>
 		                        <spring:errors path="*" />

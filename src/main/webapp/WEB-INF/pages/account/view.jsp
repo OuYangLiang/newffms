@@ -1,198 +1,196 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglibs-include.jsp"%>
 <!doctype html>
-<html>
+<html lang="zh-CN">
+    <head>
+        <link href="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.css' />" rel="stylesheet">
+    </head>
+
     <body>
-        <div class="button-area">
-            <button id="btn-back">返回</button>
-            <button id="btn-edit">修改</button>
+        <div class="container">
+            <div class="page-header">
+                <h1>账户</h1>
+            </div>
             
-            <c:if test="${acntForm.balance > 0 }" >
-                <button id="btn-transfer">转账</button>
-            </c:if>
+            <div style="padding-left: 20px; padding-bottom: 20px;">
+                <button type="button" class="btn btn-default" id="btn-back">
+                    <i class="glyphicon glyphicon-arrow-left"></i>
+                </button>
             
-            <c:if test="${isAccountSafeToRemove }" >
-                <button id="btn-delete">删除</button>
-            </c:if>
+                <button type="button" class="btn btn-default" id="btn-edit">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </button>
+                
+                <c:if test="${acntForm.balance > 0 }" >
+	                <button type="button" class="btn btn-default" id="btn-transfer">
+	                    <i class="glyphicon glyphicon-transfer"></i>
+	                </button>
+	            </c:if>
             
-            <button id="btn-viewDetail">查询明细</button>
-        </div>
-        
-        <div class="content-header ui-widget-header">
-            账户<span style="font-size: 80%;"> - 查看页面</span>
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">账户所有人</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${acntForm.owner.userName }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-            
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">账户类型</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${acntForm.acntType.desc }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">描述</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${acntForm.acntDesc }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">初始可用额度</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${acntForm.balance }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <c:if test="${acntForm.acntType == \"Creditcard\" }" >
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">限定额度</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${acntForm.quota }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">初始欠款额度</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${acntForm.debt }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
+	            <c:if test="${isAccountSafeToRemove }" >
+	                <button type="button" class="btn btn-default" id="btn-delete" data-toggle="modal" data-target="#deleteModal">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+	            </c:if>
+	            
+	            <c:if test="${acntForm.balance > 0 }" >
+                    <button type="button" class="btn btn-default" id="btn-viewDetail">
+                        <i class="glyphicon glyphicon-list"></i>
+                    </button>
                 </c:if>
             </div>
             
-            <div id="detailArea" style="display:none;">
-	            <div class="content-title ui-widget-header">
-	                账户流水
-	            </div>
-	            
-	            <div class="mainArea">
-	                <div>
-	                    <table id="gridList" ></table> 
-	                    <div id="gridListNav"></div>
-	                </div>
-	            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">账户明细</h3>
+                </div>
+                <div>&nbsp;</div>
+                
+                <div class="container lead">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-xs-5 col-md-2 text-right"><strong>账户所有人</strong></div>
+                        <div class="col-xs-1">:</div>
+                        <div class="col-md-4">${acntForm.owner.userName }</div>
+                    </div>
+                    
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-xs-5 col-md-2 text-right"><strong>账户类型</strong></div>
+                        <div class="col-xs-1">:</div>
+                        <div class="col-md-4">${acntForm.acntType.desc }</div>
+                    </div>
+                    
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-xs-5 col-md-2 text-right"><strong>描述</strong></div>
+                        <div class="col-xs-1">:</div>
+                        <div class="col-md-4">${acntForm.acntDesc }</div>
+                    </div>
+                    
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-xs-5 col-md-2 text-right"><strong>初始可用额度</strong></div>
+                        <div class="col-xs-1">:</div>
+                        <div class="col-md-4">${acntForm.balance }</div>
+                    </div>
+                    
+                    <c:if test="${acntForm.acntType == \"Creditcard\" }" >
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-xs-5 col-md-2 text-right"><strong>限定额度</strong></div>
+                            <div class="col-xs-1">:</div>
+                            <div class="col-md-4">${acntForm.quota }</div>
+                        </div>
+                            
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-xs-5 col-md-2 text-right"><strong>初始欠款额度</strong></div>
+                            <div class="col-xs-1">:</div>
+                            <div class="col-md-4">${acntForm.debt }</div>
+                        </div>
+                    </c:if>
+                </div>
+            </div>
+            
+            <div class="panel panel-primary" id="detailArea" style="display:none;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">账户流水</h3>
+                </div>
+                
+                <div class="panel-body">
+                    <table id="data-table" data-toggle="table"
+                        data-pagination="true"
+                        data-side-pagination="server"
+                        data-sort-name="ADT_TIME"
+                        data-sort-order="desc"
+                        data-page-size="10"
+                        data-page-number="1"
+                        data-show-toggle="true"
+                        data-show-columns="true"
+                        data-silent-sort="false"
+                        data-row-style="rowStyle">
+                        <thead>
+                            <tr>
+                                <th data-field="adtDesc">描述</th>
+                                <th data-field="adtType">类型</th>
+                                <th data-field="amount" data-align="right" data-formatter="amtFormatter">变化量</th>
+                                <th data-field="adtTime">发生时间</th>
+                                <th data-field="baseObject.createBy">操作人</th>
+                                <th data-field="baseObject.createTime">操作时间</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
         
-        <div id="delete-confirm-dialog" title="警告">
-            确定要删除吗?
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="deleteModalLabel">警告</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container lead">
+                            确定要删除吗?
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" id="btn-delete-confirm" data-dismiss="modal">删除</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        
+
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/locale/bootstrap-table-zh-CN.min.js' />" charset="utf-8"></script>
         
         <script>
+	        function rowStyle(row, index) {
+	            var classes = ['active', 'success', 'info', 'warning', 'danger'];
+	            
+	            if (index % 2 === 0 && index / 2 < classes.length) {
+	                return {
+	                    classes: classes[index / 2]
+	                };
+	            }
+	            return {};
+	        }
+	        
+	        function amtFormatter(value) {
+	        	return "¥" + parseFloat(value).toFixed(2);
+	        }
+        
             $( document ).ready(function() {
-                $ (".button-area button").button();
-                $ ("#btn-back").click(function(){
+            	$ ("#btn-back").click(function(){
                     window.location.href = "<c:url value='/account/summary?keepSp=Y' />";
                 });
-                
-                $ ("#btn-edit").click(function(){
+            	
+            	$ ("#btn-edit").click(function(){
                     window.location.href = "<c:url value='/account/initEdit' />?acntOid=<c:out value='${acntForm.acntOid}' />";
                 });
-                
-                var gridLoaded = false;
-                $ ("#btn-viewDetail").click(function(){
-                	if (gridLoaded) {
-                		return;
-                	}
-                	
-                	gridLoaded = true;
-                	
-                	$("#detailArea").attr("style", "display:''");
-                	
-                	$("#gridList").jqGrid({
-                        url: "<c:url value='/account/listOfItemSummary' />" + "<c:out value='?acntOid=${acntForm.acntOid}' />",
-                        
-                        page: "1",
-                        sortname: "ADT_TIME",
-                        sortorder: "desc",
-                        rowNum: "10",
-                        
-                        jsonReader: {id: "adtOid"},
-                        colNames: ["描述", "类型", "变化量", "发生时间", "操作人", "操作时间" , ""],
-                        colModel: [
-                            {sortable: false, name: "adtDesc", width: 250, align: "left"},
-                            {sortable: false, name: "adtType", width: 100, align: "center"},
-                            {sortable: false, name: "amount", width: 100, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
-                            {sortable: false, name: "adtTime", width: 150, align: "center"},
-                            {sortable: false, name: "baseObject.createBy", width: 100, align: "center"},
-                            {sortable: false, name: "baseObject.createTime", width: 100, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d'}},
-                            { sortable: false, align: "center", formatter:function (cellvalue, options, rowObject){
-                                var url = '<c:url value='/accountAudit/view' />' + '?adtOid=' + rowObject.adtOid;
-                                
-                                var href = 'javascript:window.location.href="' + url + '"';
-                                
-                                return "<a href='" + href + "'>查看</a>";
-                            }}
-                        ]
-                    });
-                });
-                
-                $( "#delete-confirm-dialog" ).dialog( {
-                    autoOpen: false,
-                    modal: true,
-                    show: {
-                        effect: "blind",
-                        duration: 300
-                    },
-                    hide: {
-                        effect: "explode",
-                        duration: 1000
-                    },
-                    buttons: {
-                        "No": function(){
-                            $( this ).dialog( "close" );
-                        },
-                        "Yes": function(){
-                            window.location.href = "<c:url value='/account/delete' />?acntOid=<c:out value='${acntForm.acntOid}' />";
-                        }
-                    }
-                });
-                
-                if ($ ("#btn-transfer").length > 0) {
-                	$ ("#btn-transfer").click(function(){
+            	
+            	if ($ ("#btn-transfer").length > 0) {
+                    $ ("#btn-transfer").click(function(){
                         window.location.href = "<c:url value='/account/initTransfer' />?acntOid=<c:out value='${acntForm.acntOid}' />";
                     });
                 }
-                
-                if ($ ("#btn-delete").length > 0) {
-                	$ ("#btn-delete").click(function(){
-                        $ ( "#delete-confirm-dialog" ).dialog( "open" );
+            	
+            	if ($ ("#btn-delete").length > 0) {
+            		$ ("#btn-delete-confirm").click(function(){
+                        window.location.href = "<c:url value='/account/delete' />?acntOid=<c:out value='${acntForm.acntOid}' />";
                     });
                 }
-                
+            	
+            	var gridLoaded = false;
+            	$ ("#btn-viewDetail").click(function(){
+            		if (gridLoaded) {
+                        return;
+                    }
+            		
+            		gridLoaded = true;
+            		$("#detailArea").attr("style", "display:''");
+            		
+            		$ ("#data-table").bootstrapTable('refresh', {'url': "<c:url value='/account/listOfItemSummary?acntOid=${acntForm.acntOid}' />"});
+            	});
             });
         </script>
     </body>

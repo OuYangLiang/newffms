@@ -27,7 +27,6 @@ import com.personal.oyl.newffms.pojo.Account;
 import com.personal.oyl.newffms.pojo.AccountAudit;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.BootstrapTableJsonRlt;
-import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.key.AccountKey;
 import com.personal.oyl.newffms.pojo.key.UserProfileKey;
 import com.personal.oyl.newffms.pojo.validator.AccountValidator;
@@ -310,15 +309,20 @@ public class AccountController extends BaseController{
     
     @RequestMapping("/listOfItemSummary")
     @ResponseBody
-    public JqGridJsonRlt<AccountAudit> listOfItemSummary(
+    public BootstrapTableJsonRlt<AccountAudit> listOfItemSummary(
             @RequestParam(value = "acntOid", required = true) BigDecimal acntOid,
-            @RequestParam(value = "requestPage", required = true) int requestPage,
-            @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
-            @RequestParam(value = "sortField", required = true) String sortField,
-            @RequestParam(value = "sortDir", required = true) String sortDir, HttpSession session) throws SQLException {
+            @RequestParam(value = "offset", required = true) int offset,
+            @RequestParam(value = "limit", required = true) int limit,
+            @RequestParam(value = "sort", required = true) String sort,
+            @RequestParam(value = "order", required = true) String order, HttpSession session) throws SQLException {
         
+    	
+    	int sizePerPage = limit;
+ 		int requestPage = offset / limit + 1;
+ 		String sortField = sort;
+ 		String sortDir = order;
+    	
         //从session中取出查询对象并查询
-
         AccountAudit searchParam = new AccountAudit();
         searchParam.setAcntOid(acntOid);
         searchParam.setStart( (requestPage - 1) * sizePerPage );
@@ -330,8 +334,9 @@ public class AccountController extends BaseController{
             searchParam.setSortDir(sortDir);
         }
         
-        return this.initPaging(accountAuditService, searchParam);
+        return this.initBootstrapPaging(accountAuditService, searchParam);
     }
+    
     
     @RequestMapping("/ajaxGetAllAccounts")
     @ResponseBody

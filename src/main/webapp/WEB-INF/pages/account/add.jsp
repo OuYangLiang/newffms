@@ -35,7 +35,7 @@
                 
                     <div class="row" id="errorArea" style="display:none">
                         <div class="col-md-1"></div>
-                        <div class="col-md-10">
+                        <div class="col-md-11">
 	                        <div class="alert alert-danger" role="alert" >
 		                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 		                        <span class="sr-only">Error:</span>
@@ -45,8 +45,8 @@
                     </div>
                 
 	                <div class="form-group">
-	                    <label for="userNameInput" class="col-md-2 control-label">账户所有人</label>
-	                    <div class="col-md-4">
+	                    <label for="userNameInput" class="col-xs-4 col-sm-2 control-label">账户所有人</label>
+	                    <div class="col-xs-7 col-sm-4">
 	                        <spring:select path="ownerOid" class="form-control" id="userNameInput">
 	                            <spring:option value="" label="请选择"/>
 	                            <spring:options items="${users}" itemValue="userOid" itemLabel="userName"/>
@@ -55,8 +55,8 @@
 	                </div>
 	                
 	                <div class="form-group">
-                        <label for="acntTypeInput" class="col-md-2 control-label">账户类型</label>
-                        <div class="col-md-4">
+                        <label for="acntTypeInput" class="col-xs-4 col-sm-2 control-label">账户类型</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:select path="acntType" class="form-control" id="acntTypeInput">
                                 <spring:option value="" label="请选择"/>
                                 <spring:options items="${acntTypes}" />
@@ -65,15 +65,15 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="acntDescInput" class="col-md-2 control-label">描述</label>
-                        <div class="col-md-4">
+                        <label for="acntDescInput" class="col-xs-4 col-sm-2 control-label">描述</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:input data-validation-engine="validate[required]" path="acntDesc" class="form-control" maxlength="30" id="acntDescInput"/>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="balanceInput" class="col-md-2 control-label">初始可用额度</label>
-                        <div class="col-md-4">
+                        <label for="balanceInput" class="col-xs-4 col-sm-2 control-label">初始可用额度</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:input data-validation-engine="validate[required]" path="balance" class="form-control" onBlur="javascript:checkAmount(this);" maxlength="11" id="balanceInput"/>
                         </div>
                     </div>

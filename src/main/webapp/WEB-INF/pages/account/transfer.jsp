@@ -53,23 +53,23 @@
                     </div>
                 
                     <div class="form-group">
-                        <label for="srcAccountInput" class="col-md-2 control-label">原账户</label>
-                        <div class="col-md-4">
-                            <div class="form-control" style="BORDER-STYLE: none;" id="srcAccountInput">${acntForm.acntHumanDesc }</div>
+                        <label for="srcAccountInput" class="col-xs-4 col-sm-2 control-label">原账户</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="border:none" id="srcAccountInput">${acntForm.acntHumanDesc }</div>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="targetAccountInput" class="col-md-2 control-label">目标账户</label>
-                        <div class="col-md-4">
+                        <label for="targetAccountInput" class="col-xs-4 col-sm-2 control-label">目标账户</label>
+                        <div class="col-xs-7 col-sm-4">
                             <input data-validation-engine="validate[required]" id="targetAccountInput" value="<c:out value='${acntForm.target.acntHumanDesc }' />" class="form-control" readonly="true" data-toggle="modal" data-target="#AccountSelectModal" />
                             <input type="hidden" id="targetAcntOid" name="target.acntOid" value="<c:out value='${acntForm.target.acntOid }' />" />
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="paymentInput" class="col-md-2 control-label">转账金额</label>
-                        <div class="col-md-4">
+                        <label for="paymentInput" class="col-xs-4 col-sm-2 control-label">转账金额</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:input data-validation-engine="validate[required]" path="payment" class="form-control" id="paymentInput" onBlur="javascript:checkAmount(this);" maxlength="11" />
                         </div>
                     </div>

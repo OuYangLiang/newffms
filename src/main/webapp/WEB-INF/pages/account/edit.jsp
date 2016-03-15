@@ -48,43 +48,43 @@
                     </div>
                 
                     <div class="form-group">
-                        <label for="userNameInput" class="col-md-2 control-label">账户所有人</label>
-                        <div class="col-md-4">
+                        <label for="userNameInput" class="col-xs-4 col-sm-2 control-label">账户所有人</label>
+                        <div class="col-xs-7 col-sm-4">
                             <div class="form-control" style="BORDER-STYLE: none;" id="userNameInput">${acntForm.owner.userName }</div>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="acntTypeInput" class="col-md-2 control-label">账户类型</label>
-                        <div class="col-md-4">
+                        <label for="acntTypeInput" class="col-xs-4 col-sm-2 control-label">账户类型</label>
+                        <div class="col-xs-7 col-sm-4">
                             <div class="form-control" style="BORDER-STYLE: none;" id=acntTypeInput>${acntForm.acntType.desc }</div>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="acntDescInput" class="col-md-2 control-label">描述</label>
-                        <div class="col-md-4">
+                        <label for="acntDescInput" class="col-xs-4 col-sm-2 control-label">描述</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:input data-validation-engine="validate[required]" path="acntDesc" class="form-control" maxlength="30" id="acntDescInput" />
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="balanceInput" class="col-md-2 control-label">初始可用额度</label>
-                        <div class="col-md-4">
+                        <label for="balanceInput" class="col-xs-4 col-sm-2 control-label">初始可用额度</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:input data-validation-engine="validate[required]" path="balance" class="form-control" onBlur="javascript:checkAmount(this);" maxlength="11" id="balanceInput"/>
                         </div>
                     </div>
                     
                     <div class="form-group" id="quota" <c:if test="${acntForm.acntType != \"Creditcard\" }" >style="display:none;"</c:if>>
-                        <label for="quotaInput" class="col-md-2 control-label">限定额度</label>
-                        <div class="col-md-4">
+                        <label for="quotaInput" class="col-xs-4 col-sm-2 control-label">限定额度</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:input path="quota" class="form-control" onBlur="javascript:checkAmount(this);" maxlength="11" id="quotaInput"/>
                         </div>
                     </div>
                     
                     <div class="form-group" id="debt" <c:if test="${acntForm.acntType != \"Creditcard\" }" >style="display:none;"</c:if>>
-                        <label for="debtInput" class="col-md-2 control-label">初始欠款额度</label>
-                        <div class="col-md-4">
+                        <label for="debtInput" class="col-xs-4 col-sm-2 control-label">初始欠款额度</label>
+                        <div class="col-xs-7 col-sm-4">
                             <spring:input path="debt" class="form-control" onBlur="javascript:checkAmount(this);" maxlength="11" id="debtInput"/>
                         </div>
                     </div>

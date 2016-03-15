@@ -90,8 +90,10 @@
                                 data-url="<c:url value='/account/ajaxGetAllAccounts' />"
 		                        data-pagination="true"
 		                        data-side-pagination="client"
-		                        data-page-size="10"
+		                        data-page-size="5"
 		                        data-page-number="1"
+		                        data-search="true"
+		                        data-search-on-enter-key="true"
 		                        data-show-toggle="true"
 		                        data-show-columns="true"
 		                        data-silent-sort="false"
@@ -109,7 +111,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-default" id="btn-query" data-dismiss="modal">查询</button>
                     </div>
                 </div>
             </div>

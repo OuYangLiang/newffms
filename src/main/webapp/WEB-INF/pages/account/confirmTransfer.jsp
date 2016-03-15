@@ -28,23 +28,26 @@
                 </div>
                 <div>&nbsp;</div>
                 
-                <div class="container lead">
-                    <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-xs-5 col-md-2 text-right"><strong>源账户</strong></div>
-                        <div class="col-xs-1">:</div>
-                        <div class="col-md-6">${acntForm.acntHumanDesc }</div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for=srcAccountInput class="col-xs-4 col-sm-2 control-label">账户所有人</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="srcAccountInput">${acntForm.acntHumanDesc }</div>
+                        </div>
                     </div>
                     
-                    <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-xs-5 col-md-2 text-right"><strong>目标账户</strong></div>
-                        <div class="col-xs-1">:</div>
-                        <div class="col-md-6">${acntForm.target.acntHumanDesc }</div>
+                    <div class="form-group">
+                        <label for=targetAccountInput class="col-xs-4 col-sm-2 control-label">目标账户</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="targetAccountInput">${acntForm.target.acntHumanDesc }</div>
+                        </div>
                     </div>
                     
-                    <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-xs-5 col-md-2 text-right"><strong>转账金额</strong></div>
-                        <div class="col-xs-1">:</div>
-                        <div class="col-md-6">${acntForm.payment }</div>
+                    <div class="form-group">
+                        <label for=paymentInput class="col-xs-4 col-sm-2 control-label">转账金额</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="paymentInput">${acntForm.payment }</div>
+                        </div>
                     </div>
                 </div>
             </div>

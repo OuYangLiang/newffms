@@ -28,44 +28,50 @@
                 </div>
                 <div>&nbsp;</div>
                 
-                <div class="container lead">
-	                <div class="row" style="margin-bottom: 10px;">
-	                    <div class="col-xs-5 col-md-2 text-right"><strong>账户所有人</strong></div>
-	                    <div class="col-xs-1">:</div>
-	                    <div class="col-md-4">${acntForm.owner.userName }</div>
-	                </div>
-	                
-	                <div class="row" style="margin-bottom: 10px;">
-	                    <div class="col-xs-5 col-md-2 text-right"><strong>账户类型</strong></div>
-	                    <div class="col-xs-1">:</div>
-	                    <div class="col-md-4">${acntForm.acntType.desc }</div>
-	                </div>
-	                
-	                <div class="row" style="margin-bottom: 10px;">
-	                    <div class="col-xs-5 col-md-2 text-right"><strong>描述</strong></div>
-	                    <div class="col-xs-1">:</div>
-	                    <div class="col-md-4">${acntForm.acntDesc }</div>
-	                </div>
-	                
-	                <div class="row" style="margin-bottom: 10px;">
-	                    <div class="col-xs-5 col-md-2 text-right"><strong>初始可用额度</strong></div>
-	                    <div class="col-xs-1">:</div>
-	                    <div class="col-md-4">${acntForm.balance }</div>
-	                </div>
-	                
-	                <c:if test="${acntForm.acntType == \"Creditcard\" }" >
-		                <div class="row" style="margin-bottom: 10px;">
-		                    <div class="col-xs-5 col-md-2 text-right"><strong>限定额度</strong></div>
-		                    <div class="col-xs-1">:</div>
-		                    <div class="col-md-4">${acntForm.quota }</div>
-		                </div>
-		                    
-		                <div class="row" style="margin-bottom: 10px;">
-		                    <div class="col-xs-5 col-md-2 text-right"><strong>初始欠款额度</strong></div>
-		                    <div class="col-xs-1">:</div>
-		                    <div class="col-md-4">${acntForm.debt }</div>
-		                </div>
-	                </c:if>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="userNameInput" class="col-xs-4 col-sm-2 control-label">账户所有人</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="userNameInput">${acntForm.owner.userName }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="acntTypeInput" class="col-xs-4 col-sm-2 control-label">账户类型</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id=acntTypeInput>${acntForm.acntType.desc }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="acntDescInput" class="col-xs-4 col-sm-2 control-label">描述</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="acntDescInput">${acntForm.acntType.desc }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="balanceInput" class="col-xs-4 col-sm-2 control-label">初始可用额度</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="balanceInput">${acntForm.balance }</div>
+                        </div>
+                    </div>
+                    
+                    <c:if test="${acntForm.acntType == \"Creditcard\" }" >
+                    <div class="form-group" id="quota">
+                        <label for="quotaInput" class="col-xs-4 col-sm-2 control-label">限定额度</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="quotaInput">${acntForm.quota }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="debt">
+                        <label for="debtInput" class="col-xs-4 col-sm-2 control-label">初始欠款额度</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="debtInput">${acntForm.debt }</div>
+                        </div>
+                    </div>
+                    </c:if>
                 </div>
             </div>
         </div>

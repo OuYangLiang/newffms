@@ -47,7 +47,7 @@
                                 <th data-field="owner.userName" data-sortable="true" >所有人</th>
                                 <th data-field="acntType" data-sortable="true" >账户类型</th>
                                 <th data-field="acntDesc">说明</th>
-                                <th data-field="balance">可用额度</th>
+                                <th data-field="balance" data-align="right" data-formatter="amtFormatter">可用额度</th>
                                 <th data-formatter="oprFormatter"></th>
                             </tr>
                         </thead>
@@ -122,7 +122,11 @@
                 var href = 'javascript:window.location.href="' + url + '"';
                 return "<a href='" + href + "'>查看</a>";
             }
-        
+            
+            function amtFormatter(value) {
+                return "¥" + parseFloat(value).toFixed(2);
+            }
+            
             $( document ).ready(function() {
                 $ ("#btn-query").click(function(){
                     $.ajax({

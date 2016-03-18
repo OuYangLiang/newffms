@@ -1,144 +1,145 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglibs-include.jsp"%>
 <!doctype html>
-<html>
+<html lang="zh-CN">
+    <head>
+    </head>
+
     <body>
-        <div class="button-area">
-            <button id="btn-back">返回</button>
-            <c:if test="${!incomingForm.confirmed }" >
-                <button id="btn-edit">修改</button>
-                <button id="btn-delete">删除</button>
-                <button id="btn-confirm">确认</button>
-            </c:if>
-            
-            <c:if test="${incomingForm.confirmed }" >
-                <button id="btn-rollback">撤销</button>
-            </c:if>
-        </div>
-        
-        <div class="content-header ui-widget-header">
-            收入<span style="font-size: 80%;"> - 查看页面</span>
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">收入人</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${incomingForm.owner.userName }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-            
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">收入类型</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${incomingForm.incomingType.desc }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">说明</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${incomingForm.incomingDesc }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">日期</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text"><fmt:formatDate value='${incomingForm.incomingDate }' pattern="yyyy-MM-dd" /></div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">金额</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${incomingForm.amount }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">目标账户</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${incomingForm.targetAccount.acntHumanDesc }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
+        <div class="container">
+            <div class="page-header">
+                <h1>收入</h1>
             </div>
             
-        </div>
-        
-        <div id="delete-confirm-dialog" title="警告">
-            确定要删除吗?
-        </div>
-        
-        <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
-        
-        <script>
-            $( document ).ready(function() {
-                $ (".button-area button").button();
-                $ ("#btn-back").click(function(){
-                    window.location.href = "<c:url value='/incoming/summary?keepSp=Y' />";
-                });
+            <div style="padding-left: 20px; padding-bottom: 20px;">
+                <button type="button" class="btn btn-default" id="btn-back">
+                    <i class="glyphicon glyphicon-arrow-left"></i>
+                </button>
                 
                 <c:if test="${!incomingForm.confirmed }" >
-                    $ ("#btn-edit").click(function(){
-                        window.location.href = "<c:url value='/incoming/initEdit' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
-                    });
+                    <button type="button" class="btn btn-default" id="btn-edit">
+	                    <i class="glyphicon glyphicon-edit"></i>
+	                </button>
+	                
+	                <button type="button" class="btn btn-default" id="btn-delete" data-toggle="modal" data-target="#deleteModal">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
                     
-                    $ ("#btn-delete").click(function(){
-                        $ ( "#delete-confirm-dialog" ).dialog( "open" );
-                    });
-                    
-                    $ ("#btn-confirm").click(function(){
-                        window.location.href = "<c:url value='/incoming/confirm' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
-                    });
+                    <button type="button" class="btn btn-default" id="btn-confirm">
+                        <i class="glyphicon glyphicon-ok-circle"></i>
+                    </button>
                 </c:if>
                 
                 <c:if test="${incomingForm.confirmed }" >
-                    $ ("#btn-rollback").click(function(){
-                        window.location.href = "<c:url value='/incoming/rollback' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
-                    });
+                    <button type="button" class="btn btn-default" id="btn-rollback">
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </button>
                 </c:if>
+            </div>
+            
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">收入明细</h3>
+                </div>
+                <div>&nbsp;</div>
                 
-                $( "#delete-confirm-dialog" ).dialog( {
-                    autoOpen: false,
-                    modal: true,
-                    show: {
-                        effect: "blind",
-                        duration: 300
-                    },
-                    hide: {
-                        effect: "explode",
-                        duration: 1000
-                    },
-                    buttons: {
-                        "No": function(){
-                            $( this ).dialog( "close" );
-                        },
-                        "Yes": function(){
-                            window.location.href = "<c:url value='/incoming/delete' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
-                        }
-                    }
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="userNameInput" class="col-xs-4 col-sm-2 control-label">收入人</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="userNameInput">${incomingForm.owner.userName }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incomingTypeInput" class="col-xs-4 col-sm-2 control-label">收入类型</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id=incomingTypeInput>${incomingForm.incomingType.desc }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incomingDescInput" class="col-xs-4 col-sm-2 control-label">说明</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="incomingDescInput">${incomingForm.incomingDesc }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incomingDateInput" class="col-xs-4 col-sm-2 control-label">日期</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="incomingDateInput"><fmt:formatDate value='${incomingForm.incomingDate }' pattern="yyyy-MM-dd" /></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amountInput" class="col-xs-4 col-sm-2 control-label">金额</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="amountInput">${incomingForm.amount }</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetAccountInput" class="col-xs-4 col-sm-2 control-label">目标账户</label>
+                        <div class="col-xs-7 col-sm-4">
+                            <div class="form-control" style="BORDER-STYLE: none;" id="targetAccountInput">${incomingForm.targetAccount.acntHumanDesc }</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="deleteModalLabel">警告</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container lead">
+                            确定要删除吗?
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" id="btn-delete-confirm" data-dismiss="modal">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        
+        <script>
+            
+            $( document ).ready(function() {
+                $ ("#btn-back").click(function(){
+                	window.location.href = "<c:url value='/incoming/summary?keepSp=Y' />";
                 });
+                
+                <c:if test="${!incomingForm.confirmed }" >
+	                $ ("#btn-edit").click(function(){
+	                    window.location.href = "<c:url value='/incoming/initEdit' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
+	                });
+	                
+	                if ($ ("#btn-delete").length > 0) {
+	                    $ ("#btn-delete-confirm").click(function(){
+	                    	window.location.href = "<c:url value='/incoming/delete' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
+	                    });
+	                }
+	                
+	                $ ("#btn-confirm").click(function(){
+	                    window.location.href = "<c:url value='/incoming/confirm' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
+	                });
+	            </c:if>
+            
+	            <c:if test="${incomingForm.confirmed }" >
+	                $ ("#btn-rollback").click(function(){
+	                    window.location.href = "<c:url value='/incoming/rollback' />?incomingOid=<c:out value='${incomingForm.incomingOid}' />";
+	                });
+	            </c:if>
+                
             });
         </script>
     </body>

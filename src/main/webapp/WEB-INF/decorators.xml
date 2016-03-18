@@ -13,5 +13,6 @@
         <pattern>/report/consumption</pattern>
         
         <pattern>/account/*</pattern>
+        <pattern>/incoming/*</pattern>
     </decorator>
 </decorators>

@@ -69,5 +69,6 @@
     <mvc:resources location="/css/" mapping="/css/**"/>
     <mvc:resources location="/bootstrap-3.3.5-dist/" mapping="/bootstrap-3.3.5-dist/**"/>
     <mvc:resources location="/bootstrap-table-1.10.1/" mapping="/bootstrap-table-1.10.1/**"/>
+    <mvc:resources location="/bootstrap-datetimepicker/" mapping="/bootstrap-datetimepicker/**"/>
 
 </beans>

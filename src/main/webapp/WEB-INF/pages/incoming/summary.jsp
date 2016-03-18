@@ -1,140 +1,174 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglibs-include.jsp"%>
 <!doctype html>
-<html>
+<html lang="zh-CN">
     <head>
-        <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
+        <link href="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.css' />" rel="stylesheet">
     </head>
-    
+
     <body>
-        <div class="button-area">
-            <button id="btn-add">新建</button>
-        </div>
+        <div class="container">
         
-        <div class="content-header ui-widget-header">
-            收入
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <form id="form" method="post" autocomplete="off" >
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">收入人</div>
-                    
-                    <div class="input" style="width: 35%;">
-                        <select name="ownerOid" class="selectbox" >
-                            <option value ="">全部</option>
-                            <c:forEach var="user" items="${ users }" varStatus="status">
-							    <option value ="${user.userOid}" <c:if test='${user.userOid == SESSION_KEY_SEARCH_PARAM_INCOMING.ownerOid }' >selected="selected"</c:if>>${user.userName}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    
-                    <div id="btn-query" style="float:left; margin-top: 5px;">查询</div>
-                    
-                    <div style="clear:both;" ></div>
+            <div class="page-header">
+                <h1>收入</h1>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">数据明细</h3>
                 </div>
                 
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">状态</div>
+                <div class="panel-body">
+
+                    <div id="search-toolbar" class="btn-group">
+                        <button type="button" class="btn btn-default" id="btn-add">
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </button>
                     
-                    <div class="input" >
-						<select name="confirmed" class="selectbox" >
-						    <option value ="">全部</option>
-						    <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>确认</option>
-						    <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && !SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>初始</option>
-						</select>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
+                    <table id="data-table" data-toggle="table"
+                        data-url="<c:url value='/incoming/listOfSummary' />"
+                        data-pagination="true"
+                        data-side-pagination="server"
+                        data-sort-name="<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.sortField}' />"
+                        data-sort-order="<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.sortDir}' />"
+                        data-page-size="<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.sizePerPage}' />"
+                        data-page-number="<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.requestPage}' />"
+                        data-show-toggle="true"
+                        data-show-columns="true"
+                        data-silent-sort="false"
+                        data-row-style="rowStyle"
+                        data-toolbar="#search-toolbar">
+                        <thead>
+                            <tr>
+                                <th data-field="incomingDesc">说明</th>
+                                <th data-field="incomingType">收入类型</th>
+                                <th data-field="amount" data-align="right" data-formatter="amtFormatter">金额</th>
+                                <th data-field="owner.userName">相关人</th>
+                                <th data-field="incomingDate" data-align="center" data-formatter="dateFormatter">收入日期</th>
+                                <th data-field="baseObject.createBy">登记人</th>
+                                <th data-field="confirmed" data-align="center" data-formatter="statusFormatter">状态</th>
+                                <th data-formatter="oprFormatter"></th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">类别</div>
-                    
-                    <div class="input" >
-                        <select name="incomingType" class="selectbox" >
-                            <option value ="">全部</option>
-                            <c:forEach var="item" items="${ incomingTypes }" varStatus="status">
-                                <option value="${item.key }" <c:if test='${item.key == SESSION_KEY_SEARCH_PARAM_INCOMING.incomingType }' >selected="selected"</c:if>>${item.value }</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                </form>
             </div>
             
-            <div class="content-title ui-widget-header">
-                查询结果
-            </div>
-            
-            <div class="mainArea">
-                <div>
-                    <table id="gridList" ></table> 
-                    <div id="gridListNav"></div>
+            <!-- Modal -->
+            <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="searchModalLabel">搜索 / 查询</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <form id="search-form" class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="ownerInput" class="col-md-3 control-label">收入人</label>
+                                        <div class="col-md-4">
+                                            <select name="ownerOid" class="form-control" id="ownerInput">
+                                                <option value ="">全部</option>
+                                                <c:forEach var="user" items="${ users }" varStatus="status">
+                                                    <option value ="${user.userOid}" <c:if test='${user.userOid == SESSION_KEY_SEARCH_PARAM_INCOMING.ownerOid }' >selected="selected"</c:if>>${user.userName}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="confirmedInput" class="col-md-3 control-label">状态</label>
+                                        <div class="col-md-4">
+                                            <select name="confirmed" class="form-control" id="confirmedInput">
+                                                <option value ="">全部</option>
+					                            <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>新建</option>
+					                            <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && !SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>初始</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="incomingTypeInput" class="col-md-3 control-label">类别</label>
+                                        <div class="col-md-4">
+                                            <select name="incomingType" class="form-control" id="incomingTypeInput">
+                                                <option value ="">全部</option>
+					                            <c:forEach var="item" items="${ incomingTypes }" varStatus="status">
+					                                <option value="${item.key }" <c:if test='${item.key == SESSION_KEY_SEARCH_PARAM_INCOMING.incomingType }' >selected="selected"</c:if>>${item.value }</option>
+					                            </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" id="btn-query" data-dismiss="modal">查询</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
+    
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/locale/bootstrap-table-zh-CN.min.js' />" charset="utf-8"></script>
         
         <script>
+            function rowStyle(row, index) {
+                var classes = ['active', 'success', 'info', 'warning', 'danger'];
+                
+                if (index % 2 === 0 && index / 2 < classes.length) {
+                    return {
+                        classes: classes[index / 2]
+                    };
+                }
+                return {};
+            }
+            
+            function oprFormatter(val, row, idx) {
+                var url = '<c:url value='/incoming/view' />' + '?incomingOid=' + row.incomingOid;
+                var href = 'javascript:window.location.href="' + url + '"';
+                return "<a href='" + href + "'>查看</a>";
+            }
+            
+            function amtFormatter(value) {
+                return "¥" + parseFloat(value).toFixed(2);
+            }
+            
+            function dateFormatter(value) {
+                return value.substr(0, 10);
+            }
+            
+            function statusFormatter(value) {
+            	if (value) {
+            		return "<span class=\"glyphicon glyphicon-ok-circle\"></span>";
+            	} else {
+            		return "<span class=\"glyphicon glyphicon-remove-circle\"></span>";
+            	}
+            }
+            
             $( document ).ready(function() {
-            	$ (".button-area button").button();
-            	$( ".selectbox" ).selectmenu();
-            	
-                $ ("#btn-add").click(function(){
-                	window.location.href = "<c:url value='/incoming/initAdd' />";
-                });
-            	
-            	$("#gridList").jqGrid({
-                    url: "<c:url value='/incoming/listOfSummary' />",
-                    
-                    page: "<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.requestPage}' />",
-                    sortname: "<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.sortField}' />",
-                    sortorder: "<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.sortDir}' />",
-                    rowNum: "<c:url value='${SESSION_KEY_SEARCH_PARAM_INCOMING.sizePerPage}' />",
-                    
-                    jsonReader: {id: "incomingOid"},
-                    colNames: ["说明", "收入类型", "金额", "相关人", "收入日期", "登记人", "状态", ""],
-                    colModel: [
-                        {sortable: false, name: "incomingDesc", width: 100, align: "left"},
-                        {sortable: false, name: "incomingType", width: 100, align: "center"},
-                        {sortable: false, name: "amount", width: 100, align: "right", formatter:"currency", formatoptions:{thousandsSeparator: ",", prefix: "¥", suffix:"  "}},
-                        {sortable: false, name: "owner.userName", width: 100, align: "center"},
-                        {sortable: false, name: "incomingDate", width: 100, align: "center", formatter: 'date', formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d'}},
-                        { sortable: false, name: "baseObject.createBy", width: 180, align: "center" },
-                        { sortable: false, name: "confirmed", width: 100, align: "center", formatter:function(cellvalue){return cellvalue?"确认":"初始";}},
-                        { sortable: false, align: "center", formatter:function (cellvalue, options, rowObject){
-                            var url = '<c:url value='/incoming/view' />' + '?incomingOid=' + rowObject.incomingOid;
-                            
-                            var href = 'javascript:window.location.href="' + url + '"';
-                            
-                            return "<a href='" + href + "'>查看</a>";
-                        }}
-                    ]
-                });
-            	
-            	$ ("#btn-query").button();
                 $ ("#btn-query").click(function(){
                     $.ajax({
-                    	cache: false,
-                    	url: "<c:url value='/incoming/search' />",
-                    	type: "POST",
-                    	async: true,
-                    	data: $('#form').serialize(),
-                    	success: function() {
-                    		$("#gridList").trigger("reloadGrid");
-                    	}
+                        cache: false,
+                        url: "<c:url value='/incoming/search' />",
+                        type: "POST",
+                        async: true,
+                        data: $('#search-form').serialize(),
+                        success: function() {
+                            $ ("#data-table").bootstrapTable('refresh');
+                        }
                     });
+                });
+                
+                $ ("#btn-add").click(function(){
+                	window.location.href = "<c:url value='/incoming/initAdd' />";
                 });
             });
         </script>

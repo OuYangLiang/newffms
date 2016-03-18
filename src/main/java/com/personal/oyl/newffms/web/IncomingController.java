@@ -3,6 +3,8 @@ package com.personal.oyl.newffms.web;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.constants.IncomingType;
 import com.personal.oyl.newffms.pojo.BaseObject;
+import com.personal.oyl.newffms.pojo.BootstrapTableJsonRlt;
 import com.personal.oyl.newffms.pojo.Incoming;
 import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.key.AccountKey;
@@ -33,6 +36,12 @@ import com.personal.oyl.newffms.util.SessionUtil;
 @RequestMapping("/incoming")
 public class IncomingController extends BaseController{
     private static final String SESSION_KEY_SEARCH_PARAM_INCOMING = "SESSION_KEY_SEARCH_PARAM_INCOMING";
+    private static final Map<String, String> colMapping;
+	
+	static {
+		colMapping = new HashMap<String, String>();
+		colMapping.put("INCOMING_DATE", "INCOMING_DATE");
+	}
     
     @Autowired
     private IncomingValidator incomingValidator;
@@ -89,6 +98,36 @@ public class IncomingController extends BaseController{
     
     @RequestMapping("/listOfSummary")
     @ResponseBody
+    public BootstrapTableJsonRlt<Incoming> listOfSummary(@RequestParam(value = "offset", required = true) int offset,
+            @RequestParam(value = "limit", required = true) int limit,
+            @RequestParam(value = "sort", required = true) String sort,
+            @RequestParam(value = "order", required = true) String order, HttpSession session) throws SQLException {
+        
+    	int sizePerPage = limit;
+		int requestPage = offset / limit + 1;
+		String sortField = colMapping.get(sort);
+		String sortDir = order;
+    	
+        //从session中取出查询对象并查询
+
+        Incoming searchParam = (Incoming) session.getAttribute(SESSION_KEY_SEARCH_PARAM_INCOMING);
+        
+        searchParam.setStart( (requestPage - 1) * sizePerPage );
+        searchParam.setSizePerPage(sizePerPage);
+        searchParam.setRequestPage(requestPage);
+        
+        if (sortField != null && !sortField.trim().isEmpty()) {
+            searchParam.setSortField(sortField);
+            searchParam.setSortDir(sortDir);
+        }
+        
+        session.setAttribute(SESSION_KEY_SEARCH_PARAM_INCOMING, searchParam);
+        
+        return this.initBootstrapPaging(incomingService, searchParam);
+    }
+    
+    /*@RequestMapping("/listOfSummary")
+    @ResponseBody
     public JqGridJsonRlt<Incoming> listOfSummary(@RequestParam(value = "requestPage", required = true) int requestPage,
             @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
             @RequestParam(value = "sortField", required = true) String sortField,
@@ -110,7 +149,7 @@ public class IncomingController extends BaseController{
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_INCOMING, searchParam);
         
         return this.initPaging(incomingService, searchParam);
-    }
+    }*/
     
     @RequestMapping("/initAdd")
     public String initAdd(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {

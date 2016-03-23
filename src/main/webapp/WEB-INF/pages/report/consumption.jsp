@@ -6,100 +6,108 @@
     </head>
 
     <body>
-        <div class="container">
-            <div class="page-header">
-                <h1>消费情况查询</h1>
-            </div>
-            
-            <div class="text-left">
-                <p>
-	                <div class="row">
-	                    <div class="col-xs-12 col-md-2">
-	                        <button type="button" class="btn btn-primary btn-block" id="btn-previous">上一月</button>
-	                    </div>
-	                    
-	                    <div class="col-xs-12 col-md-2">
-	                        <button type="button" class="btn btn-primary btn-block" id="btn-next">下一月</button>
-	                    </div>
-	                    
-	                    <div class="col-xs-12 col-md-2">
-                            <button type="button" class="btn btn-primary btn-block" id="btn-mode-toggle">按年查询</button>
-                        </div>
-	                    
-	                    <div class="col-xs-12 col-md-2">
-	                        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#searchArea">排除类别</a>
-	                    </div>
-	                </div>
-                </p>
-            </div>
-            
-            <div class="collapse" id="searchArea">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-	                    <h3 class="panel-title text-center">请沟选排除项</h3>
-	                </div>
-	                <div class="panel-body" style="padding:0 100px;">
-	                    <div class="row">
-		                    <c:forEach var="item" items="${ rootCategories }" varStatus="status" >
-		                    <div class="col-xs-6 col-md-3">
-		                        <input type="checkbox" id="category${status.index }" value="${item.categoryOid }" onclick="javascript:doQuery();"><c:out value="${ item.categoryDesc }" /></input>
-		                    </div>
-		                    </c:forEach>
-		                </div>
-	                </div>
-                </div>
-            </div>
-            
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title text-center">报表</h3>
+        <section class="content-header">
+            <h1>
+                消费<small>图表</small>
+            </h1>
+        </section>
+        
+        <section class="content">
+            <div class="row" style="padding-left: 20px; padding-bottom: 20px;">
+                <div class="col-xs-6 col-md-2">
+                    <button type="button" class="btn btn-primary btn-block" id="btn-previous">上一月</button>
                 </div>
                 
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div id="container4" ></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div id="container" ></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div id="container2" ></div>
-                                </div>
-                            </div>
+                <div class="col-xs-6 col-md-2">
+                    <button type="button" class="btn btn-primary btn-block" id="btn-next">下一月</button>
+                </div>
+                
+                <div class="col-xs-6 col-md-2">
+                    <button type="button" class="btn btn-primary btn-block" id="btn-mode-toggle">按年查询</button>
+                </div>
+                
+                <div class="col-xs-6 col-md-2">
+                    <a class="btn btn-primary btn-block" data-toggle="modal" data-target="#categoryExcludingModal">排除类别</a>
+                </div>
+            </div>
+            
+            <div class="row">
+	            <div class="col-md-6 col-lg-4">
+	                <div class="box box-primary">
+	                    <div class="box-header with-border">
+	                        <h3 class="box-title">成员消费情况</h3>
+	                    </div>
+	                    
+	                    <div class="box-body">
+	                        <div id="container4" ></div>
+	                    </div>
+	                </div>
+	            </div>
+	            
+	            <div class="col-md-6 col-lg-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">成员消费比例</h3>
                         </div>
                         
-                        <div class="col-xs-12 col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div id="container3" ></div>
-                                </div>
-                            </div>
+                        <div class="box-body">
+                            <div id="container3" ></div>
+                        </div>
+                    </div>
+                </div>
+	            
+	            <div class="col-md-6 col-lg-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">类别消费情况</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div id="container" ></div>
                         </div>
                     </div>
                 </div>
                 
+                <div class="col-md-6 col-lg-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">类别消费比例</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div id="container2" ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+        
+        <div class="modal fade" id="categoryExcludingModal" tabindex="-1" role="dialog" aria-labelledby="categoryExcludingModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="categoryExcludingModalLabel">请沟选排除项</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <c:forEach var="item" items="${ rootCategories }" varStatus="status" >
+                            <div class="col-xs-6 col-md-3">
+                                <input type="checkbox" id="category${status.index }" value="${item.categoryOid }" onclick="javascript:doQuery();"><c:out value="${ item.categoryDesc }" /></input>
+                            </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
             </div>
         </div>
     
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/highcharts.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/drilldown.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/moment.js' />" charset="utf-8"></script>

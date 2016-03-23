@@ -6,67 +6,65 @@
     </head>
 
     <body>
-	    <div class="container">
-            <div class="page-header">
-	            <h1>消费明细</h1>
-	        </div>
-	        
-	        <div class="text-left">
-	            <p>
-	                <div class="row">
-	                    <div class="col-xs-12 col-md-2">
-	                        <button type="button" class="btn btn-primary btn-block" id="btn-previous">上一年</button>
-	                    </div>
-	                    
-	                    <div class="col-xs-12 col-md-2">
-	                        <button type="button" class="btn btn-primary btn-block" id="btn-next">下一年</button>
-	                    </div>
-	                </div>
-                </p>
-	        </div>
-	        
-	        <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title text-center">报表</h3>
+        <section class="content-header">
+            <h1>
+                收入<small>图表</small>
+            </h1>
+        </section>
+        
+        <section class="content">
+            <div class="row" style="padding-left: 20px; padding-bottom: 20px;">
+                <div class="col-xs-6 col-md-2">
+                    <button type="button" class="btn btn-default btn-block" id="btn-previous">上一年</button>
                 </div>
                 
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-12">
-	                        <div class="panel panel-default">
-	                            <div class="panel-body">
-	                                <div id="container3" ></div>
-	                            </div>
-	                        </div>
+                <div class="col-xs-6 col-md-2">
+                    <button type="button" class="btn btn-default btn-block" id="btn-next">下一年</button>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 col-lg-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">总收入情况</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div id="container3" ></div>
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div id="container" ></div>
-                                </div>
-                            </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">成员收入情况</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div id="container" ></div>
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div id="container2" ></div>
-                                </div>
-                            </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">分类收入情况</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div id="container2" ></div>
                         </div>
                     </div>
                 </div>
             </div>
-	        
-	    </div>
+        </section>
     
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/highcharts.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/drilldown.src.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/moment.js' />" charset="utf-8"></script>

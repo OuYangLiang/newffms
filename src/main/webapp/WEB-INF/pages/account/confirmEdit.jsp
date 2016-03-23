@@ -7,77 +7,90 @@
     </head>
 
     <body>
-        <div class="container">
-            <div class="page-header">
-                <h1>账户</h1>
-            </div>
-            
-            <div style="padding-left: 20px; padding-bottom: 20px;">
-                <button type="button" class="btn btn-default" id="btn-save">
-                    <i class="glyphicon glyphicon-ok"></i>
-                </button>
-            
-                <button type="button" class="btn btn-default" id="btn-cancel">
-                    <i class="glyphicon glyphicon-arrow-left"></i>
-                </button>
-            </div>
-            
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">修改确认</h3>
-                </div>
-                <div>&nbsp;</div>
-                
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label for="userNameInput" class="col-xs-4 col-sm-2 control-label">账户所有人</label>
-                        <div class="col-xs-7 col-sm-4">
-                            <div class="form-control" style="BORDER-STYLE: none;" id="userNameInput">${acntForm.owner.userName }</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="acntTypeInput" class="col-xs-4 col-sm-2 control-label">账户类型</label>
-                        <div class="col-xs-7 col-sm-4">
-                            <div class="form-control" style="BORDER-STYLE: none;" id=acntTypeInput>${acntForm.acntType.desc }</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="acntDescInput" class="col-xs-4 col-sm-2 control-label">描述</label>
-                        <div class="col-xs-7 col-sm-4">
-                            <div class="form-control" style="BORDER-STYLE: none;" id="acntDescInput">${acntForm.acntType.desc }</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="balanceInput" class="col-xs-4 col-sm-2 control-label">初始可用额度</label>
-                        <div class="col-xs-7 col-sm-4">
-                            <div class="form-control" style="BORDER-STYLE: none;" id="balanceInput">${acntForm.balance }</div>
-                        </div>
-                    </div>
-                    
-                    <c:if test="${acntForm.acntType == \"Creditcard\" }" >
-                    <div class="form-group" id="quota">
-                        <label for="quotaInput" class="col-xs-4 col-sm-2 control-label">限定额度</label>
-                        <div class="col-xs-7 col-sm-4">
-                            <div class="form-control" style="BORDER-STYLE: none;" id="quotaInput">${acntForm.quota }</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" id="debt">
-                        <label for="debtInput" class="col-xs-4 col-sm-2 control-label">初始欠款额度</label>
-                        <div class="col-xs-7 col-sm-4">
-                            <div class="form-control" style="BORDER-STYLE: none;" id="debtInput">${acntForm.debt }</div>
-                        </div>
-                    </div>
-                    </c:if>
+        <section class="content-header">
+            <h1>
+                账户<small>修改确认</small>
+            </h1>
+        </section>
+        
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div style="padding-left: 20px; padding-bottom: 20px;">
+		                <button type="button" class="btn btn-default" id="btn-save">
+		                    <i class="glyphicon glyphicon-ok"></i>
+		                </button>
+		            
+		                <button type="button" class="btn btn-default" id="btn-cancel">
+		                    <i class="glyphicon glyphicon-arrow-left"></i>
+		                </button>
+		            </div>
                 </div>
             </div>
-        </div>
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Expandable</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div class="form-horizontal">
+			                    <div class="form-group">
+			                        <label for="userNameInput" class="col-xs-4 col-sm-2 control-label">账户所有人</label>
+			                        <div class="col-xs-7 col-sm-4">
+			                            <div class="form-control" style="BORDER-STYLE: none;" id="userNameInput">${acntForm.owner.userName }</div>
+			                        </div>
+			                    </div>
+			                    
+			                    <div class="form-group">
+			                        <label for="acntTypeInput" class="col-xs-4 col-sm-2 control-label">账户类型</label>
+			                        <div class="col-xs-7 col-sm-4">
+			                            <div class="form-control" style="BORDER-STYLE: none;" id=acntTypeInput>${acntForm.acntType.desc }</div>
+			                        </div>
+			                    </div>
+			                    
+			                    <div class="form-group">
+			                        <label for="acntDescInput" class="col-xs-4 col-sm-2 control-label">描述</label>
+			                        <div class="col-xs-7 col-sm-4">
+			                            <div class="form-control" style="BORDER-STYLE: none;" id="acntDescInput">${acntForm.acntDesc }</div>
+			                        </div>
+			                    </div>
+			                    
+			                    <div class="form-group">
+			                        <label for="balanceInput" class="col-xs-4 col-sm-2 control-label">初始可用额度</label>
+			                        <div class="col-xs-7 col-sm-4">
+			                            <div class="form-control" style="BORDER-STYLE: none;" id="balanceInput">${acntForm.balance }</div>
+			                        </div>
+			                    </div>
+			                    
+			                    <c:if test="${acntForm.acntType == \"Creditcard\" }" >
+			                    <div class="form-group" id="quota">
+			                        <label for="quotaInput" class="col-xs-4 col-sm-2 control-label">限定额度</label>
+			                        <div class="col-xs-7 col-sm-4">
+			                            <div class="form-control" style="BORDER-STYLE: none;" id="quotaInput">${acntForm.quota }</div>
+			                        </div>
+			                    </div>
+			                    
+			                    <div class="form-group" id="debt">
+			                        <label for="debtInput" class="col-xs-4 col-sm-2 control-label">初始欠款额度</label>
+			                        <div class="col-xs-7 col-sm-4">
+			                            <div class="form-control" style="BORDER-STYLE: none;" id="debtInput">${acntForm.debt }</div>
+			                        </div>
+			                    </div>
+			                    </c:if>
+			                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
 
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {

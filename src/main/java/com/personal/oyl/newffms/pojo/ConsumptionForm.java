@@ -2,6 +2,7 @@ package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ConsumptionForm {
@@ -11,7 +12,7 @@ public class ConsumptionForm {
     
     public ConsumptionForm() {
         setConsumption(new Consumption());
-        getConsumption().setCpnTimeSlider(1);
+        getConsumption().setCpnTime(new Date());
         setCpnItems(new ArrayList<ConsumptionItem>());
         setAccounts(new ArrayList<Account>());
         getCpnItems().add(new ConsumptionItem());
@@ -62,7 +63,7 @@ public class ConsumptionForm {
         
         BigDecimal rlt = BigDecimal.ZERO;
         for (Account item : this.accounts) {
-            rlt = rlt.add(item.getPayment());
+            rlt = rlt.add(null == item.getPayment() ? BigDecimal.ZERO : item.getPayment());
         }
         
         return rlt;

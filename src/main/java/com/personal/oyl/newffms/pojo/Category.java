@@ -1,6 +1,8 @@
 package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Category extends BasePojo {
 	private static final long serialVersionUID = 1L;
@@ -14,6 +16,7 @@ public class Category extends BasePojo {
     
     //extended field
     private Category parent;
+    private List<Category> subCategories;
 
     public BigDecimal getCategoryOid() {
         return categoryOid;
@@ -77,6 +80,22 @@ public class Category extends BasePojo {
 
 	public void setParent(Category parent) {
 		this.parent = parent;
+	}
+
+	public List<Category> getSubCategories() {
+		return subCategories;
+	}
+	
+	public void addSubCategory(Category category) {
+		if (null == subCategories) {
+			subCategories = new ArrayList<Category>();
+		}
+		
+		subCategories.add(category);
+	}
+
+	public void setSubCategories(List<Category> subCategories) {
+		this.subCategories = subCategories;
 	}
 
 	@Override

@@ -1,9 +1,21 @@
 package com.personal.oyl.newffms.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
+	
+	public String format(Date date, String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(date);
+	}
+	
+	public Date parse(String param, String format) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.parse(param);
+	}
     
     public Date getFirstTimeOfCurrentMonth() {
         Calendar c = Calendar.getInstance();

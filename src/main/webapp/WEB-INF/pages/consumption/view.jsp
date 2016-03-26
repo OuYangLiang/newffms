@@ -7,122 +7,177 @@
     </head>
     
     <body>
-        <div class="button-area">
-            <button id="btn-back">返回</button>
-            <c:if test="${!cpnForm.consumption.confirmed }" >
-	            <button id="btn-edit">修改</button>
-	            <button id="btn-delete">删除</button>
-	            <button id="btn-confirm">确认</button>
-            </c:if>
-            
-            <c:if test="${cpnForm.consumption.confirmed }" >
-                <button id="btn-rollback">撤销</button>
-            </c:if>
-        </div>
+        <section class="content-header">
+            <h1>
+                消费<small>查看</small>
+            </h1>
+        </section>
         
-        <div class="content-header ui-widget-header">
-            消费<span style="font-size: 80%;"> - 查看页面</span>
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">消费类型</div>
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div style="padding-left: 20px; padding-bottom: 20px;">
+                        <button type="button" class="btn btn-default" id="btn-back">
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                        </button>
+                        
+                        <c:if test="${!cpnForm.consumption.confirmed }" >
+                            <button type="button" class="btn btn-default" id="btn-edit">
+	                            <i class="glyphicon glyphicon-edit"></i>
+	                        </button>
+	                        
+	                        <button type="button" class="btn btn-default" id="btn-delete" data-toggle="modal" data-target="#deleteModal">
+	                            <i class="glyphicon glyphicon-remove"></i>
+	                        </button>
+	                        
+	                        <button type="button" class="btn btn-default" id="btn-confirm">
+	                            <i class="glyphicon glyphicon-ok-circle"></i>
+	                        </button>
+                        </c:if>
                     
-                    <div class="input">
-                        <div class="confirmed-text">${cpnForm.consumption.cpnTypeDesc }</div>
+                        <c:if test="${cpnForm.consumption.confirmed }" >
+			                <button type="button" class="btn btn-default" id="btn-rollback">
+                                <i class="glyphicon glyphicon-remove-circle"></i>
+                            </button>
+			            </c:if>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
                 </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">时间</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text"><fmt:formatDate value="${cpnForm.consumption.cpnTime}" pattern="yyyy-MM-dd HH:mm" /></div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">消费概况</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="cpnTypeInput" class="col-xs-4 col-sm-2 control-label">消费方式</label>
+                                    <div class="col-xs-7 col-sm-4">
+                                        <div class="form-control" style="BORDER-STYLE: none;" id="cpnTypeInput" >${cpnForm.consumption.cpnTypeDesc }</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cpnTimeInput" class="col-xs-4 col-sm-2 control-label">消费时间</label>
+                                    <div class="col-xs-7 col-sm-4">
+                                         <div class="form-control" style="BORDER-STYLE: none;" id="cpnTimeInput" ><fmt:formatDate value="${cpnForm.consumption.cpnTime}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
                 </div>
             </div>
             
-            <div class="content-title ui-widget-header">
-                明细
-            </div>
-            
-            <div>
-                <div id="items">
-                    <c:forEach var="item" items="${ cpnForm.cpnItems }" varStatus="status" >
-                    <fieldset>
-                        <legend >清单${status.index + 1 }</legend>
-                        
-                        <div class="label">说明</div>
-                        <div class="input" style="width: 100px;">
-                            <div class="confirmed-text">${item.itemDesc }</div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">消费明细</h3>
                         </div>
                         
-                        <div class="label">类别</div>
-                        <div class="input" style="width: 300px;">
-                            <div class="confirmed-text">${item.categoryFullDesc }</div>
+                        <div class="box-body" id="items">
+                            <div class="container-fluid">
+                                <table id="data-table" data-toggle="table"
+                                    data-show-toggle="true"
+                                    data-show-columns="true"
+                                    data-silent-sort="false"
+                                    data-row-style="rowStyle">
+                                    <thead>
+                                        <tr>
+                                            <th>消费说明</th>
+                                            <th>消费类别</th>
+                                            <th data-formatter="amtFormatter">金额</th>
+                                            <th>消费人</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="item" items="${ cpnForm.cpnItems }" varStatus="status" >
+                                            <tr>
+                                                <td>${item.itemDesc}</td>
+                                                <td>${item.categoryFullDesc}</td>
+                                                <td>${item.amount}</td>
+                                                <td>${item.userName}</td>
+                                            </tr>
+                                        </c:forEach>                                    
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        
-                        <div class="label">金额</div>
-                        <div class="input" style="width: 80px;">
-                            <div class="confirmed-text">${item.amount }</div>
+                        <div class="box-footer">
+                            <div class="pull-right">消费总金额: <span id="totalAmountDisplay">${cpnForm.totalItemAmount }</span></div>
                         </div>
-                        
-                        <div class="label">消费人</div>
-                        <div class="input">
-                            <div class="confirmed-text">${item.userName }</div>
-                        </div>
-                        
-                        <div style="clear:both;" ></div>
-                    </fieldset>
-                    </c:forEach>
+                    </div>
                 </div>
-                
             </div>
             
-            <div class="content-title ui-widget-header">
-                付款
-            </div>
-            
-            <div>
-                <div id="accounts">
-                    <c:forEach var="item" items="${ cpnForm.accounts }" varStatus="status" >
-                    <fieldset>
-                        <legend>账户${status.index + 1 }</legend>
-                        
-                        <div class="label">类别</div>
-                        <div class="input" style="width: 500px;">
-                            <div class="confirmed-text">${item.acntHumanDesc }</div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">支付明细</h3>
                         </div>
                         
-                        <div class="label" >支付金额</div>
-                        <div class="input" ><div class="confirmed-text">${item.payment }</div></div>
-                        
-                        <div style="clear:both;" ></div>
-                        
-                    </fieldset>
-                    </c:forEach>
+                        <div class="box-body" id="accounts">
+                            <div class="container-fluid">
+                                <table id="data-table" data-toggle="table"
+                                    data-show-toggle="true"
+                                    data-show-columns="true"
+                                    data-silent-sort="false"
+                                    data-row-style="rowStyle">
+                                    <thead>
+                                        <tr>
+                                            <th>支付账户</th>
+                                            <th data-formatter="amtFormatter">金额</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="item" items="${ cpnForm.accounts }" varStatus="status" >
+                                            <tr>
+                                                <td>${item.acntHumanDesc}</td>
+                                                <td>${item.payment}</td>
+                                            </tr>
+                                        </c:forEach>                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="pull-right">支付总金额: <span id="totalPaymentDisplay">${cpnForm.totalPayment }</span></div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div style="text-align: right;padding-right: 50px;margin-bottom: 20px;">总金额: ${cpnForm.totalItemAmount }</div>
             </div>
-            
-        </div>
+        </section>
         
-        <div id="delete-confirm-dialog" title="警告">
-            确定要删除吗?
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="deleteModalLabel">警告</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container lead">
+                            确定要删除吗?
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" id="btn-delete-confirm" data-dismiss="modal">删除</button>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {
-            	$ (".button-area button").button();
             	$ ("#btn-back").click(function(){
                     window.location.href = "<c:url value='/consumption/summary?keepSp=Y' />";
                 });
@@ -132,13 +187,15 @@
 	                    window.location.href = "<c:url value='/consumption/initEdit' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
 	                });
 	                
-	                $ ("#btn-delete").click(function(){
-	                	$ ( "#delete-confirm-dialog" ).dialog( "open" );
-	                });
-	                
 	                $ ("#btn-confirm").click(function(){
 	                    window.location.href = "<c:url value='/consumption/confirm' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
 	                });
+	                
+	                if ($ ("#btn-delete").length > 0) {
+                        $ ("#btn-delete-confirm").click(function(){
+                        	window.location.href = "<c:url value='/consumption/delete' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
+                        });
+                    }
                 </c:if>
             	
                 <c:if test="${cpnForm.consumption.confirmed }" >
@@ -146,27 +203,6 @@
 	                    window.location.href = "<c:url value='/consumption/rollback' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
 	                });
                 </c:if>
-                
-                $( "#delete-confirm-dialog" ).dialog( {
-                    autoOpen: false,
-                    modal: true,
-                    show: {
-                        effect: "blind",
-                        duration: 300
-                    },
-                    hide: {
-                        effect: "explode",
-                        duration: 1000
-                    },
-                    buttons: {
-                        "No": function(){
-                            $( this ).dialog( "close" );
-                        },
-	                    "Yes": function(){
-	                    	window.location.href = "<c:url value='/consumption/delete' />?cpnOid=<c:out value='${cpnForm.consumption.cpnOid}' />";
-	                    }
-                    }
-                });
             });
         </script>
     </body>

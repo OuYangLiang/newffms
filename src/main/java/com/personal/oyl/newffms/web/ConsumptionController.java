@@ -177,7 +177,6 @@ public class ConsumptionController extends BaseController{
             return "consumption/add";
         }
         
-        form.getConsumption().calculateCpnTime();
         form.getConsumption().setCpnTypeDesc(form.getConsumption().getCpnType().getDesc());
         
         for ( ConsumptionItem item : form.getCpnItems() ) {
@@ -300,7 +299,6 @@ public class ConsumptionController extends BaseController{
             return "consumption/edit";
         }
         
-        form.getConsumption().calculateCpnTime();
         form.getConsumption().setCpnTypeDesc(form.getConsumption().getCpnType().getDesc());
         
         for ( ConsumptionItem item : form.getCpnItems() ) {

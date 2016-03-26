@@ -1,10 +1,11 @@
 package com.personal.oyl.newffms.pojo;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.text.ParseException;
 import java.util.Date;
 
 import com.personal.oyl.newffms.constants.ConsumptionType;
+import com.personal.oyl.newffms.util.DateUtil;
 
 public class Consumption extends BasePojo {
 	private static final long serialVersionUID = 1L;
@@ -16,24 +17,32 @@ public class Consumption extends BasePojo {
     private BaseObject baseObject;
     
     //extended field
-    private Integer cpnTimeSlider;
+    private String cpnTimeInput;
     private String cpnTypeDesc;
     private Date cpnTimeFrom;
     private Date cpnTimeTo;
     
-    public void calculateCpnTime() {
-        int hour = cpnTimeSlider / 4;
-        int minute = cpnTimeSlider % 4 * 15;
-        
-        Calendar c = Calendar.getInstance();
-        c.setTime(cpnTime);
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        c.set(Calendar.MINUTE, minute);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        
-        this.setCpnTime(c.getTime());
-    }
+    public String getCpnTimeInput() {
+    	if (null != cpnTimeInput)
+    		return cpnTimeInput;
+    	
+    	if (null != cpnTime)
+    		return DateUtil.getInstance().format(cpnTime, "yyyy-MM-dd HH:mm");
+    	
+    	return null;
+	}
+
+	public void setCpnTimeInput(String cpnTimeInput) {
+		this.cpnTimeInput = cpnTimeInput;
+		
+		if (null == cpnTime) {
+			try {
+				cpnTime = DateUtil.getInstance().parse(cpnTimeInput, "yyyy-MM-dd HH:mm");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
     public Date getCpnTimeFrom() {
         return cpnTimeFrom;
@@ -76,7 +85,7 @@ public class Consumption extends BasePojo {
     }
 
     public Date getCpnTime() {
-        return cpnTime;
+		return cpnTime;
     }
 
     public void setCpnTime(Date cpnTime) {
@@ -116,24 +125,6 @@ public class Consumption extends BasePojo {
         super.trimAllString();
     }
     
-    public Integer getCpnTimeSlider() {
-        
-        if (null == cpnTimeSlider && null != cpnTime) {
-            Calendar c = Calendar.getInstance();
-            c.setTime(cpnTime);
-            int hour   = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-            
-            cpnTimeSlider = hour * 4 + (minute / 15);
-        }
-        
-        return cpnTimeSlider;
-    }
-
-    public void setCpnTimeSlider(Integer cpnTimeSlider) {
-        this.cpnTimeSlider = cpnTimeSlider;
-    }
-
     public String getCpnTypeDesc() {
         return cpnTypeDesc;
     }

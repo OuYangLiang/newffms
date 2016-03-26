@@ -3,6 +3,8 @@ package com.personal.oyl.newffms.web;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,15 +15,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.personal.oyl.newffms.pojo.BootstrapTableJsonRlt;
 import com.personal.oyl.newffms.pojo.Consumption;
 import com.personal.oyl.newffms.pojo.ConsumptionItem;
-import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.util.DateUtil;
 
 @Controller
 @RequestMapping("/consumption")
 public class ConsumptionItemController extends BaseController {
 	private static final String SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM = "SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM";
+	private static final Map<String, String> colMapping;
+	
+	static {
+		colMapping = new HashMap<String, String>();
+		colMapping.put("CPN_TIME", "CPN_TIME");
+		colMapping.put("consumption.cpnTime", "CPN_TIME");
+	}
     
     @RequestMapping("summary")
     public String summary(HttpServletRequest request, Model model, HttpSession session) throws SQLException {
@@ -82,11 +91,16 @@ public class ConsumptionItemController extends BaseController {
     
     @RequestMapping("/listOfSummary")
     @ResponseBody
-    public JqGridJsonRlt<ConsumptionItem> listOfSummary(@RequestParam(value = "requestPage", required = true) int requestPage,
-            @RequestParam(value = "sizePerPage", required = true) int sizePerPage,
-            @RequestParam(value = "sortField", required = true) String sortField,
-            @RequestParam(value = "sortDir", required = true) String sortDir, HttpSession session) throws SQLException {
+    public BootstrapTableJsonRlt<ConsumptionItem> listOfSummary(@RequestParam(value = "offset", required = true) int offset,
+            @RequestParam(value = "limit", required = true) int limit,
+            @RequestParam(value = "sort", required = true) String sort,
+            @RequestParam(value = "order", required = true) String order, HttpSession session) throws SQLException {
         
+    	int sizePerPage = limit;
+		int requestPage = offset / limit + 1;
+		String sortField = colMapping.get(sort);
+		String sortDir = order;
+    	
         //从session中取出查询对象并查询
 
     	ConsumptionItem searchParam = (ConsumptionItem) session.getAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM);
@@ -102,7 +116,7 @@ public class ConsumptionItemController extends BaseController {
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_CONSUMPTIONITEM, searchParam);
         
-        JqGridJsonRlt<ConsumptionItem> rlt =  this.initPaging(consumptionItemService, searchParam);
+        BootstrapTableJsonRlt<ConsumptionItem> rlt =  this.initBootstrapPaging(consumptionItemService, searchParam);
         
         for (ConsumptionItem item : rlt.getRows()) {
             item.setCategoryFullDesc(categoryService.selectFullDescByKey(item.getCategoryOid()));

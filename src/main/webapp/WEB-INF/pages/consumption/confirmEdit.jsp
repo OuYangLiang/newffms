@@ -3,122 +3,170 @@
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="<c:url value='/css/consumption.css' />" />
+        <link href="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.css' />" rel="stylesheet">
     </head>
     
     <body>
-        <div class="button-area">
-            <button id="btn-save">确认</button>
-            <button id="btn-back">返回</button>
-        </div>
+        <section class="content-header">
+            <h1>
+                消费<small>修改确认</small>
+            </h1>
+        </section>
         
-        <div class="content-header ui-widget-header">
-            消费<span style="font-size: 80%;"> - 修改确认</span>
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">消费类型</div>
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div style="padding-left: 20px; padding-bottom: 20px;">
+                        <button type="button" class="btn btn-default" id="btn-save">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </button>
                     
-                    <div class="input">
-                        <div class="confirmed-text">${cpnForm.consumption.cpnTypeDesc }</div>
+                        <button type="button" class="btn btn-default" id="btn-cancel">
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                        </button>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
                 </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">时间</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text"><fmt:formatDate value="${cpnForm.consumption.cpnTime}" pattern="yyyy-MM-dd HH:mm" /></div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">消费概况</h3>
+                        </div>
+                        
+                        <div class="box-body">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="cpnTypeInput" class="col-xs-4 col-sm-2 control-label">消费方式</label>
+                                    <div class="col-xs-7 col-sm-4">
+                                        <div class="form-control" style="BORDER-STYLE: none;" id="cpnTypeInput" >${cpnForm.consumption.cpnTypeDesc }</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cpnTimeInput" class="col-xs-4 col-sm-2 control-label">消费时间</label>
+                                    <div class="col-xs-7 col-sm-4">
+                                         <div class="form-control" style="BORDER-STYLE: none;" id="cpnTimeInput" ><fmt:formatDate value="${cpnForm.consumption.cpnTime}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
                 </div>
             </div>
             
-            <div class="content-title ui-widget-header">
-                明细
-            </div>
-            
-            <div>
-                <div id="items">
-                    <c:forEach var="item" items="${ cpnForm.cpnItems }" varStatus="status" >
-                    <fieldset>
-                        <legend >清单${status.index + 1 }</legend>
-                        
-                        <div class="label">说明</div>
-                        <div class="input" style="width: 100px;">
-                            <div class="confirmed-text">${item.itemDesc }</div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">消费明细</h3>
                         </div>
                         
-                        <div class="label">类别</div>
-                        <div class="input" style="width: 300px;">
-                            <div class="confirmed-text">${item.categoryFullDesc }</div>
+                        <div class="box-body" id="items">
+                            <div class="container-fluid">
+                                <table id="data-table" data-toggle="table"
+                                    data-show-toggle="true"
+                                    data-show-columns="true"
+                                    data-silent-sort="false"
+                                    data-row-style="rowStyle">
+                                    <thead>
+                                        <tr>
+                                            <th>消费说明</th>
+                                            <th>消费类别</th>
+                                            <th data-formatter="amtFormatter">金额</th>
+                                            <th>消费人</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="item" items="${ cpnForm.cpnItems }" varStatus="status" >
+                                            <tr>
+                                                <td>${item.itemDesc}</td>
+                                                <td>${item.categoryFullDesc}</td>
+                                                <td>${item.amount}</td>
+                                                <td>${item.userName}</td>
+                                            </tr>
+                                        </c:forEach>                                    
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        
-                        <div class="label">金额</div>
-                        <div class="input" style="width: 80px;">
-                            <div class="confirmed-text">${item.amount }</div>
+                        <div class="box-footer">
+                            <div class="pull-right">消费总金额: <span id="totalAmountDisplay">${cpnForm.totalItemAmount }</span></div>
                         </div>
-                        
-                        <div class="label">消费人</div>
-                        <div class="input">
-                            <div class="confirmed-text">${item.userName }</div>
-                        </div>
-                        
-                        <div style="clear:both;" ></div>
-                    </fieldset>
-                    </c:forEach>
+                    </div>
                 </div>
-                
             </div>
             
-            <div class="content-title ui-widget-header">
-                付款
-            </div>
-            
-            <div>
-                <div id="accounts">
-                    <c:forEach var="item" items="${ cpnForm.accounts }" varStatus="status" >
-                    <fieldset>
-                        <legend>账户${status.index + 1 }</legend>
-                        
-                        <div class="label">类别</div>
-                        <div class="input" style="width: 500px;">
-                            <div class="confirmed-text">${item.acntHumanDesc }</div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">支付明细</h3>
                         </div>
                         
-                        <div class="label" >支付金额</div>
-                        <div class="input" ><div class="confirmed-text">${item.payment }</div></div>
-                        
-                        <div style="clear:both;" ></div>
-                        
-                    </fieldset>
-                    </c:forEach>
+                        <div class="box-body" id="accounts">
+                            <div class="container-fluid">
+                                <table id="data-table" data-toggle="table"
+                                    data-show-toggle="true"
+                                    data-show-columns="true"
+                                    data-silent-sort="false"
+                                    data-row-style="rowStyle">
+                                    <thead>
+                                        <tr>
+                                            <th>支付账户</th>
+                                            <th data-formatter="amtFormatter">金额</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="item" items="${ cpnForm.accounts }" varStatus="status" >
+                                            <tr>
+                                                <td>${item.acntHumanDesc}</td>
+                                                <td>${item.payment}</td>
+                                            </tr>
+                                        </c:forEach>                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="pull-right">支付总金额: <span id="totalPaymentDisplay">${cpnForm.totalPayment }</span></div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div style="text-align: right;padding-right: 50px;margin-bottom: 20px;">总金额: ${cpnForm.totalItemAmount }</div>
             </div>
-            
-        </div>
+        </section>
         
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/locale/bootstrap-table-zh-CN.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         
         <script>
+            function rowStyle(row, index) {
+                var classes = ['active', 'success', 'info', 'warning', 'danger'];
+                
+                if (index % 2 === 0 && index / 2 < classes.length) {
+                    return {
+                        classes: classes[index / 2]
+                    };
+                }
+                return {};
+            }
+            
+            function amtFormatter(value) {
+                return "¥" + parseFloat(value).toFixed(2);
+            }
+        
             $( document ).ready(function() {
-                $ ("#btn-back").click(function(){
-                	window.location.href = "<c:url value='/consumption/initEdit?back=true' />";
+                $ ("#btn-cancel").click(function(){
+                    window.location.href = "<c:url value='/consumption/initEdit?back=true' />";
                 });
                 
                 $ ("#btn-save").click(function(){
                 	window.location.href = "<c:url value='/consumption/saveEdit' />";
                 });
-                
-                $ (".button-area button").button();
             });
         </script>
     </body>

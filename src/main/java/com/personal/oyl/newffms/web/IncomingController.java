@@ -25,7 +25,6 @@ import com.personal.oyl.newffms.constants.IncomingType;
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.BootstrapTableJsonRlt;
 import com.personal.oyl.newffms.pojo.Incoming;
-import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.key.AccountKey;
 import com.personal.oyl.newffms.pojo.key.IncomingKey;
 import com.personal.oyl.newffms.pojo.key.UserProfileKey;

@@ -18,6 +18,8 @@ public interface CategoryService extends BaseService<Category, CategoryKey>,
 	
 	public String selectFullDescByKey(BigDecimal categoryOid)
 			throws SQLException;
+	
+	public List<Category> selectAllCategoriesRecusively() throws SQLException;
 
 	public List<Category> selectAllCategories() throws SQLException;
 

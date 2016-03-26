@@ -9,10 +9,9 @@
     </decorator>
     
     <decorator name="new" page="new-main.jsp">
-        <pattern>/report/incoming</pattern>
-        <pattern>/report/consumption</pattern>
-        
+        <pattern>/report/*</pattern>
         <pattern>/account/*</pattern>
         <pattern>/incoming/*</pattern>
+        <pattern>/consumption/*</pattern>
     </decorator>
 </decorators>

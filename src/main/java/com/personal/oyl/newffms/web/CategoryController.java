@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.personal.oyl.newffms.pojo.BaseObject;
 import com.personal.oyl.newffms.pojo.Category;
-import com.personal.oyl.newffms.pojo.JqGridJsonRlt;
 import com.personal.oyl.newffms.pojo.key.CategoryKey;
 import com.personal.oyl.newffms.pojo.validator.CategoryValidator;
 import com.personal.oyl.newffms.service.CategoryService;
@@ -192,18 +191,7 @@ public class CategoryController extends BaseController{
     
     @RequestMapping("/ajaxGetAllCategories")
     @ResponseBody
-    public JqGridJsonRlt<Category> alaxGetAllAccounts() {
-        
-        JqGridJsonRlt<Category> rlt = new JqGridJsonRlt<Category>();
-        
-        try {
-            List<Category> list =  categoryService.selectAllCategories();
-            
-            rlt.setRows(list);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return rlt;
+    public List<Category> alaxGetAllAccounts() throws SQLException {
+        return categoryService.selectAllCategoriesRecusively();
     }
 }

@@ -64,7 +64,53 @@ public class CategoryServiceImpl implements CategoryService {
         
         return dao.select(param);
     }
-
+    
+    @Override
+	public List<Category> selectAllCategoriesRecusively() throws SQLException {
+    	List<Category> list =  dao.select(null);
+        
+        Map<BigDecimal, List<Category>> catMap = new HashMap<BigDecimal, List<Category>>();
+        
+        BigDecimal key = null;
+        for (Category cat : list) {
+        	if (null == cat.getParentOid()) {
+        		key = BigDecimal.valueOf(-1);
+        	} else {
+        		key = cat.getParentOid();
+        	}
+        	
+        	if (catMap.containsKey(key)) {
+    			List<Category> cList = catMap.get(key);
+    			cList.add(cat);
+    		} else {
+    			List<Category> cList = new ArrayList<Category>();
+    			cList.add(cat);
+    			
+    			catMap.put(key, cList);
+    		}
+        }
+        
+        for (Category cat : list) {
+        	if (null == cat.getParentOid()) {
+        		continue;
+        	}
+        	
+        	if (!cat.getIsLeaf()) {
+        		cat.setSubCategories(catMap.get(cat.getCategoryOid()));
+        	}
+        }
+        
+        List<Category> rlt = new ArrayList<Category>();
+        
+        for (Category root : catMap.get(BigDecimal.valueOf(-1))) {
+        	rlt.add(root);
+        	root.setSubCategories(catMap.get(root.getCategoryOid()));
+        	
+        }
+        
+        return rlt;
+	}
+    
     @Override
     public List<Category> selectAllCategories() throws SQLException {
     	List<Category> list =  dao.select(null);

@@ -9,6 +9,7 @@
     </decorator>
     
     <decorator name="new" page="new-main.jsp">
+        <pattern>/welcome</pattern>
         <pattern>/report/*</pattern>
         <pattern>/account/*</pattern>
         <pattern>/incoming/*</pattern>

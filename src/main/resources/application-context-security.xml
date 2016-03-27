@@ -18,6 +18,7 @@
 	<http pattern="/bootstrap-table-1.10.1/**" security="none" />
 	<http pattern="/AdminLTE2/**" security="none" />
 	<http pattern="/bootstrap-datetimepicker/**" security="none" />
+	<http pattern="/resources/**" security="none" />
 	
 	<http access-decision-manager-ref="accessDecisionManager" access-denied-page="/accessDeniedRouter?q=accessDenied">
 		

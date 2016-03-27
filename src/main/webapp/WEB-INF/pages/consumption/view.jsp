@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="<c:url value='/css/consumption.css' />" />
+        <link href="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.css' />" rel="stylesheet">
     </head>
     
     <body>
@@ -90,7 +90,7 @@
                                         <tr>
                                             <th>消费说明</th>
                                             <th>消费类别</th>
-                                            <th data-formatter="amtFormatter">金额</th>
+                                            <th data-align="right" data-formatter="amtFormatter">金额</th>
                                             <th>消费人</th>
                                         </tr>
                                     </thead>
@@ -131,7 +131,7 @@
                                     <thead>
                                         <tr>
                                             <th>支付账户</th>
-                                            <th data-formatter="amtFormatter">金额</th>
+                                            <th data-align="right" data-formatter="amtFormatter">金额</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -174,9 +174,26 @@
         
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/bootstrap-table.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-table-1.10.1/locale/bootstrap-table-zh-CN.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         
         <script>
+	        function rowStyle(row, index) {
+	            var classes = ['active', 'success', 'info', 'warning', 'danger'];
+	            
+	            if (index % 2 === 0 && index / 2 < classes.length) {
+	                return {
+	                    classes: classes[index / 2]
+	                };
+	            }
+	            return {};
+	        }
+	        
+	        function amtFormatter(value) {
+	            return "¥" + parseFloat(value).toFixed(2);
+	        }
+        
             $( document ).ready(function() {
             	$ ("#btn-back").click(function(){
                     window.location.href = "<c:url value='/consumption/summary?keepSp=Y' />";

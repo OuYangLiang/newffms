@@ -32,7 +32,7 @@
             </div>
             
             <div class="row">
-	            <div class="col-md-6 col-lg-4">
+	            <div class="col-lg-6">
 	                <div class="box box-primary">
 	                    <div class="box-header with-border">
 	                        <h3 class="box-title">成员消费情况</h3>
@@ -44,7 +44,7 @@
 	                </div>
 	            </div>
 	            
-	            <div class="col-md-6 col-lg-4">
+	            <div class="col-lg-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">成员消费比例</h3>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 	            
-	            <div class="col-md-6 col-lg-4">
+	            <div class="col-lg-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">类别消费情况</h3>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-6 col-lg-4">
+                <div class="col-lg-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">类别消费比例</h3>

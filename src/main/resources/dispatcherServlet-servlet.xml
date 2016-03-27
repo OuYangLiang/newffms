@@ -71,5 +71,6 @@
     <mvc:resources location="/bootstrap-table-1.10.1/" mapping="/bootstrap-table-1.10.1/**"/>
     <mvc:resources location="/AdminLTE2/" mapping="/AdminLTE2/**"/>
     <mvc:resources location="/bootstrap-datetimepicker/" mapping="/bootstrap-datetimepicker/**"/>
+    <mvc:resources location="/resources/" mapping="//resources/**"/>
 
 </beans>

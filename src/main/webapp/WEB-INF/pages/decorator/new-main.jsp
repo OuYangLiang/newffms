@@ -12,7 +12,7 @@
         <!-- Bootstrap -->
         <link href="<c:url value='/bootstrap-3.3.5-dist/css/bootstrap.min.css' />" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+        <!-- <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet"> -->
         <link href="<c:url value='/AdminLTE2/css/AdminLTE.min.css' />" rel="stylesheet">
         <link href="<c:url value='/AdminLTE2/css/skins/skin-blue.min.css' />" rel="stylesheet">
 
@@ -29,13 +29,41 @@
 		<div class="wrapper">
 			<header class="main-header">
 				<a href="#" class="logo"> <span class="logo-mini"><b>A</b>LT</span>
-					<span class="logo-lg"><b>Admin</b>LTE</span>
+					<span class="logo-lg">家庭管理系统</span>
 				</a>
 	
 				<nav class="navbar navbar-static-top" role="navigation">
 					<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 					    <span class="sr-only">Toggle navigation</span>
 					</a>
+					
+					<div class="navbar-custom-menu">
+	                    <ul class="nav navbar-nav">
+	                        <li class="dropdown user user-menu">
+				                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				                    <img src="<c:url value='/resources/img/developper.jpg' />" class="user-image" alt="欧阳亮">
+				                    <span class="hidden-xs">欧阳亮</span>
+				                </a>
+				                <ul class="dropdown-menu">
+				                    <li class="user-header">
+				                        <img src="<c:url value='/resources/img/developper.jpg' />" class="img-circle" alt="欧阳亮">
+				                        <p>苏宁：高级架构师</p>
+				                    </li>
+				                    <li class="user-footer">
+					                    <div class="pull-right">
+					                        <a href="<c:url value='/profile/initEdit' />" class="btn btn-default ">Profile</a>
+					                    </div>
+				                    </li>
+				                </ul>
+				            </li>
+					                        
+	                        <li class="dropdown messages-menu">
+	                            <a href="<c:url value='/j_spring_security_logout' />" >
+	                                <i class="fa fa-power-off">退出</i>
+	                            </a>
+	                        </li>
+	                    </ul>
+	                </div>
 				</nav>
 			</header>
 			
@@ -43,21 +71,20 @@
                 <section class="sidebar">
                     <div class="user-panel">
 						<div class="pull-left image">
-						  <img src="<c:url value='/AdminLTE2/img/user2-160x160.jpg' />" class="img-circle" alt="User Image">
+						    <img src="<c:url value='/resources/img/developper.jpg' />" class="img-circle" alt="作者：欧阳亮">
 						</div>
 						
                         <div class="pull-left info">
-                            <p>Alexander Pierce</p>
-                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            <p>欧阳亮</p>
+                            苏宁：高级架构师
                         </div>
                     </div>
 
 					<ul class="sidebar-menu">
-						<li class="header">HEADER</li>
+						<li class="header">菜单</li>
 						<c:forEach var="item" items="${ SESSION_MENU_KEY }" varStatus="status" >
-                            <li><a href="<c:url value='${item.moduleLink }' />"><i class="fa fa-link"></i> <span>${item.moduleDesc }</span></a></li>
+                            <li><a href="<c:url value='${item.moduleLink }' />"><i class="fa fa-circle "></i> <span>${item.moduleDesc }</span></a></li>
                         </c:forEach>
-                        <li><a href="<c:url value='/j_spring_security_logout' />"><i class="fa fa-link"></i> <span>退出</span></a></li>
 					</ul>
                 </section>
             </aside>
@@ -68,10 +95,9 @@
 
 			<footer class="main-footer">
 				<!-- To the right -->
-				<div class="pull-right hidden-xs">Anything you want</div>
+				<div class="pull-right hidden-xs"></div>
 				<!-- Default to the left -->
-				<strong>Copyright &copy; 2015 <a href="#">Company</a>.
-				</strong> All rights reserved.
+				<strong>Copyright &copy; <a href="#">欧阳亮</a></strong>
 			</footer>
 	   </div>
     </body>

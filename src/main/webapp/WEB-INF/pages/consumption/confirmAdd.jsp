@@ -74,7 +74,7 @@
 	                                    <tr>
 	                                        <th>消费说明</th>
 	                                        <th>消费类别</th>
-	                                        <th data-formatter="amtFormatter">金额</th>
+	                                        <th data-align="right" data-formatter="amtFormatter">金额</th>
 	                                        <th>消费人</th>
 	                                    </tr>
 	                                </thead>
@@ -115,7 +115,7 @@
                                     <thead>
                                         <tr>
                                             <th>支付账户</th>
-                                            <th data-formatter="amtFormatter">金额</th>
+                                            <th data-align="right" data-formatter="amtFormatter">金额</th>
                                         </tr>
                                     </thead>
                                     <tbody>

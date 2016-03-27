@@ -12,6 +12,8 @@ public class UserProfile extends BasePojo {
     private Gender gender;
     private String phone;
     private String email;
+    private String icon;
+    private String remarks;
     private String loginId;
     private String loginPwd;
     private BigDecimal userTypeOid;
@@ -71,7 +73,23 @@ public class UserProfile extends BasePojo {
         this.email = email;
     }
 
-    public String getLoginId() {
+    public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public String getLoginId() {
         return loginId;
     }
 

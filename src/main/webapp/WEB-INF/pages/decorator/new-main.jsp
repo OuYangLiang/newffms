@@ -41,13 +41,13 @@
 	                    <ul class="nav navbar-nav">
 	                        <li class="dropdown user user-menu">
 				                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				                    <img src="<c:url value='/resources/img/developper.jpg' />" class="user-image" alt="欧阳亮">
-				                    <span class="hidden-xs">欧阳亮</span>
+				                    <img src="<c:url value='/resources/img/${SESSION_USER_KEY.icon }' />" class="user-image" alt="<c:out value='${SESSION_USER_KEY.userName }' />">
+				                    <span class="hidden-xs"><c:out value='${SESSION_USER_KEY.userName }' /></span>
 				                </a>
 				                <ul class="dropdown-menu">
 				                    <li class="user-header">
-				                        <img src="<c:url value='/resources/img/developper.jpg' />" class="img-circle" alt="欧阳亮">
-				                        <p>苏宁：高级架构师</p>
+				                        <img src="<c:url value='/resources/img/${SESSION_USER_KEY.icon }' />" class="img-circle" alt="<c:out value='${SESSION_USER_KEY.userName }' />">
+				                        <p><c:out value='${SESSION_USER_KEY.remarks }' /></p>
 				                    </li>
 				                    <li class="user-footer">
 					                    <div class="pull-right">
@@ -75,7 +75,7 @@
 						</div>
 						
                         <div class="pull-left info">
-                            <p>欧阳亮</p>
+                            <p>By: 欧阳亮</p>
                             苏宁：高级架构师
                         </div>
                     </div>

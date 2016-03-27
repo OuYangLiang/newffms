@@ -8,6 +8,8 @@
 		<result column="GENDER" property="gender" jdbcType="VARCHAR" />
 		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
 		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="ICON" property="icon" jdbcType="VARCHAR" />
+		<result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
 		<result column="LOGIN_ID" property="loginId" jdbcType="VARCHAR" />
 		<result column="LOGIN_PWD" property="loginPwd" jdbcType="CHAR" />
 		<result column="USER_TYPE_OID" property="userTypeOid" jdbcType="DECIMAL" />
@@ -20,7 +22,7 @@
 
 
 	<sql id="Base_Column_List">
-        USER_OID, USER_NAME, USER_ALIAS, GENDER, PHONE, EMAIL, LOGIN_ID, LOGIN_PWD, USER_TYPE_OID, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
+        USER_OID, USER_NAME, USER_ALIAS, GENDER, PHONE, EMAIL, ICON, REMARKS, LOGIN_ID, LOGIN_PWD, USER_TYPE_OID, CREATE_TIME, UPDATE_TIME, CREATE_BY, UPDATE_BY, SEQ_NO
 	</sql>
 
 
@@ -120,7 +122,7 @@
     <insert id="insert" parameterType="com.personal.oyl.newffms.pojo.UserProfile" useGeneratedKeys="true" keyProperty="userOid">
         INSERT INTO USER_PROFILE(<include refid="Base_Column_List" />)
         VALUES (#{userOid,jdbcType=DECIMAL}, #{userName,jdbcType=NVARCHAR}, #{userAlias,jdbcType=NVARCHAR}, #{gender,jdbcType=VARCHAR},
-                #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR}, #{userTypeOid,jdbcType=DECIMAL},
+                #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR}, #{userTypeOid,jdbcType=DECIMAL},
                 #{baseObject.createTime,jdbcType=TIMESTAMP}, #{baseObject.updateTime,jdbcType=TIMESTAMP}, #{baseObject.createBy,jdbcType=NVARCHAR}, #{baseObject.updateBy,jdbcType=NVARCHAR}, #{baseObject.seqNo,jdbcType=DECIMAL})
     </insert>
     
@@ -143,6 +145,12 @@
             </if>
             <if test="email != null">
                 EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                ICON = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                REMARKS = #{remarks,jdbcType=VARCHAR},
             </if>
             <if test="loginId != null">
                 LOGIN_ID = #{loginId,jdbcType=VARCHAR},
@@ -179,6 +187,8 @@
             GENDER = #{gender,jdbcType=VARCHAR},
             PHONE = #{phone,jdbcType=VARCHAR},
             EMAIL = #{email,jdbcType=VARCHAR},
+            ICON = #{icon,jdbcType=VARCHAR},
+            REMARKS = #{remarks,jdbcType=VARCHAR},
             LOGIN_ID = #{loginId,jdbcType=VARCHAR},
             LOGIN_PWD = #{loginPwd,jdbcType=VARCHAR},
             USER_TYPE_OID = #{userTypeOid,jdbcType=DECIMAL},

@@ -35,12 +35,10 @@ public class Consumption extends BasePojo {
 	public void setCpnTimeInput(String cpnTimeInput) {
 		this.cpnTimeInput = cpnTimeInput;
 		
-		if (null == cpnTime) {
-			try {
-				cpnTime = DateUtil.getInstance().parse(cpnTimeInput, "yyyy-MM-dd HH:mm");
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+		try {
+			cpnTime = DateUtil.getInstance().parse(cpnTimeInput, "yyyy-MM-dd HH:mm");
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 	}
 

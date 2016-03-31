@@ -24,7 +24,7 @@
             </div>
             
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">总收入情况</h3>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">成员收入情况</h3>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">分类收入情况</h3>

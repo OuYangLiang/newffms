@@ -85,8 +85,8 @@
                                     <div class="col-md-4">
                                         <select name="confirmed" class="form-control" id="confirmedInput">
                                             <option value ="">全部</option>
-                                            <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>新建</option>
-                                            <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && !SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>初始</option>
+                                            <option value ="true" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>确认</option>
+                                            <option value ="false" <c:if test='${null != SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed && !SESSION_KEY_SEARCH_PARAM_INCOMING.confirmed }' >selected="selected"</c:if>>新建</option>
                                         </select>
                                     </div>
                                 </div>

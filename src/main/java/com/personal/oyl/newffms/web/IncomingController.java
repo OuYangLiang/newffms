@@ -209,7 +209,7 @@ public class IncomingController extends BaseController{
         
         session.removeAttribute("incomingForm");
         
-        return "incoming/summary";
+        return "redirect:/incoming/summary?keepSp=Y";
     }
     
     @RequestMapping("/view")
@@ -286,7 +286,7 @@ public class IncomingController extends BaseController{
         
         session.removeAttribute("incomingForm");
         
-        return "incoming/summary";
+        return "redirect:/incoming/summary?keepSp=Y";
     }
     
     @RequestMapping("/delete")

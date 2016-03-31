@@ -31,10 +31,6 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Expandable</h3>
-                        </div>
-                        
                         <div class="box-body">
                             <c:url value='/account/confirmAdd' var='url' />
 			                <spring:form id="form" class="form-horizontal" method="post" action="${url}" modelAttribute="acntForm" autocomplete="off" >

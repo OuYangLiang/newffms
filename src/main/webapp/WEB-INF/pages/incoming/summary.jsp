@@ -102,6 +102,13 @@
                                         </select>
                                     </div>
                                 </div>
+                                
+                                <div class="form-group">
+                                    <label for="incomingDescInput" class="col-md-3 control-label">描述</label>
+                                    <div class="col-md-4">
+                                        <input id="incomingDescInput" class="form-control" value="<c:out value='${SESSION_KEY_SEARCH_PARAM_INCOMING.incomingDesc }' />" type="text" name="incomingDesc" />
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

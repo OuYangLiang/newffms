@@ -82,6 +82,7 @@ public class IncomingController extends BaseController{
 	public String search(@RequestParam("ownerOid") BigDecimal ownerOid,
 			@RequestParam("confirmed") Boolean confirmed,
 			@RequestParam("incomingType") IncomingType incomingType,
+			@RequestParam("incomingDesc") String incomingDesc,
 			HttpSession session) {
     	//从页面接受查询参数，并放入session中。
         Incoming searchParam = new Incoming();
@@ -89,6 +90,7 @@ public class IncomingController extends BaseController{
         searchParam.setOwnerOid(ownerOid);
         searchParam.setConfirmed(confirmed);
         searchParam.setIncomingType(incomingType);
+        searchParam.setIncomingDesc(incomingDesc);
         
         session.setAttribute(SESSION_KEY_SEARCH_PARAM_INCOMING, searchParam);
         

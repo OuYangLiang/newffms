@@ -30,6 +30,9 @@
             <if test="confirmed != null">
                 AND CONFIRMED = #{confirmed,jdbcType=BIT}
             </if>
+            <if test="incomingDesc != null">
+                AND INCOMING_DESC LIKE CONCAT('%',#{incomingDesc,jdbcType=NVARCHAR},'%')
+            </if>
         </where>
     </select>
     
@@ -45,6 +48,9 @@
             </if>
             <if test="confirmed != null">
                 AND CONFIRMED = #{confirmed,jdbcType=BIT}
+            </if>
+            <if test="incomingDesc != null">
+                AND INCOMING_DESC LIKE CONCAT('%',#{incomingDesc,jdbcType=NVARCHAR},'%')
             </if>
         <if test="sortField == null" >
             ORDER BY INCOMING_DATE DESC

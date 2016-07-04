@@ -44,7 +44,6 @@ public class ReportServiceImpl implements ReportService {
         
         List<CategoryConsumption> rlt = new ArrayList<CategoryConsumption>();
         
-        Map<BigDecimal, UserProfile> userMap = new HashMap<BigDecimal, UserProfile>();
         Map<BigDecimal, Category> catMap = new HashMap<BigDecimal, Category>();
         Map<String, CategoryConsumption> categoryConsumptionsMap = new HashMap<String, CategoryConsumption>();
         
@@ -62,12 +61,7 @@ public class ReportServiceImpl implements ReportService {
             }
         }
         
-        for (UserProfile user : allUsers) {
-            userMap.put(user.getUserOid(), user);
-        }
-        
         //开始干活。
-        
         for (PersonalConsumption personalConsumption : personalConsumptions) {
             BigDecimal key = personalConsumption.getCategoryOid();
             

@@ -222,7 +222,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
     @Override
-	public boolean isCategoryUsedByIncoming(BigDecimal categoryOid)
+	public boolean isCategoryUsed(BigDecimal categoryOid)
 			throws SQLException {
 		Object obj = consumptionItemDao.selectOneByCategory(categoryOid);
 		

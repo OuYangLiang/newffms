@@ -28,7 +28,7 @@ public interface CategoryService extends BaseService<Category, CategoryKey>,
 	
 	public BigDecimal selectTotalBudgetByParent(BigDecimal parentOid) throws SQLException;
 	
-	public boolean isCategoryUsedByIncoming(BigDecimal categoryOid) throws SQLException;
+	public boolean isCategoryUsed(BigDecimal categoryOid) throws SQLException;
 	
 	public Category selectByParentAndDesc(BigDecimal parentOid, String categoryDesc) throws SQLException;
 	

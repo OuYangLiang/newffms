@@ -42,12 +42,26 @@ public class CategoryController extends BaseController{
     }
     
     @RequestMapping("summary")
-    public String summary() throws SQLException {
+    public String summary(@RequestParam(value = "parentOid", required = false) BigDecimal parentOid, Model model) throws SQLException {
+    	model.addAttribute("parentOid", parentOid);
+    	
+    	if (null != parentOid) {
+    		Category category = categoryService.selectByKey(new CategoryKey(parentOid));
+    		
+    		if (null != category.getParentOid()) {
+    			model.addAttribute("parentParentOid", category.getParentOid());
+    		}
+    		
+    	}
+    	
         return "category/summary";
     }
     
     @RequestMapping("/initAdd")
-    public String initAdd(@RequestParam(value = "back", required = false) Boolean back, Model model, HttpSession session) throws SQLException {
+	public String initAdd(
+			@RequestParam(value = "back", required = false) Boolean back,
+			@RequestParam(value = "parentOid", required = false) BigDecimal parentOid,
+			Model model, HttpSession session) throws SQLException {
         
         Category form = null;
         
@@ -56,6 +70,12 @@ public class CategoryController extends BaseController{
         }
         else {
             form = new Category();
+        }
+        
+        if (null != parentOid) {
+        	Category parent = categoryService.selectByKey(new CategoryKey(parentOid));
+        	form.setParent(parent);
+        	parent.setCategoryDesc(categoryService.selectFullDescByKey(parent.getCategoryOid()));
         }
         
         model.addAttribute("catForm", form);
@@ -113,7 +133,7 @@ public class CategoryController extends BaseController{
     	form.setCategoryDesc(categoryService.selectFullDescByKey(categoryOid));
         
         model.addAttribute("catForm", form);
-        model.addAttribute("removable", !categoryService.isCategoryUsedByIncoming(categoryOid));
+        model.addAttribute("removable", !categoryService.isCategoryUsed(categoryOid));
         
         return "category/view";
     }
@@ -144,9 +164,30 @@ public class CategoryController extends BaseController{
     @RequestMapping("/confirmEdit")
     public String confirmEdit(@Valid @ModelAttribute("catForm") Category form, BindingResult result, Model model, HttpSession session) throws SQLException {
         if (result.hasErrors()) {
+        	
+        	Category oldObj = categoryService.selectByKey(new CategoryKey(form.getCategoryOid()));
+        	form.setIsLeaf(oldObj.getIsLeaf());
+        	form.setCategoryLevel(oldObj.getCategoryLevel());
+        	if (!form.getIsLeaf()) {
+        		form.setMonthlyBudget(oldObj.getMonthlyBudget());
+        	}
+        	
+        	if (null != form.getParentOid()) {
+            	Category parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
+        		form.setParent(parent);
+        		parent.setCategoryDesc(categoryService.selectFullDescByKey(parent.getCategoryOid()));
+            }
+        	
             model.addAttribute("validation", false);
             return "category/edit";
         }
+        
+        Category oldObj = categoryService.selectByKey(new CategoryKey(form.getCategoryOid()));
+    	form.setIsLeaf(oldObj.getIsLeaf());
+    	form.setCategoryLevel(oldObj.getCategoryLevel());
+    	if (!form.getIsLeaf()) {
+    		form.setMonthlyBudget(oldObj.getMonthlyBudget());
+    	}
         
         if (null != form.getParentOid()) {
         	Category parent = categoryService.selectByKey(new CategoryKey(form.getParentOid()));
@@ -187,6 +228,16 @@ public class CategoryController extends BaseController{
         transactionService.deleteCategory(categoryOid, SessionUtil.getInstance().getLoginUser(session).getUserName());
         
         return "redirect:/category/summary";
+    }
+    
+    @RequestMapping("/ajaxGetCategoriesByParent")
+    @ResponseBody
+    public List<Category> ajaxGetCategoriesByParent(@RequestParam(value = "parentOid", required = false) BigDecimal parentOid) throws SQLException {
+        if (null == parentOid) {
+        	return categoryService.selectByLevel(0);
+        }
+    	
+    	return categoryService.selectByParent(parentOid);
     }
     
     @RequestMapping("/ajaxGetAllCategories")

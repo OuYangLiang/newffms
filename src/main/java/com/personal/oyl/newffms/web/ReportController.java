@@ -80,25 +80,6 @@ public class ReportController {
         	throw new Exception ("不可识别的参数mode: " + mode);
         }
         
-//        if (null == queryMethod || 1 == queryMethod) {
-//        	queryMethod = 1;
-//            startParam = DateUtil.getInstance().getFirstTimeOfCurrentMonth();
-//            endParam   = DateUtil.getInstance().getLastTimeOfCurrentMonth();
-//            title = sdf.format(startParam);
-//            
-//        } else if (2 == queryMethod) {
-//            startParam = DateUtil.getInstance().getFirstTimeOfLastMonth();
-//            endParam   = DateUtil.getInstance().getLastTimeOfLastMonth();
-//            title = sdf.format(startParam);
-//            
-//        } else if (3 == queryMethod) {
-//            startParam = DateUtil.getInstance().getBeginTime(start);
-//            endParam   = DateUtil.getInstance().getEndTime(end);
-//            
-//            sdf = new SimpleDateFormat("yyyy-MM-dd");
-//            title = sdf.format(startParam) + " ~ " + sdf.format(endParam);
-//        }
-        
         List<UserProfile> allUsers = userProfileService.selectAllUsers();
         List<Category> allCategories = null;
         List<CategoryConsumption> categoryConsumptions = null;
@@ -122,7 +103,6 @@ public class ReportController {
         HighChartGraphResult pieRltOfAll = this.pieResultOfAll(categoryConsumptions, allCategories);
         HighChartGraphResult pieRltOfUser = this.pieResultOfUser(categoryConsumptions);
         HighChartGraphResult colRltOfAmount = this.columnResultOfAmount(categoryConsumptions);
-        
         
         colRlt.setTitle(title);
         pieRltOfAll.setTitle(title);

@@ -1,115 +1,111 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglibs-include.jsp"%>
 <!doctype html>
-<html>
+<html lang="zh-CN">
     <head>
         <link rel="stylesheet" href="<c:url value='/css/validationEngine.jquery.css' />" />
     </head>
-    
+
     <body>
-        <div class="button-area">
-            <button id="btn-save">修改</button>
-            <button id="btn-cancel">返回</button>
-        </div>
+        <section class="content-header">
+            <h1>
+                类别<small>修改</small>
+            </h1>
+        </section>
         
-        <spring:errors path="errors" />
-        
-        <c:url value='/category/confirmEdit' var='url' />
-        <spring:form id="form" method="post" action="${url}" modelAttribute="catForm" autocomplete="off" >
-        <input type="hidden" name="categoryOid" value="${catForm.categoryOid}" />
-        <input type="hidden" name="parentOid" value="${catForm.parentOid}" />
-        <div id="errorArea" class="ui-widget" style="margin-bottom:5px;display:none">
-            <div class="ui-state-error ui-corner-all" style="margin-right: 400px; padding: 5px 30px;" >
-                <span class="ui-icon ui-icon-alert" style="float: left; margin-top:5px; "></span>
-                <span id="errorMsg" style="font-size: 70%;"><spring:errors path="*" /></span>
-            </div>
-            
-            <div style="clear:both;" ></div>
-        </div>
-        
-        <div class="content-header ui-widget-header">
-            类别<span style="font-size: 80%;"> - 修改</span>
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">类别描述</div>
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div style="padding-left: 20px; padding-bottom: 20px;">
+                        <button type="button" class="btn btn-default" id="btn-save">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </button>
                     
-                    <div class="input">
-                        <spring:input data-validation-engine="validate[required]" path="categoryDesc" class="inputbox" maxlength="10" />
+                        <button type="button" class="btn btn-default" id="btn-cancel">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
                 </div>
+            </div>
             
-                <c:choose>
-                    <c:when test="${ catForm.isLeaf == true }" >
-                        <div class="newline-wrapper ui-widget-content">
-		                    <div class="label">月度预算</div>
-		                    
-		                    <div class="input">
-		                        <spring:input data-validation-engine="validate[required]" path="monthlyBudget" class="inputbox" onBlur="javascript:checkAmount(this);" maxlength="11" />
-		                    </div>
-		                    
-		                    <div style="clear:both;" ></div>
-		                </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="newline-wrapper ui-widget-content">
-		                    <div class="label">月度预算</div>
-		                    
-		                    <div class="input">
-		                        <div class="confirmed-text">${catForm.monthlyBudget }</div>
-		                        <input type="hidden" name="monthlyBudget" value="${catForm.monthlyBudget}" />
-		                    </div>
-		                    
-		                    <div style="clear:both;" ></div>
-		                </div>
-                    </c:otherwise>
-                </c:choose>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">父类别</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${catForm.parent.categoryDesc }</div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <c:url value='/category/confirmEdit' var='url' />
+                            <spring:form id="form" class="form-horizontal" method="post" action="${url}" modelAttribute="catForm" autocomplete="off" >
+                                <input type="hidden" name="categoryOid" value="${catForm.categoryOid}" />
+                                <input type="hidden" name="parentOid" value="${catForm.parentOid}" />
+                            
+                                <div class="row" id="errorArea" style="display:none">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="alert alert-danger" role="alert" >
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span class="sr-only">Error:</span>
+                                            <spring:errors path="*" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <c:if test="${catForm.parent != null }">
+                                    <div class="form-group">
+                                        <label for="parentDescInput" class="col-xs-4 col-sm-2 control-label">上级类别</label>
+                                        <div class="col-xs-7 col-sm-4">
+                                            <div class="form-control" style="BORDER-STYLE: none;" id="parentDescInput">${catForm.parent.categoryDesc }</div>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                
+                                <div class="form-group">
+                                    <label for="categoryDescInput" class="col-xs-4 col-sm-2 control-label">描述</label>
+                                    <div class="col-xs-7 col-sm-4">
+                                        <spring:input data-validation-engine="validate[required]" path="categoryDesc" class="inputbox" maxlength="10" id="categoryDescInput" />
+                                    </div>
+                                </div>
+                                
+                                <c:choose>
+                                    <c:when test="${ catForm.isLeaf == true }" >
+                                        <div class="form-group">
+		                                    <label for="monthlyBudgetInput" class="col-xs-4 col-sm-2 control-label">月度预算</label>
+		                                    <div class="col-xs-7 col-sm-4">
+		                                        <spring:input data-validation-engine="validate[required]" path="monthlyBudget" class="form-control" onBlur="javascript:checkAmount(this);" maxlength="11" id="monthlyBudgetInput"/>
+		                                    </div>
+		                                </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="form-group">
+		                                    <label for="monthlyBudgetInput" class="col-xs-4 col-sm-2 control-label">月度预算</label>
+		                                    <div class="col-xs-7 col-sm-4">
+		                                        <div class="form-control" style="BORDER-STYLE: none;" id="monthlyBudgetInput">${catForm.monthlyBudget }</div>
+		                                    </div>
+		                                </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            
+                            </spring:form>
+                        </div>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
                 </div>
-                
             </div>
-            
-        </div>
-        
-        </spring:form>
-        
-        <div id="category-select-dialog" title="选择父类别" >
-            <div>
-                <table id="category-select-grid" ></table> 
-            </div>
-        </div>
+        </section>
         
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/i18n/grid.locale-cn.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery.jqGrid.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.validationEngine.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/jquery.validationEngine-zh_CN.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jqGrid-setting.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         <script src="<c:url value='/js/common.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {
-            	if ('<c:out value="${validation}" />' === 'false') {
+                
+                if ('<c:out value="${validation}" />' === 'false') {
                     $("#errorArea").css("display", "");
                 }
-            	
-            	$ (".button-area button").button();
                 
                 $ ("#btn-cancel").click(function(){
-                    window.location.href = "<c:url value='/category/summary' />";
+                    window.location.href = "<c:url value='/category/view' />?categoryOid=<c:out value='${catForm.categoryOid}' />";
                 });
                 
                 $ ("#btn-save").click(function(){
@@ -122,6 +118,5 @@
                 
             });
         </script>
-    
     </body>
 </html>

@@ -37,11 +37,9 @@
 		                    </button>
 		                </c:if>
 		                
-		                <c:if test="${acntForm.balance > 0 }" >
-		                    <button type="button" class="btn btn-default" id="btn-viewDetail">
-		                        <i class="glyphicon glyphicon-list"></i>
-		                    </button>
-		                </c:if>
+	                    <button type="button" class="btn btn-default" id="btn-viewDetail">
+	                        <i class="glyphicon glyphicon-list"></i>
+	                    </button>
 		            </div>
                 </div>
             </div>
@@ -103,10 +101,6 @@
             <div class="row" id="detailArea" style="display:none;">
 	            <div class="col-sm-12">
 	                <div class="box box-primary">
-	                    <div class="box-header with-border">
-	                        <h3 class="box-title">Expandable</h3>
-	                    </div>
-	                    
 	                    <div class="box-body">
 	                        <table id="data-table" data-toggle="table"
 	                   data-pagination="true"

@@ -58,7 +58,7 @@ public class CategoryValidator implements Validator {
 			}
 			
 			if (null == category.getCategoryOid() && null != category.getParentOid() 
-					&& categoryService.isCategoryUsedByIncoming(category.getParentOid())) {
+					&& categoryService.isCategoryUsed(category.getParentOid())) {
 				errors.reject(null, "父类别已经被使用过了，不能再作为父类了，亲。");
 				return;
 			}

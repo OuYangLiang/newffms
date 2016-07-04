@@ -4,15 +4,8 @@
 		<pattern>/login</pattern>
 	</excludes>
 
-    <decorator name="default" page="main.jsp">
+    <decorator name="default" page="new-main.jsp">
         <pattern>/*</pattern>
     </decorator>
     
-    <decorator name="new" page="new-main.jsp">
-        <pattern>/welcome</pattern>
-        <pattern>/report/*</pattern>
-        <pattern>/account/*</pattern>
-        <pattern>/incoming/*</pattern>
-        <pattern>/consumption/*</pattern>
-    </decorator>
 </decorators>

@@ -1,68 +1,82 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/taglibs-include.jsp"%>
 <!doctype html>
-<html>
+<html lang="zh-CN">
+    <head>
+    
+    </head>
+
     <body>
-        <div class="button-area">
-            <button id="btn-save">确认</button>
-            <button id="btn-cancel">返回</button>
-        </div>
+        <section class="content-header">
+            <h1>
+                类别<small>新建确认</small>
+            </h1>
+        </section>
         
-        <div class="content-header ui-widget-header">
-            类别<span style="font-size: 80%;"> - 新建确认</span>
-        </div>
-        
-        <div class="contentWrapper">
-            <div class="mainArea">
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">类别描述</div>
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div style="padding-left: 20px; padding-bottom: 20px;">
+                        <button type="button" class="btn btn-default" id="btn-save">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </button>
                     
-                    <div class="input">
-                        <div class="confirmed-text">${catForm.categoryDesc }</div>
+                        <button type="button" class="btn btn-default" id="btn-cancel">
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                        </button>
                     </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-            
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">月度预算</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${catForm.monthlyBudget }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
-                </div>
-                
-                <div class="newline-wrapper ui-widget-content">
-                    <div class="label">父类别</div>
-                    
-                    <div class="input">
-                        <div class="confirmed-text">${catForm.parent.categoryDesc }</div>
-                    </div>
-                    
-                    <div style="clear:both;" ></div>
                 </div>
             </div>
             
-        </div>
-        
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <div class="form-horizontal">
+                                <c:if test="${catForm.parent != null }">
+                                    <div class="form-group">
+	                                    <label for=""parentDescInput"" class="col-xs-4 col-sm-2 control-label">上级类别</label>
+	                                    <div class="col-xs-7 col-sm-4">
+	                                        <div class="form-control" style="BORDER-STYLE: none;" id="parentDescInput">${catForm.parent.categoryDesc }</div>
+	                                    </div>
+	                                </div>
+                                </c:if>
+                            
+                                <div class="form-group">
+                                    <label for="categoryDescInput" class="col-xs-4 col-sm-2 control-label">描述</label>
+                                    <div class="col-xs-7 col-sm-4">
+                                        <div class="form-control" style="BORDER-STYLE: none;" id="categoryDescInput">${catForm.categoryDesc }</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="monthlyBudgetInput" class="col-xs-4 col-sm-2 control-label">月度预算</label>
+                                    <div class="col-xs-7 col-sm-4">
+                                        <div class="form-control" style="BORDER-STYLE: none;" id="monthlyBudgetInput">${catForm.monthlyBudget }</div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
         <script src="<c:url value='/js/jquery-1.11.1.min.js' />" charset="utf-8"></script>
-        <script src="<c:url value='/js/jquery-ui.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/bootstrap-3.3.5-dist/js/bootstrap.min.js' />" charset="utf-8"></script>
+        <script src="<c:url value='/AdminLTE2/js/app.min.js' />" charset="utf-8"></script>
         
         <script>
             $( document ).ready(function() {
-            	$ ("#btn-cancel").click(function(){
+                $ ("#btn-cancel").click(function(){
                     window.location.href = "<c:url value='/category/initAdd?back=true' />";
                 });
                 
                 $ ("#btn-save").click(function(){
                     window.location.href = "<c:url value='/category/saveAdd' />";
                 });
-                
-                $ (".button-area button").button();
             });
         </script>
-    
     </body>
 </html>

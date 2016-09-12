@@ -17,6 +17,7 @@
 	<http pattern="/bootstrap-3.3.5-dist/**" security="none" />
 	<http pattern="/bootstrap-table-1.10.1/**" security="none" />
 	<http pattern="/AdminLTE2/**" security="none" />
+	<http pattern="/font-awesome-4.6.3/**" security="none" />
 	<http pattern="/bootstrap-datetimepicker/**" security="none" />
 	<http pattern="/resources/**" security="none" />
 	

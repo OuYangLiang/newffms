@@ -70,7 +70,8 @@
     <mvc:resources location="/bootstrap-3.3.5-dist/" mapping="/bootstrap-3.3.5-dist/**"/>
     <mvc:resources location="/bootstrap-table-1.10.1/" mapping="/bootstrap-table-1.10.1/**"/>
     <mvc:resources location="/AdminLTE2/" mapping="/AdminLTE2/**"/>
+    <mvc:resources location="/font-awesome-4.6.3/" mapping="/font-awesome-4.6.3/**"/>
     <mvc:resources location="/bootstrap-datetimepicker/" mapping="/bootstrap-datetimepicker/**"/>
-    <mvc:resources location="/resources/" mapping="//resources/**"/>
+    <mvc:resources location="/resources/" mapping="/resources/**"/>
 
 </beans>

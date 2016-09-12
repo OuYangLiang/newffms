@@ -11,7 +11,7 @@
 
         <!-- Bootstrap -->
         <link href="<c:url value='/bootstrap-3.3.5-dist/css/bootstrap.min.css' />" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="<c:url value='/font-awesome-4.6.3/css/font-awesome.min.css' />" rel="stylesheet">
         <!-- <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet"> -->
         <link href="<c:url value='/AdminLTE2/css/AdminLTE.min.css' />" rel="stylesheet">
         <link href="<c:url value='/AdminLTE2/css/skins/skin-blue.min.css' />" rel="stylesheet">
